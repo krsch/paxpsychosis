@@ -18,7 +18,11 @@ exports.loadMap = ->
     osm.setView(pc_pos, 13).addLayer(cloudmade)
     marker = new L.Marker(pc_pos)
     osm.addLayer(marker)
+    pc.marker = marker
+    window.pc = pc
     marker.bindPopup("Your PC, ", pc.name)
+    osm.on 'click', (e)->
+      ss.rpc 'pc.move', [e.latlng.lat, e.latlng.lng]
 
 loadPC = (fn)->
   ss.rpc 'pc.get', (pc)->
@@ -26,3 +30,7 @@ loadPC = (fn)->
       setTimeout -> fn('auth error',null)
     else
       setTimeout -> fn(null,pc)
+
+ss.event.on 'pcPosition', (pos)->
+    pc.pos = pos
+    pc.marker.setLatLng(new L.LatLng(pc.pos[0], pc.pos[1]))

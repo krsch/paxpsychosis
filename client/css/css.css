@@ -43,6 +43,8 @@ html,body{
 	background-image:url(/img/bord.png);
 	width:1280px;
 	height:800px;
+        top: 0;
+        left: 0;
 	position:absolute;
 }
 
@@ -50,6 +52,9 @@ html,body{
 	width:450px;
 	height:450px;
 	position:absolute;
+        top: 0;
+        left:0;
+        z-index: 5;
 	background-image:url(/img/bbg.PNG);
 }
 
@@ -216,8 +221,9 @@ html,body{
 	width:1000px;
 	height:90px;
 	position:absolute;
-	margin-top:710px;
-	margin-left:140px;
+	top:710px;
+	left:140px;
+        z-index: 5;
 }
 
 .novibg {
