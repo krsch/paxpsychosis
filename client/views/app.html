@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
+    <script src="/leaflet/leaflet.js"></script>
     <SocketStream>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="/leaflet/leaflet.css" />
@@ -10,17 +11,17 @@
     <title>Pax Psychosis</title>
   </head>
   <body>
-    <div id="map">
-      
-    </div>
-    <div id="content">
-      <!-- QUICK CHAT DEMO-->
-      <form id="demo" onsubmit="return false">
-        <h3>Quick Chat Demo</h3>
-        <h5>Open this page in multiple tabs or browsers and type a message below</h5>
-        <div id="chatlog"></div>
-        <input id="myMessage" type="text" autocomplete="off">
-      </form>
+    <div id="map"></div>
+    <div class="darken hidden" id="login_box">
+      <div id="login">
+        <form id="login_form">
+          <div><label for="login_user">Имя пользователя</label>
+          <input name="user" type="text" id="login_user"></div>
+          <div><label for="login_pass">Пароль</label>
+          <input name="pass" type="password" id="login_pass"></div>
+          <input type="submit" value="Войти">
+        </form>
+      </div>
     </div>
   </body>
 </html>

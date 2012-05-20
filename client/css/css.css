@@ -1,0 +1,287 @@
+html,body{
+
+	height:100%; 
+	background-color:#FFF; 
+	font-family:Tahoma, Helvetica, sans-serif; 
+	font-size:11px; 
+	margin:0 auto; 
+	margin-top:0px; 
+	
+}
+
+
+#bg{
+}
+
+
+.bt{
+
+	//background:url(../images/background1.jpg) no-repeat;
+	margin: auto;
+	width:1280px;
+	height:800px;
+
+}
+
+
+#wrapper{
+
+	//height:100%;
+	//min-height:100%;
+	width:1280px;
+	height:800px;
+	//background-color:green;
+	/*background-image:url(/img/bg.png);*/
+	overflow:hidden;
+	margin:0 auto;
+        position: absolute;
+        top: 0;
+        z-index: 5;
+}
+
+.bord {
+	background-image:url(/img/bord.png);
+	width:1280px;
+	height:800px;
+	position:absolute;
+}
+
+.lt {
+	width:450px;
+	height:450px;
+	position:absolute;
+	background-image:url(/img/bbg.PNG);
+}
+
+.blockava {
+	width:220px;
+	height:220px;
+	position:absolute;
+}
+
+.bgava {
+	width:220px;
+	height:220px;
+	background-image:url(/img/bgav.png)
+}
+
+.stekava {
+	width:100px;
+	height:100px;
+	background-image:url(/img/stek.png);
+	position:absolute;
+	margin-left:12px;
+	margin-top:12px;
+}
+
+.ava {
+	width:74px;
+	height:74px;
+	//background-color:#FFF;
+	position:absolute;
+	margin-left:25px;
+	margin-top:25px;
+}
+
+.avahp {
+	width:150px;
+	height:150px;
+	background-image:url(/img/hp.png);
+	position:absolute;
+	margin-left:24px;
+	margin-top:24px;
+}
+
+.avamp {
+	width:150px;
+	height:150px;
+	background-image:url(/img/mp.png);
+	position:absolute;
+	margin-left:38px;
+	margin-top:38px;
+}
+
+.infoblock {
+	width:190px;
+	height:70px;
+	position:absolute;
+	margin-left:185px;
+	margin-top:7px;
+}
+
+.infobg {
+	width:190px;
+	height:70px;
+	background-image:url(/img/bginfo.PNG)
+}
+
+.infostek {
+	width:190px;
+	height:70px;
+	position:absolute;
+	background-image:url(/img/stekinfo.PNG)
+}
+
+.infopole {
+	width:134px;
+	height:26px;
+	position:absolute;
+	margin-left:26px;
+	margin-top:16px;
+	//background-color:#999;
+}
+
+.skblog {
+	width:80px;
+	height:220px;
+	position:absolute;
+	margin-left:0px;
+	margin-top:120px;
+}
+
+.skbg {
+	width:80px;
+	height:220px;
+	background-image:url(/img/skbg.PNG);
+}
+
+.fonsk {
+	width:80px;
+	height:220px;
+	background-image:url(/img/fonsk.PNG);
+}
+
+.skstek {
+	width:80px;
+	height:220px;
+	position:absolute;
+	background-image:url(/img/skstek.PNG);
+}
+
+.skinf {
+	width:36px;
+	height:28px;
+	position:absolute;
+	margin-left:28px;
+	margin-top:80px;
+	background-image:url(/img/skinf.PNG);
+}
+
+.stsk {
+	width:36px;
+	height:28px;
+	position:absolute;
+	margin-left:21px;
+	margin-top:130px;
+	background-image:url(/img/stsk.PNG);
+}
+
+.rolsk {
+	width:36px;
+	height:28px;
+	position:absolute;
+	margin-left:10px;
+	margin-top:130px;
+	background-image:url(/img/rolsk.PNG);
+}
+
+.kman {
+	width:56px;
+	height:56px;
+	background-image:url(/img/kman.PNG);
+	position:absolute;
+	margin-left:183px;
+	margin-top:75px;
+}
+
+.ki {
+	width:56px;
+	height:56px;
+	background-image:url(/img/ki.PNG);
+	position:absolute;
+	margin-left:150px;
+	margin-top:124px;
+}
+
+.ktel {
+	width:56px;
+	height:56px;
+	background-image:url(/img/ktel.PNG);
+	position:absolute;
+	margin-left:105px;
+	margin-top:165px;
+}
+
+.novi {
+	width:1000px;
+	height:90px;
+	position:absolute;
+	margin-top:710px;
+	margin-left:140px;
+}
+
+.novibg {
+	width:1000px;
+	height:90px;
+	position:absolute;
+	background-image:url(/img/novibg.PNG);
+}
+
+.novibgk {
+	width:1000px;
+	height:90px;
+	position:absolute;
+	background-image:url(/img/novibgk.PNG);
+}
+
+.novistekk {
+	width:1000px;
+	height:90px;
+	position:absolute;
+	background-image:url(/img/novistekk.PNG);
+}
+
+.knopka1 {
+	width:41px;
+	height:41px;
+	position:absolute;
+	background-color:#339;
+	margin-left:246px;
+	margin-top:30px;
+}
+
+.knopka2 {
+	width:41px;
+	height:41px;
+	position:absolute;
+	background-color:#339;
+	margin-left:299px;
+	margin-top:30px;
+}
+
+.knopka3 {
+	width:41px;
+	height:41px;
+	position:absolute;
+	background-color:#339;
+	margin-left:352px;
+	margin-top:30px;
+}
+
+.knopka4 {
+	width:41px;
+	height:41px;
+	position:absolute;
+	background-color:#339;
+	margin-left:405px;
+	margin-top:30px;
+}
+
+.knopka5 {
+	width:41px;
+	height:41px;
+	position:absolute;
+	background-color:#339;
+	margin-left:458px;
+	margin-top:30px;
+}

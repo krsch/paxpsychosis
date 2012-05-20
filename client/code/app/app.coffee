@@ -1,47 +1,28 @@
-### QUICK CHAT DEMO ####
+login = require('./login')
+login.login (err,ok) ->
+  # TODO: check for errors
+  exports.loadMap()
 
-# Delete this file once you've seen how the demo works
+exports.loadMap = ->
+  loadPC (err,pc)->
+    if err != null
+      alert(err)
+      return
+    # Create map
+    window.osm = new L.Map 'map'
+    cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+      maxZoom: 18
+    })
+    pc_pos = new L.LatLng(pc.loc[0], pc.loc[1])
+    osm.setView(pc_pos, 13).addLayer(cloudmade)
+    marker = new L.Marker(pc_pos)
+    osm.addLayer(marker)
+    marker.bindPopup("Your PC, ", pc.name)
 
-# Listen out for newMessage events coming from the server
-ss.event.on 'newMessage', (message) ->
-
-  # Example of using the Hogan Template in client/templates/chat/message.jade to generate HTML for each message
-  html = ss.tmpl['chat-message'].render({message: message, time: -> timestamp() })
-
-  # Append it to the #chatlog div and show effect
-  $(html).hide().appendTo('#chatlog').slideDown()
-
-
-# Show the chat form and bind to the submit action
-$('#demo').on 'submit', ->
-
-  # Grab the message from the text box
-  text = $('#myMessage').val()
-
-  # Call the 'send' funtion (below) to ensure it's valid before sending to the server
-  exports.send text, (success) ->
-    if success
-      $('#myMessage').val('') # clear text box
+loadPC = (fn)->
+  ss.rpc 'pc.get', (pc)->
+    if pc == false
+      setTimeout -> fn('auth error',null)
     else
-      alert('Oops! Unable to send message')
-
-
-# Demonstrates sharing code between modules by exporting function
-exports.send = (text, cb) ->
-  if valid(text)
-    ss.rpc('demo.sendMessage', text, cb)
-  else
-    cb(false)
-
-
-# Private functions
-
-timestamp = ->
-  d = new Date()
-  d.getHours() + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds())
-
-pad2 = (number) ->
-  (if number < 10 then '0' else '') + number
-
-valid = (text) ->
-  text && text.length > 0
+      setTimeout -> fn(null,pc)

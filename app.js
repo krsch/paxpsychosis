@@ -3,10 +3,14 @@
 var http = require('http')
   , ss = require('socketstream');
 
+// Connect to MongoDB
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/pp');
+
 // Define a single-page client
 ss.client.define('main', {
-  view: 'app.html',
-  css:  ['libs', 'app.styl'],
+  view: 'main.html',
+  css:  ['libs', 'app.styl', 'css.css'],
   code: ['libs', 'app'],
   tmpl: '*'
 });
