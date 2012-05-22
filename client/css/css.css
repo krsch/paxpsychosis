@@ -56,7 +56,7 @@ html,body{
         top: 0;
         left:0;
         z-index: 5;
-	background-image:url(/img/bbg.PNG);
+	background-image:url(/img/bbg.png);
 }
 
 .blockava {
@@ -118,14 +118,14 @@ html,body{
 .infobg {
 	width:190px;
 	height:70px;
-	background-image:url(/img/bginfo.PNG)
+	background-image:url(/img/bginfo.png)
 }
 
 .infostek {
 	width:190px;
 	height:70px;
 	position:absolute;
-	background-image:url(/img/stekinfo.PNG)
+	background-image:url(/img/stekinfo.png)
 }
 
 .infopole {
@@ -148,20 +148,20 @@ html,body{
 .skbg {
 	width:80px;
 	height:220px;
-	background-image:url(/img/skbg.PNG);
+	background-image:url(/img/skbg.png);
 }
 
 .fonsk {
 	width:80px;
 	height:220px;
-	background-image:url(/img/fonsk.PNG);
+	background-image:url(/img/fonsk.png);
 }
 
 .skstek {
 	width:80px;
 	height:220px;
 	position:absolute;
-	background-image:url(/img/skstek.PNG);
+	background-image:url(/img/skstek.png);
 }
 
 .skinf {
@@ -170,7 +170,7 @@ html,body{
 	position:absolute;
 	margin-left:28px;
 	margin-top:80px;
-	background-image:url(/img/skinf.PNG);
+	background-image:url(/img/skinf.png);
 }
 
 .stsk {
@@ -179,7 +179,7 @@ html,body{
 	position:absolute;
 	margin-left:21px;
 	margin-top:130px;
-	background-image:url(/img/stsk.PNG);
+	background-image:url(/img/stsk.png);
 }
 
 .rolsk {
@@ -188,13 +188,13 @@ html,body{
 	position:absolute;
 	margin-left:10px;
 	margin-top:130px;
-	background-image:url(/img/rolsk.PNG);
+	background-image:url(/img/rolsk.png);
 }
 
 .kman {
 	width:56px;
 	height:56px;
-	background-image:url(/img/kman.PNG);
+	background-image:url(/img/kman.png);
 	position:absolute;
 	margin-left:183px;
 	margin-top:75px;
@@ -203,7 +203,7 @@ html,body{
 .ki {
 	width:56px;
 	height:56px;
-	background-image:url(/img/ki.PNG);
+	background-image:url(/img/ki.png);
 	position:absolute;
 	margin-left:150px;
 	margin-top:124px;
@@ -212,7 +212,7 @@ html,body{
 .ktel {
 	width:56px;
 	height:56px;
-	background-image:url(/img/ktel.PNG);
+	background-image:url(/img/ktel.png);
 	position:absolute;
 	margin-left:105px;
 	margin-top:165px;
@@ -231,21 +231,21 @@ html,body{
 	width:1000px;
 	height:90px;
 	position:absolute;
-	background-image:url(/img/novibg.PNG);
+	background-image:url(/img/novibg.png);
 }
 
 .novibgk {
 	width:1000px;
 	height:90px;
 	position:absolute;
-	background-image:url(/img/novibgk.PNG);
+	background-image:url(/img/novibgk.png);
 }
 
 .novistekk {
 	width:1000px;
 	height:90px;
 	position:absolute;
-	background-image:url(/img/novistekk.PNG);
+	background-image:url(/img/novistekk.png);
 }
 
 .knopka1 {
