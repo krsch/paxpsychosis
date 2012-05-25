@@ -74,7 +74,7 @@ input[type='submit'] {
 
 #btn-submit {
 	display: block;
-	background: url('../img/vhodk.png') no-repeat;
+	background: url('/img/vhodk.png') no-repeat;
 	width: 90px;
 	height: 40px;
 	border: none;
