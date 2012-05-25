@@ -4,8 +4,8 @@ exports.login = (fn)->
       fn(null,true)
     else
       $('#login_box').show()
-      $('#login_form').submit ->
-        ss.rpc 'login.login', $('#login_user').val(), $('#login_pass').val(), (result)->
+      $('#form-auth').submit ->
+        ss.rpc 'login.login', $('#login').val(), $('#pass').val(), (result)->
           if result
             $('#login_box').hide()
             setTimeout -> fn(null,true)

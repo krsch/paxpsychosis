@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost/pp');
 // Define a single-page client
 ss.client.define('main', {
   view: 'main.html',
-  css:  ['libs', 'app.styl', 'css.css'],
+  css:  ['libs', 'app.styl', 'css.css', 'forms.css'],
   code: ['libs', 'app'],
   tmpl: '*'
 });

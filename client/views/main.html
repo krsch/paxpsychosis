@@ -83,18 +83,31 @@
         <div class="bord" style="clip: rect(  0px,1280px,  20px,   0px);"></div>
         <div class="bord" style="clip: rect( 17px,  17px, 800px,   0px);"></div>
         <div class="bord" style="clip: rect(783px,1280px, 800px,  17px);"></div>
-        <div class="bord" style="clip: rect( 17px,1280px, 780px,1263px);"></div>
+        <div class="bord" style="clip: rect( 17px,1280px, 783px,1263px);"></div>
 	</div>
 	</div>
     <div class="darken hidden" id="login_box">
-      <div id="login">
-        <form id="login_form">
-          <div><label for="login_user">Имя пользователя</label>
-          <input name="user" type="text" id="login_user"></div>
-          <div><label for="login_pass">Пароль</label>
-          <input name="pass" type="password" id="login_pass"></div>
-          <input type="submit" value="Войти">
-        </form>
+<!-- форма входа начало -->
+          <div class="vhod">
+            	<div class="vhodbg">
+<form id="form-auth" name="form-auth" action="-" method="post">
+
+<!--элементы формы-->
+<div id="form-content">
+	<div id="formlogin">
+		<input type="text" id="login" name="login" />
+	</div>
+	<div id="formpass">
+		<input type="password" id="pass" name="pass" />
+	</div>
+	
+    <div id="btnsubmit">
+	<input id="btn-submit" type="submit" value="" title="Войти" />
+</div>
+</form>
+</div>
+</div>
+<!-- форма входа конец -->
       </div>
     </div>
 </body>

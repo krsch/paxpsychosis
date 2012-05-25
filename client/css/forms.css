@@ -1,0 +1,88 @@
+form, input, label {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 9pt;
+}
+form {
+	color: #999;
+}
+form h1, form h2, form h3, form h4 {
+	color: #ddd;
+}
+input[type='text'],
+input[type='password'] {
+	color: #999;
+	border: 1px solid #333;
+	background-color: #333;
+	padding: 3px 4px;
+}
+input[type='text']:focus,
+input[type='password']:focus {
+	outline: none;
+	border: 1px solid #555;
+}
+input[type='text'].error,
+input[type='password'].error {
+	outline: none;
+	border: 1px solid #ff7f2a;
+}
+form a ,
+form a img,
+input[type='image'],
+input[type='submit'] {
+	outline: none;
+	border: none;
+}
+
+#form-auth {
+	width: 300px;
+	height: 170px;
+	position:absolute;
+}
+
+#form-content {
+	width:300px;
+	height:170px;
+	position:absolute;
+}
+
+#formlogin {
+	width:162px;
+	height:22px;
+	position:absolute;
+	margin-top:60px;
+	margin-left:40px;
+	border: 1px solid #ff7f2a;
+}
+#formpass {
+	width:162px;
+	height:22px;
+	position:absolute;
+	margin-top:90px;
+	margin-left:40px;
+	border: 1px solid #ff7f2a;
+}
+
+#form-auth-forgot {
+	position: absolute;
+	display: block;
+	width: 100%;
+	top: 80px;
+	right: 20px;
+	text-align: right;
+}
+
+
+#btn-submit {
+	display: block;
+	background: url('../img/vhodk.png') no-repeat;
+	width: 90px;
+	height: 40px;
+	border: none;
+	cursor: pointer;
+}
+
+#btnsubmit {
+	margin-top:115px;
+	margin-left:110px;
+	position:absolute;
+}

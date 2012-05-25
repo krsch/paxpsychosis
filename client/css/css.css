@@ -292,3 +292,23 @@ html,body{
 	margin-left:458px;
 	margin-top:30px;
 }
+
+.vhod {
+	width:310px;
+	height:180px;
+	position:absolute;
+	margin:310px 0px 0px 485px;
+}
+
+.vhodbg {
+	width:310px;
+	height:180px;
+	background-image:url(/img/vhodbg.png);
+}
+
+.vhodk {
+	width:90px;
+	height:40px;
+	background-image:url(/img/vhodk.png);
+	margin:115px 0px 0px 110px;
+}
