@@ -301,6 +301,7 @@ html,body{
  top: 50%;
  margin-left: -200px;
  margin-top: -150px;
+ z-index: 21;
 }
 
 .vhodbg {
