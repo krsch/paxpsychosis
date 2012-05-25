@@ -298,6 +298,8 @@ html,body{
 	height:180px;
 	position:absolute;
 	margin:310px 0px 0px 485px;
+        z-index: 21;
+        top: 0;
 }
 
 .vhodbg {
