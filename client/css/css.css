@@ -294,12 +294,13 @@ html,body{
 }
 
 .vhod {
-	width:310px;
-	height:180px;
-	position:absolute;
-	margin:310px 0px 0px 485px;
-        z-index: 21;
-        top: 0;
+ width:310px;
+ height:180px;
+ position:absolute;
+ left: 50%;
+ top: 50%;
+ margin-left: -200px;
+ margin-top: -150px;
 }
 
 .vhodbg {
