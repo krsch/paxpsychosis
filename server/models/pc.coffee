@@ -4,7 +4,7 @@ ObjectId = Schema.ObjectId
 Pc = new Schema {
   name: String
   factionId: ObjectId
-  userId: ObjectId
-  loc: [Number]
+  userId: {type: ObjectId, unique: true}
+  loc: [{type: Number, index: {"2d": true}}]
 }
 module.exports = mongoose.model('PC', Pc)

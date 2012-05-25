@@ -12,4 +12,9 @@ exports.login = (fn)->
           else
             alert('Неправильное имя пользователя или пароль')
         false
-
+exports.logout = (fn)->
+  ss.rpc 'login.logout', (res)->
+    if res
+      fn(null,null)
+    else
+      fn(-1, null)

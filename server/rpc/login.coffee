@@ -16,3 +16,8 @@ exports.actions = (req,res,ss) ->
   
   isLoggedin: ->
     res(req.session && req.session.userId)
+
+  logout: ->
+    delete req.session.userId
+    req.session.save()
+    true
