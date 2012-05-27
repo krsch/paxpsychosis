@@ -7,6 +7,8 @@ var http = require('http')
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/pp');
 
+global.cache = {pc: {} };
+
 // Define a single-page client
 ss.client.define('main', {
   view: 'main.html',

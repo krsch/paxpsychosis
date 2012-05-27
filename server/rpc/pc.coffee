@@ -14,17 +14,18 @@ exports.actions = (req,res,ss) ->
         res(null)
       else
         req.session.pc = doc
+        req.session.pc_id = doc._id
         req.session.save()
+        cache.pc[doc._id] = doc
         res(doc)
   move: (dst) ->
-    pc = req.session.pc
+    pc = cache.pc[req.session.pc_id]
     pc.movement ?= {}
     pc.movement.dst = dst
     pc.movement.speed ?= 0.0001
     pc.movePc = movePc
     unless pc.interval_id
       pc.interval_id = setInterval((-> pc.movePc(ss)), 1000)
-    req.session.save()
 
 movePc = (ss)->
   dir = [0, 0]
@@ -37,7 +38,9 @@ movePc = (ss)->
     @loc[1] = @loc[1] + dir[1]*@movement.speed/distance
   else
     @loc = @movement.dst
-    clearInterval @interval_id
+    interval = @interval_id
+    delete @interval_id
+    clearInterval interval
   Pc = require('./../models/pc')
   Pc.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->
     if num != 1 || err
