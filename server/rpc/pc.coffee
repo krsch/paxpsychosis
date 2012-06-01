@@ -1,3 +1,4 @@
+Geo = require('geojs')
 exports.actions = (req,res,ss) ->
   req.use('session')
   req.use('auth.authenticated')
@@ -18,29 +19,35 @@ exports.actions = (req,res,ss) ->
         req.session.save()
         cache.pc[doc._id] = doc
         res(doc)
-  move: (dst) ->
+  move: (type, dst) ->
+    if type != 'fly'
+      res(null)
     pc = cache.pc[req.session.pc_id]
+    if pc.updatePos
+      pc.updatePos(ss)
     pc.movement ?= {}
-    pc.movement.dst = dst
-    pc.movement.speed ?= 0.0001
-    pc.movePc = movePc
-    unless pc.interval_id
-      pc.interval_id = setInterval((-> pc.movePc(ss)), 1000)
+    pc.pos ?= new Geo.Pos(pc.loc[0], pc.loc[1])
+    dst_pos = new Geo.Pos(dst[0], dst[1])
+    pc.movement.way = new Geo.Line([pc.pos, dst_pos])
+    # FIXME: add multisegment support
+    distance = pc.movement.way.distance().total
+    pc.movement.speed ?= 0.005 / 1000
+    pc.movement.start = (new Date).getTime()
+    time = distance / pc.movement.speed
+    pc.updatePos ?= updatePos
+    setTimeout((-> pc.updatePos(ss)), time)
+    res {
+      waypoints: pc.movement.way.positions
+      speed: pc.movement.speed
+    }
 
-movePc = (ss)->
-  dir = [0, 0]
-  dir[0] = @movement.dst[0] - @loc[0]
-  dir[1] = @movement.dst[1] - @loc[1]
-  #console.log "Difference #{dir} from #{@loc} to #{@movement.dst}"
-  distance = Math.sqrt(dir[0]*dir[0] + dir[1]*dir[1])
-  if distance > @movement.speed
-    @loc[0] = @loc[0] + dir[0]*@movement.speed/distance
-    @loc[1] = @loc[1] + dir[1]*@movement.speed/distance
-  else
-    @loc = @movement.dst
-    interval = @interval_id
-    delete @interval_id
-    clearInterval interval
+updatePos = (ss)->
+  time = (new Date).getTime() - @movement.start
+  distance = time * @movement.speed
+  @pos = @movement.way.traverse(distance)
+  @loc[0] = @pos.lat
+  @loc[1] = @pos.lon
+  
   Pc = require('./../models/pc')
   Pc.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->
     if num != 1 || err

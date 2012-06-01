@@ -18,7 +18,11 @@ exports.loadMap = ->
     window.pc = pc
     marker.bindPopup("Your PC, ", pc.name)
     osm.on 'click', (e)->
-      ss.rpc 'pc.move', [e.latlng.lat, e.latlng.lng]
+      console.log e.latlng
+      ss.rpc 'pc.move', 'fly', [e.latlng.lat, e.latlng.lng], (e)->
+        console.log(e)
+        pc.waypoints = e.waypoints.map (p)-> new L.LatLng(p.lat, p.lon)
+        pc.speed = e.speed
 
 loadPC = (fn)->
   ss.rpc 'pc.get', (pc)->

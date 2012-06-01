@@ -9,6 +9,7 @@
     "ss-coffee": "0.1.x",
     "ss-stylus": "0.1.x",
     "ss-hogan": "0.1.x",
-    "mongoose": "2.x.x"
+    "mongoose": "2.x.x",
+    "geojs"   : "0.2.x"
   }
 }
