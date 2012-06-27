@@ -8,5 +8,7 @@ exports.startup = ->
 exports.startup()
 
 ss.event.on 'pcPosition', (pos)->
-    pc.pos = pos
-    pc.marker.setLatLng(new L.LatLng(pc.pos[0], pc.pos[1]))
+    pc.loc = pos
+    pc.pos = new L.LatLng(pc.loc...)
+    pc.marker.setLatLng pc.pos
+    pc.waypoints?[0] = pc.pos
