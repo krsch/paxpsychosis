@@ -13,7 +13,7 @@ global.cache = {pc: {} };
 ss.client.define('main', {
   view: 'main.html',
   css:  ['libs', 'app.styl', 'css.css', 'forms.css'],
-  code: ['libs', 'app'],
+  code: ['libs', 'app', 'system'],
   tmpl: '*'
 });
 

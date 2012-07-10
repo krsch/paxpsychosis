@@ -1,4 +1,4 @@
-#G = require 'geojs'
+pc = require('./model/pc')
 exports.loadMap = ->
   loadPC (err,pc)->
     if err != null
