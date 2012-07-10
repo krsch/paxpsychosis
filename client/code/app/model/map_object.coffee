@@ -1,7 +1,7 @@
 Backbone = require('backbone')
-module.exports = mo = Backbone.Model.extend {
+class MapObject extends Backbone.Model
         icon: '/static/images/user.png'
-        setPos: (pos)->
+        setPosition: (pos)->
                 loc = [pos[0] ? pos.lat, pos[1] ? pos.lon ? pos.lng]
                 throw "Bad position" if undefined in pos
                 @set('loc', loc)
@@ -11,6 +11,7 @@ module.exports = mo = Backbone.Model.extend {
         redraw: ->
                 @get('marker').setLanLng(@get('pos'))
         initialize: ->
+                super
                 unless @has('loc')
                         @set('loc', [0,0])
                 @set('latlng', latlng = new L.LatLng(@get('loc')...))
@@ -18,4 +19,4 @@ module.exports = mo = Backbone.Model.extend {
                 osm.addLayer(marker)
         remove: ->
                 osm.removeLayer(marker)
-}
+module.exports = MapObject

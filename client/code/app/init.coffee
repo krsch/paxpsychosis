@@ -1,6 +1,6 @@
-pc = require('./model/pc')
+Pc = require('./model/pc')
 exports.loadMap = ->
-  loadPC (err,pc)->
+  loadPC (err,pc_data)->
     if err != null
       alert(err)
       return
@@ -9,24 +9,26 @@ exports.loadMap = ->
     cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', {
       maxZoom: 18
     })
-    pc_pos = new L.LatLng(pc.loc...)
+    pc = new Pc({loc: pc_data.loc})
+    pc_pos = pc.get('latlng')
     osm.setView(pc_pos, 13).addLayer(cloudmade)
-    marker = new L.Marker(pc_pos)
-    osm.addLayer(marker)
-    pc.marker = marker
+    #marker = new L.Marker(pc_pos)
+    #osm.addLayer(marker)
+    #pc.marker = marker
     window.pc = pc
-    marker.bindPopup("Your PC, ", pc.name)
+    pc.get('marker').bindPopup("Your PC, ", pc_data.name)
     osm.on 'click', (e)->
       ss.rpc 'pc.move', 'fly', [e.latlng.lat, e.latlng.lng], (e)->
         #console.log(e)
-        pc.waypoints = e.waypoints.map (e) -> new L.LatLng(e.lat, e.lon)
-        pc.speed = e.speed
-        pc.start_time = (new Date).getTime()
-        if pc.dst_marker
-          osm.removeLayer pc.dst_marker
-        pc.dst_marker = new L.CircleMarker(pc.waypoints[1])
-        osm.addLayer pc.dst_marker
-        requestAnimationFrame -> movePc(pc)
+        #pc.waypoints = e.waypoints.map (e) -> new L.LatLng(e.lat, e.lon)
+        #pc.speed = e.speed
+        #pc.start_time = (new Date).getTime()
+        pc.startMovement(e)
+        #if pc.dst_marker
+        #  osm.removeLayer pc.dst_marker
+        #pc.dst_marker = new L.CircleMarker(pc.waypoints[1])
+        #osm.addLayer pc.dst_marker
+        #requestAnimationFrame -> movePc(pc)
         #console.log pc.waypoints[0].distanceTo(pc.waypoints[1])
 
 loadPC = (fn)->
