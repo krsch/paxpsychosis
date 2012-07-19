@@ -34,7 +34,7 @@ exports.actions = (req,res,ss) ->
     pc.updatePos ?= updatePos
     setTimeout((-> pc.updatePos(ss)), time)
     res {
-      waypoints: pc.movement.way.positions
+      waypoints: pc.movement.way.positions.map (p) -> [p.lat, p.lon]
       speed: pc.movement.speed
       distance: distance
       time: time
@@ -50,4 +50,10 @@ updatePos = (ss)->
   Pc.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->
     if num != 1 || err
       console.log err
-  ss.publish.user(@userId, 'pcPosition', @loc)
+  if @movement
+    ss.publish.user @userId, 'pcMove',
+        waypoints: [@loc].concat @movement.way.positions[1..].map((p)->[p.lat,p.lon])
+        speed: @movement.speed
+  else
+    ss.publish.user(@userId, 'pcPosition', @loc)
+
