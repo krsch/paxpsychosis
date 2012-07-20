@@ -5,14 +5,14 @@ exports.actions = (req,res,ss) ->
     User = require('./../models/user')
     User.findOne {login: username, password: pass}, (err,doc)->
       if err
-        res(false)
+        res('Wrong username or password')
       else if doc
         req.session.userId = doc._id
         req.session.save()
-        res(true)
+        res(null, true)
       else
         console.error("Unknown error in mongoose. Both doc and err are null. Login is #{username}")
-        res(false)
+        res('Bad error')
   
   isLoggedin: ->
     res(req.session && req.session.userId)

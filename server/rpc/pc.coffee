@@ -20,7 +20,7 @@ exports.actions = (req,res,ss) ->
         res(doc)
   move: (type, dst) ->
     if type != 'fly'
-      res(null)
+      return res('Wrong move type',null)
     pc = cache.pc[req.session.pc_id]
     if pc.updatePos
       pc.updatePos(ss)
@@ -33,7 +33,7 @@ exports.actions = (req,res,ss) ->
     time = distance / pc.movement.speed
     pc.updatePos ?= updatePos
     setTimeout((-> pc.updatePos(ss)), time)
-    res {
+    res null, {
       waypoints: pc.movement.way.positions.map (p) -> [p.lat, p.lon]
       speed: pc.movement.speed
       distance: distance
