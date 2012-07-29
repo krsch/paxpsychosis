@@ -1,7 +1,7 @@
 MapObject = require('./map_object')
 _ = require('underscore')
 
-class MovingObject extends MapObject
+module.exports = class MovingObject extends MapObject
         updatePosition: =>
                 return unless @has('movement')
                 m = @get('movement')
@@ -34,4 +34,3 @@ class MovingObject extends MapObject
                 if movement.animate
                         requestAnimationFrame(@updatePosition)
 
-module.exports = MovingObject

@@ -1,6 +1,6 @@
 MovingObject = require('./moving')
 
-class Pc extends MovingObject
+module.exports = class Pc extends MovingObject
         initialize: ->
                 super
                 @set('dstMarker', new L.CircleMarker(new L.LatLng(0,0)))
@@ -21,4 +21,3 @@ class Pc extends MovingObject
                                 pc = new Pc(pc_data)
                                 fn(null, pc)
 
-module.exports = Pc

@@ -1,5 +1,6 @@
 Backbone = require('backbone')
-class MapObject extends Backbone.Model
+
+module.exports = class MapObject extends Backbone.Model
         icon: '/images/user.png'
         setPosition: (pos)->
                 loc = [pos[0] ? pos.lat, pos[1] ? pos.lon ? pos.lng]
@@ -20,4 +21,3 @@ class MapObject extends Backbone.Model
                 osm.addLayer(marker)
         remove: ->
                 osm.removeLayer(marker)
-module.exports = MapObject
