@@ -1,10 +1,11 @@
 {
   "name": "pp.ss",
-  "description": "An awesome real time application",
+  "description": "Pax Psychosys browser MMORPG",
   "version": "0.0.1",
-  "author": "Me <me@mydomain.com>",
+  "author": "Alexey Kreshchuk <akrsch@gmail.com>",
   "private": true,
   "engines": { "node": ">= 0.6.0" },
+  "scripts": { "test": "mocha --compilers coffee:coffee-script --globals cache -R spec" },
   "dependencies": {
     "ss-coffee": "0.1.x",
     "ss-stylus": "0.1.x",

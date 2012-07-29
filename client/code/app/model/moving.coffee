@@ -7,13 +7,13 @@ class MovingObject extends MapObject
                 m = @get('movement')
                 duration = (new Date).getTime() - m.startTime
                 distance = 1000*duration * m.speed
-                #pos = m.way.traverse(distance)
                 pos = geo.math.destination(m.start_pos, heading:m.heading, distance:distance)
                 @setPosition([pos.lat(), pos.lng()])
                 if m.animate && !pos.equals(_.last(m.way)) && distance < m.distance
                         requestAnimationFrame(@updatePosition)
                 else
                         m.animate = false
+
         startMovement: (movement)->
                 if movement
                         movement.animate = true
@@ -21,6 +21,7 @@ class MovingObject extends MapObject
                 else
                         @get('movement').animate = true
                         requestAnimationFrame(@updatePosition)
+
         setMovement: (movement)->
                 movement.way = movement.waypoints.map (loc)->new geo.Point(loc...)
                 movement.distance = movement.way[0].distance(movement.way[1])

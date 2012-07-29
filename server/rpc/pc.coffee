@@ -5,22 +5,22 @@ exports.actions = (req,res,ss) ->
 
   get: ->
     if req.session.pc_id
-      res(cache.pc[req.session.pc_id])
+      res(null,cache.pc[req.session.pc_id])
       return
     userid = req.session.userId
     pc = require('./../models/pc')
     pc.findOne {userId: userid}, (err,doc)->
       if err
         console.log(err)
-        res(null)
+        res(err)
       else
         req.session.pc_id = doc._id
         req.session.save()
         cache.pc[doc._id] = doc
-        res(doc)
+        res(null,doc)
   move: (type, dst) ->
     if type != 'fly'
-      return res('Wrong move type',null)
+      return res(new Error('Wrong move type'),null)
     pc = cache.pc[req.session.pc_id]
     if pc.updatePos
       pc.updatePos(ss)
@@ -49,7 +49,8 @@ updatePos = (ss)->
   Pc = require('./../models/pc')
   Pc.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->
     if num != 1 || err
-      console.log err
+      debugger
+      console.error err
   if @movement
     ss.publish.user @userId, 'pcMove',
         waypoints: [@loc].concat @movement.way.positions[1..].map((p)->[p.lat,p.lon])

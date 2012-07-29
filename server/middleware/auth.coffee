@@ -6,5 +6,5 @@ exports.authenticated = ->
     if req.session && req.session.userId?
       next()
     else
-      res(false)
+      res new Error('Not logged in')
 
