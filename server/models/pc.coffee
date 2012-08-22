@@ -1,4 +1,6 @@
 mongoose = require 'mongoose'
+Geo = require('geojs')
+ss = require('socketstream').api
 Schema = mongoose.Schema
 ObjectId = Schema.ObjectId
 Pc = new Schema {
@@ -19,7 +21,7 @@ Pc.statics.by_id = (pc_id, cb) ->
                         cache.pc[pc_id] = doc unless err
                         cb(err,doc)
 
-Pc.methods.updatePos = (ss)->
+Pc.methods.updatePos = ->
         if @movement && @movement.type = 'fly'
           time = (new Date).getTime() - @movement.start
           distance = time * @speed[@movement.type]
@@ -36,9 +38,15 @@ Pc.methods.updatePos = (ss)->
 
 
 move =
-        fly: (dst)->
-                dst
+  fly: (dst)->
+    @movement.way= new Geo.Line([@loc.toObject(), dst].map (loc)-> new Geo.Pos(loc...))
+    distance = @movement.way.distance().total
+    time = distance / @movement.speed
+    setTimeout(@updatePos.bind(this), time)
 
-Pc.methods.move = (type, other...) -> move[type](other...)
+Pc.methods.move = (type, other...) ->
+  @updatePos(ss)
+  @movement = type: type, start: (new Date).getTime(), speed: @speed[type]
+  move[type].apply(this, other)
         
 module.exports = model = mongoose.model('PC', Pc)

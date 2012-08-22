@@ -15,9 +15,9 @@ exports.actions = (req,res,ss) ->
         res new Error('Bad error')
   
   isLoggedin: ->
-    res(req.session && req.session.userId)
+    res(null, req.session && req.session.userId)
 
   logout: ->
     delete req.session.userId
     req.session.save()
-    true
+    res(null)
