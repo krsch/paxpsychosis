@@ -12,6 +12,7 @@
     "ss-coffee": "0.1.x",
     "ss-stylus": "0.1.x",
     "ss-hogan": "0.1.x",
+    "socketstream": "0.3.x",
     "mongoose": "3.x.x",
     "geojs"   : "0.2.x",
     "connect-mongo": "0.1.x",
