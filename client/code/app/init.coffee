@@ -10,7 +10,6 @@ exports.loadMap = ->
       alert(err)
       return
     # Create map
-    #pc = new Pc({loc: pc_data.loc})
     pc_pos = pc.get('latlng')
     osm.setView(pc_pos, 13).addLayer(cloudmade)
     window.pc = pc
@@ -18,9 +17,9 @@ exports.loadMap = ->
     osm.on 'click', (e)->
       ss.rpc 'pc.move', 'fly', [e.latlng.lat, e.latlng.lng], (err, movement)->
         if err
-                console.log(err)
+          console.log(err)
         else
-                pc.startMovement(movement)
+          pc.startMovement(movement)
 
 loadPC = (fn)->
   ss.rpc 'pc.get', fn

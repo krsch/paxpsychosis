@@ -23,6 +23,10 @@ module.exports = class MovingObject extends MapObject
                         requestAnimationFrame(@updatePosition)
 
         setMovement: (movement)->
+                @setPosition movement.waypoints[0]
+                if movement.waypoints.length == 1
+                  @set('movement', null)
+                  return
                 movement.way = movement.waypoints.map (loc)->new geo.Point(loc...)
                 movement.distance = movement.way[0].distance(movement.way[1])
                 movement.heading = geo.math.heading(movement.way[0..1]...)
@@ -30,7 +34,7 @@ module.exports = class MovingObject extends MapObject
                 movement.startTime = (new Date).getTime()
                 movement.animate ?= false
                 @set('movement', movement)
-                @setPosition movement.waypoints[0]
+                return if movement.distance == 0
                 if movement.animate
                         requestAnimationFrame(@updatePosition)
 

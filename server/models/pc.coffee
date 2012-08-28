@@ -1,4 +1,6 @@
 mongoose = require 'mongoose'
+deepEqual = require('deep-equal')
+_ = require('underscore')
 Geo = require('geojs')
 ss = require('socketstream').api
 Schema = mongoose.Schema
@@ -7,8 +9,8 @@ Pc = new Schema {
   name: String
   factionId: ObjectId
   userId: {type: ObjectId, unique: true}
-  speed: { fly: {type: Number, default: 0.005} }
-  loc: [{type: Number, index: {"2d": true}}]
+  speed: { fly: {type: Number, default: 5e-6} }
+  loc: {type: [Number], index: {"2d": true}}
 }
 
 Pc.statics.by_user = (userId, cb) ->
@@ -25,8 +27,17 @@ Pc.methods.updatePos = ->
         if @movement && @movement.type = 'fly'
           time = (new Date).getTime() - @movement.start
           distance = time * @speed[@movement.type]
+          distance_segments = @movement.way.distance().segments
           pos = @movement.way.traverse(distance)
           @loc = [pos.lat, pos.lon]
+          while distance > distance_segments[0]
+            distance -= distance_segments[0]
+            @movement.way.positions.shift()
+            distance_segments.shift()
+          if distance_segments.length > 0
+            distance = @movement.way.distance().total
+            new_time = distance / @movement.speed - time
+            setTimeout Pc.methods.updatePos.bind(this), new_time
           model.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->
             if num != 1 || err
               console.error err
