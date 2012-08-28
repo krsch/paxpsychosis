@@ -1,6 +1,6 @@
 exports.login = (fn)->
-  ss.rpc 'login.isLoggedin', (loggedIn)->
-    if loggedIn
+  ss.rpc 'login.isLoggedin', (err, loggedIn)->
+    if !err && loggedIn
       fn(null,true)
     else
       $('#login_box').show()
@@ -8,7 +8,7 @@ exports.login = (fn)->
         ss.rpc 'login.login', $('#login').val(), $('#pass').val(), (err,result)->
           if result
             $('#login_box').hide()
-            setTimeout -> fn(null,true)
+            fn(null,true)
           else
             alert('Неправильное имя пользователя или пароль')
         false

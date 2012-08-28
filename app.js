@@ -21,7 +21,9 @@ ss.client.define('main', {
 ss.http.route('/', function(req, res){
   res.serveClient('main');
 })
-
+var     connect = ss.http.connect,
+        MongoStore = require('connect-mongo')(connect);
+ss.session.store.use(new MongoStore({db: 'pp'}));
 // Code Formatters
 ss.client.formatters.add(require('ss-coffee'));
 ss.client.formatters.add(require('ss-stylus'));

@@ -13,6 +13,7 @@
     "ss-stylus": "0.1.x",
     "ss-hogan": "0.1.x",
     "mongoose": "3.x.x",
-    "geojs"   : "0.2.x"
+    "geojs"   : "0.2.x",
+    "connect-mongo": "1.9.x"
   }
 }
