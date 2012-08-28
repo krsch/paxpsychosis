@@ -16,6 +16,7 @@
     "mongoose": "3.x.x",
     "geojs"   : "0.2.x",
     "connect-mongo": "0.1.x",
+    "underscore": "*",
     "deep-equal": "*"
   }
 }
