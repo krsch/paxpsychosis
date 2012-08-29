@@ -20,4 +20,4 @@ module.exports = class MapObject extends Backbone.Model
                 @set('marker', marker = new L.Marker(latlng, icon: new L.Icon(@icon) ))
                 osm.addLayer(marker)
         remove: ->
-                osm.removeLayer(marker)
+                osm.removeLayer(@get('marker'))

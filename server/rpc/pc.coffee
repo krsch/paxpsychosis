@@ -23,7 +23,6 @@ exports.actions = (req,res,ss) ->
       return res(err) if err
       unless type of pc.speed
         return res(new Error('Wrong move type'),null)
-      #pc = cache.pc[req.session.pc_id]
       pc.move(type, dst)
       res null, {
         waypoints: pc.movement.way.positions.map (p) -> [p.lat, p.lon]
@@ -34,10 +33,12 @@ exports.actions = (req,res,ss) ->
   lookAround: ->
     Pc.by_id req.session.pc_id, (err, pc) ->
       return res(err) if err
-      Pc.find {loc: $within: $center: [pc.loc, 1] }, (err, near)->
+      Pc.find {loc: {$within: $center: [pc.loc, m2deg(100)]}, _id: $ne: pc._id }, (err, near)->
         console.log(err) if err
         return res(err) if err
-        pc.sees(near.map (e)->e._id)
+        pc_export = near.map (e)->{_id: e._id, loc: e.loc, type: 'person'}
+        pc.sees_only pc_export
         near.forEach (e)->e.seen_by pc
-        return res(null, near.map (e)->{_id: e._id, loc: e.loc, type: 'person'})
+        return res(null, true)
 
+m2deg = (m)->m/6321000/3.1415926*180

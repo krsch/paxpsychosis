@@ -48,7 +48,7 @@ describe 'PC', ->
         mock.verify()
         #userId.should.equal 1
         messageId.should.equal 'pcMove'
-        m.waypoints.should.deep.equal [dst, dst]
+        m.waypoints.should.deep.equal [dst]
         done()
       ss.rpc 'pc.move', 'fly', dst, wrapRPC (err,m)->
         chai.expect(err).to.be.null

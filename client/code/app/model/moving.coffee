@@ -38,3 +38,17 @@ module.exports = class MovingObject extends MapObject
                 if movement.animate
                         requestAnimationFrame(@updatePosition)
 
+ss.event.on 'you see', (pcs)->
+  window.people ?= {}
+  pcs.forEach (e)->
+    if e._id of people
+      #TODO add supoort for other fields
+      people[e._id].setPosition(e.loc)
+    else
+      people[e._id] = new MovingObject(e)
+
+ss.event.on 'you lost', (pcs)->
+  pcs.forEach (e)->
+    if e._id of people
+      people[e._id].remove()
+      delete people[e._id]

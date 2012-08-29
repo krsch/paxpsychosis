@@ -1,4 +1,5 @@
 mongoose = require 'mongoose'
+$ = require('interlude')
 deepEqual = require('deep-equal')
 _ = require('underscore')
 Geo = require('geojs')
@@ -60,9 +61,17 @@ Pc.methods.move = (type, other...) ->
   @movement = type: type, start: (new Date).getTime(), speed: @speed[type]
   move[type].apply(this, other)
 
-Pc.methods.sees = (pc)->
+Pc.methods.sees_only = (pc)->
   @_sees ?= []
-  @_sees.push(pc...)
+  pc_ids = @_sees.map (e)->{_id: e}
+  equals = (a,b)-> String(a._id) == String(b._id)
+  #new_pcs = $.differenceBy(equals, pc, pc_ids)
+  old_pcs = $.differenceBy(equals, pc_ids, pc)
+  #console.log(old_pcs, new_pcs)
+  ss.publish.user(@userId, 'you see', pc)
+  ss.publish.user(@userId, 'you lost', old_pcs) unless old_pcs.length == 0
+  @_sees = pc.map (e)->e._id
+  #@_sees.push(pc...)
         
 Pc.methods.seen_by = (pc)->
   @_seen_by ?= []
