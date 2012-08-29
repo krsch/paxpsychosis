@@ -10,7 +10,7 @@ Pc = new Schema {
   factionId: ObjectId
   userId: {type: ObjectId, unique: true}
   speed: { fly: {type: Number, default: 5e-6} }
-  loc: {type: [Number], index: {"2d": true}}
+  loc: {type: [Number], index: "2d"}
 }
 
 Pc.statics.by_user = (userId, cb) ->
@@ -59,5 +59,13 @@ Pc.methods.move = (type, other...) ->
   @updatePos(ss)
   @movement = type: type, start: (new Date).getTime(), speed: @speed[type]
   move[type].apply(this, other)
+
+Pc.methods.sees = (pc)->
+  @_sees ?= []
+  @_sees.push(pc...)
         
+Pc.methods.seen_by = (pc)->
+  @_seen_by ?= []
+  @_seen_by.push(pc)
+
 module.exports = model = mongoose.model('PC', Pc)

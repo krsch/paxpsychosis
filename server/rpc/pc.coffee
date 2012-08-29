@@ -31,4 +31,13 @@ exports.actions = (req,res,ss) ->
         distance: pc.movement.way.distance().total
         time: pc.movement.start
       }
+  lookAround: ->
+    Pc.by_id req.session.pc_id, (err, pc) ->
+      return res(err) if err
+      Pc.find {loc: $within: $center: [pc.loc, 1] }, (err, near)->
+        console.log(err) if err
+        return res(err) if err
+        pc.sees(near.map (e)->e._id)
+        near.forEach (e)->e.seen_by pc
+        return res(null, near.map (e)->{_id: e._id, loc: e.loc, type: 'person'})
 

@@ -1,4 +1,5 @@
 Pc = require('./model/pc')
+Moving = require('./model/moving')
 exports.loadMap = ->
   window.osm ?= new L.Map 'map', attributionControl: false
   window.cloudmade ?= new L.TileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', {
@@ -23,6 +24,19 @@ exports.loadMap = ->
 
 loadPC = (fn)->
   ss.rpc 'pc.get', fn
+
+swap = (f,a,b)->f(b,a)
+int_id = swap setInterval, 1000, ->
+  ss.rpc 'pc.lookAround', (err, new_people)->
+    return if err
+    window.people ?= {}
+    new_people.forEach (e)->
+      if e._id of people
+        #TODO add supoort for other fields
+        people[e._id].set('loc', e.loc)
+      else
+        people[e._id] = new Moving(e)
+alert('no interval') unless int_id
 
 window.requestAnimationFrame ?=
     window.webkitRequestAnimationFrame ||
