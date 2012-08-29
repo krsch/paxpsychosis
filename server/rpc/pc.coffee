@@ -33,6 +33,7 @@ exports.actions = (req,res,ss) ->
   lookAround: ->
     Pc.by_id req.session.pc_id, (err, pc) ->
       return res(err) if err
+      console.error("Couldn't load pc", req.session.pc_id) unless pc
       Pc.find {loc: {$within: $center: [pc.loc, m2deg(100)]}, _id: $ne: pc._id }, (err, near)->
         console.log(err) if err
         return res(err) if err
