@@ -17,7 +17,7 @@
     "geojs"   : "0.2.x",
     "connect-mongo": "0.1.x",
     "underscore": "*",
-    "subset": "0.1.x",
+    "interlude": "0.7.x",
     "deep-equal": "*"
   }
 }
