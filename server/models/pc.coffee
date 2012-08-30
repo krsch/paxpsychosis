@@ -12,6 +12,8 @@ Pc = new Schema {
   userId: {type: ObjectId, unique: true}
   speed: { fly: {type: Number, default: 5e-6} }
   loc: {type: [Number], index: "2d"}
+  _seen_by: []
+  _sees: []
 }
 
 Pc.statics.by_user = (userId, cb) ->
@@ -47,33 +49,37 @@ Pc.methods.updatePos = ->
               speed: @movement.speed
         else
           ss.publish.user(@userId, 'pcPosition', @loc)
+          @_sees.forEach (pc)=>
+            if pc of cache.pc
+              message = [{_id: @_id, loc: @loc}]
+              ss.publish.user cache.pc[pc].userId, 'you see', message
+        @notify_movement()
 
+Pc.methods.notify_movement = ->
+  @_sees.forEach (pc)=>
+    if pc of cache.pc
+      message = {_id: @_id, loc: @loc}
+      if @movement?.way.positions.length > 1
+        message.movement =
+          src: @loc
+          speed: @movement.speed
+          heading: @movement.way.positions[0].bearing(@movement.way.positions[1])
+      ss.publish.user cache.pc[pc].userId, 'you see', [message]
 
 move =
-  fly: (dst, cb)->
+  fly: (dst)->
     @movement.way= new Geo.Line([@loc.toObject(), dst].map (loc)-> new Geo.Pos(loc...))
     distance = @movement.way.distance().total
     time = distance / @movement.speed
     setTimeout(@updatePos.bind(this), time)
-    cb()
+    @notify_movement()
 
 Pc.methods.move = (type, other...) ->
-  @updatePos(ss)
+  @updatePos()
   @movement = type: type, start: (new Date).getTime(), speed: @speed[type]
-  move[type].apply this, other.concat ->
-    @_seen_by.forEach (pc)->
-      if pc of cache.pc
-        ss.publish.user cache.pc[pc].userId, 'you see',
-          _id: @_id
-          loc: @loc
-          movement:
-            src: @loc
-            speed: @movement.speed
-            heading: movement.way.positions[0].bearing(movement.way.positions[1])
-
+  move[type].apply this, other
 
 Pc.methods.sees_only = (pc)->
-  @_sees ?= []
   pc_ids = @_sees.map (e)->{_id: e}
   equals = (a,b)-> String(a._id) == String(b._id)
   #new_pcs = $.differenceBy(equals, pc, pc_ids)
@@ -94,7 +100,6 @@ Pc.methods.sees_only = (pc)->
   #@_sees.push(pc...)
         
 Pc.methods.seen_by = (pc)->
-  @_seen_by ?= []
   @_seen_by = $.insert(@_seen_by, pc)
 
 Pc.methods.not_seen_by = (pc)->

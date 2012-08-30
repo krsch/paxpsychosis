@@ -18,7 +18,7 @@ exports.loadMap = ->
     osm.on 'click', (e)->
       ss.rpc 'pc.move', 'fly', [e.latlng.lat, e.latlng.lng], (err, movement)->
         if err
-          console.log(err)
+          console.error(err)
         else
           pc.startMovement(movement)
 
@@ -28,7 +28,9 @@ loadPC = (fn)->
 swap = (f,a,b)->f(b,a)
 int_id = swap setInterval, 10000, ->
   ss.rpc 'pc.lookAround', (err, new_people)->
-    return if err
+    if err
+      console.error(err)
+      return
     return if new_people == true
     window.people ?= {}
     new_people.forEach (e)->
