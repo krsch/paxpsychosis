@@ -9,7 +9,7 @@ module.exports = class MovingObject extends MapObject
                 distance = 1000*duration * m.speed
                 pos = geo.math.destination(m.start_pos, heading:m.heading, distance:distance)
                 @setPosition([pos.lat(), pos.lng()])
-                if m.animate && !pos.equals(_.last(m.way)) && distance < m.distance
+                if m.animate && (!m.distance? || !pos.equals(_.last(m.way)) && distance < m.distance)
                         requestAnimationFrame(@updatePosition)
                 else
                         m.animate = false
@@ -23,29 +23,38 @@ module.exports = class MovingObject extends MapObject
                         requestAnimationFrame(@updatePosition)
 
         setMovement: (movement)->
-                @setPosition movement.waypoints[0]
-                if movement.waypoints.length == 1
-                  @unset('movement')
-                  return
-                movement.way = movement.waypoints.map (loc)->new geo.Point(loc...)
-                movement.distance = movement.way[0].distance(movement.way[1])
-                movement.heading = geo.math.heading(movement.way[0..1]...)
-                movement.start_pos = movement.way[0]
+                if movement.waypoints
+                  @setPosition movement.waypoints[0]
+                  if movement.waypoints.length == 1
+                    @unset('movement')
+                    return
+                  movement.way = movement.waypoints.map (loc)->new geo.Point(loc...)
+                  movement.distance = movement.way[0].distance(movement.way[1])
+                  movement.heading = geo.math.heading(movement.way[0..1]...)
+                  movement.start_pos = movement.way[0]
+                else
+                  @setPosition movement.src
+                  movement.start_pos = new geo.Point(movement.src...)
                 movement.startTime = (new Date).getTime()
                 movement.animate ?= false
                 @set('movement', movement)
-                return if movement.distance == 0
+                return if movement.distance? == 0
                 if movement.animate
                         requestAnimationFrame(@updatePosition)
 
 ss.event.on 'you see', (pcs)->
   window.people ?= {}
+  console.log(pcs)
   pcs.forEach (e)->
     if e._id of people
       #TODO add supoort for other fields
       people[e._id].setPosition(e.loc)
     else
       people[e._id] = new MovingObject(e)
+    if e.movement
+      people[e._id].startMovement(e.movement)
+    else if people[e._id].has('movement')
+      people[e._id].unset('movement')
 
 ss.event.on 'you lost', (pcs)->
   pcs.forEach (e)->

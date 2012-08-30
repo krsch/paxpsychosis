@@ -50,16 +50,27 @@ Pc.methods.updatePos = ->
 
 
 move =
-  fly: (dst)->
+  fly: (dst, cb)->
     @movement.way= new Geo.Line([@loc.toObject(), dst].map (loc)-> new Geo.Pos(loc...))
     distance = @movement.way.distance().total
     time = distance / @movement.speed
     setTimeout(@updatePos.bind(this), time)
+    cb()
 
 Pc.methods.move = (type, other...) ->
   @updatePos(ss)
   @movement = type: type, start: (new Date).getTime(), speed: @speed[type]
-  move[type].apply(this, other)
+  move[type].apply this, other.concat ->
+    @_seen_by.forEach (pc)->
+      if pc of cache.pc
+        ss.publish.user cache.pc[pc].userId, 'you see',
+          _id: @_id
+          loc: @loc
+          movement:
+            src: @loc
+            speed: @movement.speed
+            heading: movement.way.positions[0].bearing(movement.way.positions[1])
+
 
 Pc.methods.sees_only = (pc)->
   @_sees ?= []
@@ -67,7 +78,16 @@ Pc.methods.sees_only = (pc)->
   equals = (a,b)-> String(a._id) == String(b._id)
   #new_pcs = $.differenceBy(equals, pc, pc_ids)
   old_pcs = $.differenceBy(equals, pc_ids, pc)
+  pc.forEach (pc)->
+    if pc._id of cache.pc and cache.pc[pc._id].movement?.way.positions.length > 1
+      movement = cache.pc[pc._id].movement
+      path = movement.way.positions
+      pc.movement =
+        speed: movement.speed
+        src: pc.loc
+        heading: path[0].bearing(path[1])
   #console.log(old_pcs, new_pcs)
+  old_pcs.forEach (pc)->pc.not_seen_by(@_id)
   ss.publish.user(@userId, 'you see', pc)
   ss.publish.user(@userId, 'you lost', old_pcs) unless old_pcs.length == 0
   @_sees = pc.map (e)->e._id
@@ -75,6 +95,10 @@ Pc.methods.sees_only = (pc)->
         
 Pc.methods.seen_by = (pc)->
   @_seen_by ?= []
-  @_seen_by.push(pc)
+  @_seen_by = $.insert(@_seen_by, pc)
+
+Pc.methods.not_seen_by = (pc)->
+  @_seen_by ?= []
+  @_seen_by = $.delete(@_seen_by, pc)
 
 module.exports = model = mongoose.model('PC', Pc)

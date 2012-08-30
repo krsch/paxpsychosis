@@ -34,12 +34,17 @@ exports.actions = (req,res,ss) ->
     Pc.by_id req.session.pc_id, (err, pc) ->
       return res(err) if err
       console.error("Couldn't load pc", req.session.pc_id) unless pc
-      Pc.find {loc: {$within: $center: [pc.loc, m2deg(100)]}, _id: $ne: pc._id }, (err, near)->
-        console.log(err) if err
-        return res(err) if err
-        pc_export = near.map (e)->{_id: e._id, loc: e.loc, type: 'person'}
-        pc.sees_only pc_export
-        near.forEach (e)->e.seen_by pc
-        return res(null, true)
+      pc.updatePos()
+      Pc.find {loc: {$within: $center: [pc.loc, m2deg(200)]}, _id: $ne: pc._id }, (err, near)->
+        near.forEach (e)->
+          if e._id of cache.pc
+            cache.pc[e._id].updatePos()
+        Pc.find {loc: {$within: $center: [pc.loc, m2deg(100)]}, _id: $ne: pc._id }, (err, near)->
+          console.log(err) if err
+          return res(err) if err
+          pc_export = near.map (e)->{_id: e._id, loc: e.loc, type: 'person'}
+          pc.sees_only pc_export
+          near.forEach (e)->e.seen_by pc
+          return res(null, true)
 
 m2deg = (m)->m/6321000/3.1415926*180

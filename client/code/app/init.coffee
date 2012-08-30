@@ -26,7 +26,7 @@ loadPC = (fn)->
   ss.rpc 'pc.get', fn
 
 swap = (f,a,b)->f(b,a)
-int_id = swap setInterval, 1000, ->
+int_id = swap setInterval, 10000, ->
   ss.rpc 'pc.lookAround', (err, new_people)->
     return if err
     return if new_people == true
