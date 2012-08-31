@@ -3,10 +3,11 @@ pc = require '../server/rpc/pc'
 chai = require 'chai'
 user = require '../server/models/user'
 sinon = require 'sinon'
+deepEqual = require('deep-equal')
 chai.should()
 wrapRPC = (done)-> (args)->done(args...)
 global.cache = pc: {}
-Pc = require('../server/models/pc')
+Pc = require('../server/models/pc').model
 
 describe 'PC', ->
   describe 'move', ->
@@ -44,12 +45,16 @@ describe 'PC', ->
       mock = sinon.mock(Pc)
       mock.expects('update').returns(null).yields(null,1)
       stubs.push sinon.stub ss.publish, 'user', (userId, messageId, m)->
-        return unless messageId == 'pcMove'
-        mock.verify()
-        #userId.should.equal 1
-        messageId.should.equal 'pcMove'
-        m.waypoints.should.deep.equal [dst]
-        done()
+        if messageId == 'pcMove' and deepEqual(m.waypoints[0], dst)
+          mock.verify()
+          m.waypoints.should.deep.equal [dst]
+          done()
+        else if messageId == 'pcPosition' and deepEqual(m, dst)
+          mock.verify()
+          m.should.deep.equal dst
+          done()
+        else
+          console.log("received #{messageId} with #{m.length} #{m}")
       ss.rpc 'pc.move', 'fly', dst, wrapRPC (err,m)->
         chai.expect(err).to.be.null
 

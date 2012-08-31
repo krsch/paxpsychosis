@@ -41,6 +41,9 @@ module.exports = class MovingObject extends MapObject
                 return if movement.distance? == 0
                 if movement.animate
                         requestAnimationFrame(@updatePosition)
+        remove: ->
+          @unset('movement')
+          super()
 
 ss.event.on 'you see', (pcs)->
   window.people ?= {}
@@ -57,6 +60,7 @@ ss.event.on 'you see', (pcs)->
       people[e._id].unset('movement')
 
 ss.event.on 'you lost', (pcs)->
+  window.people ?= {}
   pcs.forEach (e)->
     if e._id of people
       people[e._id].remove()

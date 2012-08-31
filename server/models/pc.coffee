@@ -12,59 +12,84 @@ Pc = new Schema {
   userId: {type: ObjectId, unique: true}
   speed: { fly: {type: Number, default: 5e-6} }
   loc: {type: [Number], index: "2d"}
-  _seen_by: []
-  _sees: []
+  around: []
 }
 
-Pc.statics.by_user = (userId, cb) ->
-        model.find({userId}, cb)
-Pc.statics.by_id = (pc_id, cb) ->
-        if pc_id of cache.pc
-                cb(null, cache.pc[pc_id])
-        else
-                model.findOne {_id: pc_id}, (err,doc)->
-                        cache.pc[pc_id] = doc unless err
-                        cb(err,doc)
+Pc.statics.by_user = by_user = (userId, cb) ->
+  model.findOne {userId}, (err, doc)->
+    return cb(arguments) if err
+    if doc._id of cache.pc
+      cb(null, cache.pc[doc._id])
+    else
+      cb(null, cache.pc[doc._id]=doc)
+Pc.statics.by_id = by_id = (pc_id, cb) ->
+  if pc_id of cache.pc
+    cb(null, cache.pc[pc_id])
+  else
+    model.findOne {_id: pc_id}, (err,doc)->
+      return cb(arguments) if err
+      if pc_id of cache.pc
+        cb(null, cache.pc[pc_id])
+      else
+        cache.pc[pc_id] = doc unless err
+        cb(err,doc)
+
+Pc.methods.publish = (topic, message)->
+  ss.publish.user(@userId, topic, message)
 
 Pc.methods.updatePos = ->
-        if @movement && @movement.type = 'fly'
-          time = (new Date).getTime() - @movement.start
-          distance = time * @speed[@movement.type]
-          distance_segments = @movement.way.distance().segments
-          pos = @movement.way.traverse(distance)
-          @loc = [pos.lat, pos.lon]
-          while distance > distance_segments[0]
-            distance -= distance_segments[0]
-            @movement.way.positions.shift()
-            distance_segments.shift()
-          if distance_segments.length > 0
-            distance = @movement.way.distance().total
-            new_time = distance / @movement.speed - time
-            setTimeout Pc.methods.updatePos.bind(this), new_time
-          model.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->
-            if num != 1 || err
-              console.error err
-          ss.publish.user @userId, 'pcMove',
-              waypoints: [@loc.toObject()].concat @movement.way.positions[1..].map((p)->[p.lat,p.lon])
-              speed: @movement.speed
-        else
-          ss.publish.user(@userId, 'pcPosition', @loc)
-          @_sees.forEach (pc)=>
-            if pc of cache.pc
-              message = [{_id: @_id, loc: @loc}]
-              ss.publish.user cache.pc[pc].userId, 'you see', message
-        @notify_movement()
+  if cache.pc[@_id] != @
+    throw new Error("updatePos for non-cached PC #{@_id}: #{@}")
+  if @movement && @movement.type = 'fly'
+    time = (new Date).getTime() - @movement.start
+    distance = time * @speed[@movement.type]
+    distances = @movement.way.distance()
+    distance_segments = distances.segments
+    if distance >= distances.total
+      pos = _.last(@movement.way.positions)
+      @loc = [pos.lat, pos.lon]
+      delete @movement
+      model.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->(console.error(err) if err)
+      @publish('pcPosition', @loc)
+    else
+      pos = @movement.way.traverse(distance)
+      @loc = [pos.lat, pos.lon]
+      model.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->(console.error(err) if err)
+      while distance > distance_segments[0]
+        distance -= distance_segments[0]
+        @movement.way.positions.shift()
+        distance_segments.shift()
+      if distance_segments.length > 0
+        @movement.way.positions[0] = pos
+        @movement.start += time
+        distance = @movement.way.distance().total
+        new_time = distance / @movement.speed
+        setTimeout Pc.methods.updatePos.bind(this), new_time
+      @publish 'pcMove',
+        waypoints: @movement.way.positions.map (p)->[p.lat,p.lon]
+        speed: @movement.speed
+    @notify_movement()
+  else
+    ss.publish.user(@userId, 'pcPosition', @loc)
+    @around.forEach (pc)=>
+      if pc of cache.pc
+        message = [{_id: @_id, loc: @loc}]
+        ss.publish.user cache.pc[pc].userId, 'you see', message
+
+get_message = (pc)->
+  message = {_id: pc._id, loc: pc.loc}
+  if pc.movement?.way.positions.length > 1
+    message.movement =
+      src: pc.loc
+      speed: pc.movement.speed
+      heading: pc.movement.way.positions[0].bearing(pc.movement.way.positions[1])
+  message
 
 Pc.methods.notify_movement = ->
-  @_sees.forEach (pc)=>
-    if pc of cache.pc
-      message = {_id: @_id, loc: @loc}
-      if @movement?.way.positions.length > 1
-        message.movement =
-          src: @loc
-          speed: @movement.speed
-          heading: @movement.way.positions[0].bearing(@movement.way.positions[1])
-      ss.publish.user cache.pc[pc].userId, 'you see', [message]
+  message = get_message(this)
+  @around.forEach (pc)=>
+    if pc of cache.pc and @_id in cache.pc[pc].around
+      cache.pc[pc].publish 'you see', [message]
 
 move =
   fly: (dst)->
@@ -76,16 +101,16 @@ move =
 
 Pc.methods.move = (type, other...) ->
   @updatePos()
-  @movement = type: type, start: (new Date).getTime(), speed: @speed[type]
+  @movement = {type: type, start: (new Date).getTime(), speed: @speed[type]}
   move[type].apply this, other
 
 Pc.methods.sees_only = (pc)->
-  pc_ids = @_sees.map (e)->{_id: e}
+  pc_ids = @around.map (e)->{_id: e}
   equals = (a,b)-> String(a._id) == String(b._id)
-  #new_pcs = $.differenceBy(equals, pc, pc_ids)
+  new_pcs = $.differenceBy(equals, pc, pc_ids)
   old_pcs = $.differenceBy(equals, pc_ids, pc)
-  pc.forEach (pc)->
-    if pc._id of cache.pc and cache.pc[pc._id].movement?.way.positions.length > 1
+  new_pcs.forEach (pc)->
+    if cache.pc[pc._id]?.movement?.way.positions.length > 1
       movement = cache.pc[pc._id].movement
       path = movement.way.positions
       pc.movement =
@@ -93,17 +118,38 @@ Pc.methods.sees_only = (pc)->
         src: pc.loc
         heading: path[0].bearing(path[1])
   #console.log(old_pcs, new_pcs)
-  old_pcs.forEach (pc)->pc.not_seen_by(@_id)
-  ss.publish.user(@userId, 'you see', pc)
-  ss.publish.user(@userId, 'you lost', old_pcs) unless old_pcs.length == 0
-  @_sees = pc.map (e)->e._id
-  #@_sees.push(pc...)
+  old_pcs.forEach (pc)=>
+    if pc._id of cache.pc
+      pc = cache.pc[pc._id]
+      pc.around = $.delete(pc.around, @_id)
+      pc.publish('you lost', [{_id: @_id}])
+  new_pcs.forEach (pc)=>
+    if pc._id of cache.pc
+      pc = cache.pc[pc._id]
+      pc.around = $.insert(pc.around, @_id)
+      pc.publish('you see', [get_message(this)])
+    #cache.pc[pc._id]?.not_seen_by(@_id)
+  @publish('you see', new_pcs) if new_pcs.length > 0
+  @publish('you lost', old_pcs) if old_pcs.length > 0
+  @around = pc.map (e)->e._id
         
-Pc.methods.seen_by = (pc)->
-  @_seen_by = $.insert(@_seen_by, pc)
+#Pc.methods.seen_by = (pc)->
+#  @_seen_by = $.insert(@_seen_by, pc)
 
-Pc.methods.not_seen_by = (pc)->
-  @_seen_by ?= []
-  @_seen_by = $.delete(@_seen_by, pc)
+#Pc.methods.not_seen_by = (pc)->
+#  @_seen_by ?= []
+#  @_seen_by = $.delete(@_seen_by, pc)
 
-module.exports = model = mongoose.model('PC', Pc)
+model = mongoose.model('PC', Pc)
+module.exports =
+  model: model
+  by_id: by_id
+  by_user: by_user
+  find: (query, cb)->
+    model.find query, (err, docs)->
+      cb(arguments) if err
+      cb null, docs.map (doc)->
+        if cache.pc[doc._id]
+          cache.pc[doc._id]
+        else
+          cache.pc[doc._id] = doc
