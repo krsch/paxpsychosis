@@ -1,7 +1,13 @@
 Pc = require('./model/pc')
 Moving = require('./model/moving')
+
+inside_bgava = (e)->
+  x = e.clientX
+  y = e.clientY
+  return y<(220+120) and x<80 or y<(70+7) and x<(190+185) or (x*x + y*y < 200*200)
+
 exports.loadMap = ->
-  $('.lt').on('click dblclick mousedown mouseup mouseover mouseout contextmenu mousenter mouseleave', passEvent.bind(this, '.lt', ->false))
+  $('.lt').on('click dblclick mousedown mouseup mouseover mouseout contextmenu mousenter mouseleave', passEvent.bind(this, '.lt', inside_bgava))
   window.osm ?= new L.Map 'map', attributionControl: false
   L.tileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(osm)
   Pc.load (err,pc)->
