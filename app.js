@@ -40,3 +40,5 @@ server.listen(3000);
 
 // Start SocketStream
 ss.start(server);
+
+require('node-codein')

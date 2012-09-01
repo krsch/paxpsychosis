@@ -8,8 +8,9 @@ exports.startup = ->
 exports.startup()
 
 ss.event.on 'pcPosition', (pos)->
-    pc.setPosition(pos)
-    pc.get('movement').animate = false if pc.has('movement')
+  pc.setPosition(pos)
+  #pc.get('movement').animate = false if pc.has('movement')
+  pc.unset('movement') if pc.has('movement')
 
 ss.event.on 'pcMove', (movement)->
-        pc.startMovement(movement)
+  pc.startMovement(movement)

@@ -5,13 +5,12 @@ exports.loadMap = ->
   window.cloudmade ?= new L.TileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', {
     maxZoom: 18
   })
-  #loadPC (err,pc_data)->
   Pc.load (err,pc)->
     if err != null
       alert(err)
       return
     # Create map
-    pc_pos = pc.get('latlng')
+    pc_pos = pc.get('loc')
     osm.setView(pc_pos, 13).addLayer(cloudmade)
     window.pc = pc
     #pc.get('marker').bindPopup("Your PC, ", pc_data.name)

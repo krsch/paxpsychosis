@@ -18,6 +18,8 @@
     "connect-mongo": "0.1.x",
     "underscore": "*",
     "interlude": "0.7.x",
+    "node-codein": "1.0.x",
+    "mocha"     : "1.x.x",
     "deep-equal": "*"
   }
 }
