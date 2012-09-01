@@ -33,3 +33,11 @@ module.exports = class Pc extends MovingObject
         pc = new Pc(pc_data)
         fn(null, pc)
 
+ss.event.on 'pcPosition', (pos)->
+  return unless pc
+  pc.setPosition(pos)
+  pc.unset('movement') if pc.has('movement')
+
+ss.event.on 'pcMove', (movement)->
+  return unless pc
+  pc.startMovement(movement)
