@@ -1,9 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <script src="/leaflet/leaflet.js"></script>
-  <SocketStream>
+  <SocketStream/>
   <meta charset="utf-8"/>
   <link rel="stylesheet" href="/leaflet/leaflet.css" />
   <!--[if lte IE 8]>
@@ -13,103 +13,90 @@
 </head>
 
 <body id="bg">
-	<div class="bt">
-		<div id="wrapper">
-                <div id="map"></div>
-            	<div class="lt">
-            	<!-- info block начало -->
-            	<div class="infoblock">
-                	<div class="infobg">
-                    	<div class="infopole"> Поле вывод инфы
-                        </div>
-                    	<div class="infostek">
-                        </div>
-                    </div>
-                </div>
-            	<!-- info block конец -->
-            	<!-- скрытность начало -->
-            	<div class="skblog">
-                	<div class="fonsk">
-                		<div class="skbg">
-                        	<div class="stsk">
-                            </div>
-                    		<div class="skinf">
-                        	</div>
-                    		<div class="skstek">
-                            	<div class="rolsk">
-                                </div>
-                        	</div>
-                    	</div>
-                	</div>
-                </div>
-            	<!-- скрытность конец -->
-            	<!-- левый верхний угол с аватаркой начало -->
-            	<div class="blockava">
-                	<div class="bgava">
-                    	<div class="ava"><!-- сюда подгружаем аватарку --></div>
-                    	<div class="stekava">
-                        </div>
-                        <div class="avahp">
-                        </div>
-                        <div class="avamp">
-                        </div>
-                    </div>
-                </div>
-            	<!-- левый верхний угол с аватаркой конец -->
-            	<!-- новигация начало -->
-            		<div class="kman">
-                	</div>
-                		<div class="ki">
-                		</div>
-                	<div class="ktel">
-                	</div>
-            	<!-- новигация конец -->
-            	</div> 
-             
-            <div class="novi">               
-            	<div class="novibg">
-                	<div class="novibgk">
-                    	<div class="knopka1"></div>
-                        <div class="knopka2"></div>
-                        <div class="knopka3"></div>
-                        <div class="knopka4"></div>
-                        <div class="knopka5"></div>
-                    	<div class="novistekk">
-                        </div>
-                    </div>
-            	</div>
-            </div>
-
-        <div class="bord" style="clip: rect(  0px,1280px,  20px,   0px);"></div>
-        <div class="bord" style="clip: rect( 17px,  17px, 800px,   0px);"></div>
-        <div class="bord" style="clip: rect(783px,1280px, 800px,  17px);"></div>
-        <div class="bord" style="clip: rect( 17px,1280px, 783px,1263px);"></div>
-	</div>
-	</div>
-    <div class="hidden" id="login_box">
-        <div class="darken"> </div>
-<!-- форма входа начало -->
-          <div class="vhod">
-            	<div class="vhodbg">
-<form id="form-auth" name="form-auth" action="-" method="post">
-
-<!--элементы формы-->
-<div id="form-content">
-	<div id="formlogin">
-		<input type="text" id="login" name="login" />
-	</div>
-	<div id="formpass">
-		<input type="password" id="pass" name="pass" />
-	</div>
-	
-    <div id="btnsubmit">
-	<input id="btn-submit" type="submit" value="" title="Войти" />
-</div>
-</form>
-</div>
-</div>
-<!-- форма входа конец -->
+  <div class="bt">
+    <div id="wrapper">
+      <div id="map"></div>
+      <div class="lt">
+        <!-- info block начало -->
+        <div class="infoblock">
+          <div class="infobg">
+            <div class="infopole"> Поле вывод инфы </div>
+            <div class="infostek"></div>
+          </div>
+        </div>
+        <!-- info block конец -->
+        <!-- скрытность начало -->
+        <div class="skblog">
+          <div class="fonsk">
+            <div class="skbg">
+            <div class="stsk">
+          </div>
+          <div class="skinf"></div>
+          <div class="skstek">
+            <div class="rolsk"></div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- скрытность конец -->
+    <!-- левый верхний угол с аватаркой начало -->
+    <div class="blockava">
+      <div class="bgava">
+        <div class="ava"><!-- сюда подгружаем аватарку --></div>
+        <div class="stekava"></div>
+        <div class="avahp"></div>
+        <div class="avamp"></div>
+      </div>
+    </div>
+    <!-- левый верхний угол с аватаркой конец -->
+    <!-- новигация начало -->
+    <div class="kman"></div>
+    <div class="ki"></div>
+    <div class="ktel"></div>
+    <!-- новигация конец -->
+  </div> 
+       
+  <div class="novi">               
+    <div class="novibg">
+      <div class="novibgk">
+        <div class="knopka1"></div>
+        <div class="knopka2"></div>
+        <div class="knopka3"></div>
+        <div class="knopka4"></div>
+        <div class="knopka5"></div>
+        <div class="novistekk"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bord" style="clip: rect(  0px,1280px,  20px,   0px);"></div>
+  <div class="bord" style="clip: rect( 17px,  17px, 800px,   0px);"></div>
+  <div class="bord" style="clip: rect(783px,1280px, 800px,  17px);"></div>
+  <div class="bord" style="clip: rect( 17px,1280px, 783px,1263px);"></div>
+</div>
+</div>
+<div class="hidden" id="login_box">
+  <div class="darken"> </div>
+<!-- форма входа начало -->
+    <div class="vhod">
+      <div class="vhodbg">
+        <form id="form-auth" name="form-auth" action="-" method="post">
+          <!--элементы формы-->
+          <div id="form-content">
+            <div id="formlogin">
+                    <input type="text" id="login" name="login" />
+            </div>
+            <div id="formpass">
+                    <input type="password" id="pass" name="pass" />
+            </div>
+            <div id="btnsubmit">
+              <input id="btn-submit" type="submit" value="" title="Войти" />
+            </div>
+          </form>
+        </div>
+      </div>
+    <!-- форма входа конец -->
+    </div>
+  </div>
 </body>
 </html>

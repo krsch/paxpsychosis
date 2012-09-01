@@ -4,18 +4,27 @@ module.exports = class Pc extends MovingObject
   initialize: ->
     super
     @set('dstMarker', new L.CircleMarker(new L.LatLng(0,0)))
+    @set('path', new L.Polyline([], {}))
     @on 'change:movement', ->
       dstMarker = @get('dstMarker')
+      path = @get('path')
       if @has('movement')
         m = @get('movement')
         if m.animate
           dst = @get('movement').waypoints[1]
-          dstMarker.setLatLng(new L.LatLng(dst...))
+          dstMarker.setLatLng(dst)
           osm.addLayer(dstMarker) unless osm.hasLayer(dstMarker)
+          path.setLatLngs(@get('movement').waypoints)
+          osm.addLayer(path) unless osm.hasLayer(path)
         else
           osm.removeLayer(dstMarker) if osm.hasLayer(dstMarker)
+          osm.removeLayer(path) if osm.hasLayer(path)
       else
         osm.removeLayer(dstMarker) if osm.hasLayer(dstMarker)
+        osm.removeLayer(path) if osm.hasLayer(path)
+    @on 'change:loc', ->
+      if @has('movement') and @get('movement').animate
+        @get('path').spliceLatLngs(0, 1, @get('loc'))
   @load = (fn)->
     ss.rpc 'pc.get', (err,pc_data)->
       if err

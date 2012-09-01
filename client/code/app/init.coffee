@@ -1,17 +1,14 @@
 Pc = require('./model/pc')
 Moving = require('./model/moving')
 exports.loadMap = ->
+  $('.lt').on('click dblclick mousedown mouseup mouseover mouseout contextmenu mousenter mouseleave', passEvent.bind(this, '.lt', ->false))
   window.osm ?= new L.Map 'map', attributionControl: false
-  window.cloudmade ?= new L.TileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', {
-    maxZoom: 18
-  })
+  L.tileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(osm)
   Pc.load (err,pc)->
-    if err != null
-      alert(err)
-      return
+    return alert(err) if err
     # Create map
     pc_pos = pc.get('loc')
-    osm.setView(pc_pos, 13).addLayer(cloudmade)
+    osm.setView(pc_pos, 13)
     window.pc = pc
     #pc.get('marker').bindPopup("Your PC, ", pc_data.name)
     osm.on 'click', (e)->
@@ -46,3 +43,17 @@ window.requestAnimationFrame ?=
     window.oRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     (callback) -> window.setTimeout(callback, 1000 / 60)
+
+window.passEvent = (src, inside, e)->
+  if !inside(e)
+    e.stopPropagation()
+    e.preventDefault()
+    event = document.createEvent('MouseEvents')
+    event.initMouseEvent(e.type, e.bubbles, e.cancelable, window, e.detail?,
+         e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey,
+         e.metaKey, e.button, e.relatedTarget)
+    $(src).hide()
+    dst = document.elementFromPoint(e.clientX, e.clientY)
+    $(src).show()
+    dst.dispatchEvent(event)
+
