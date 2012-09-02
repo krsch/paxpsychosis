@@ -13,6 +13,7 @@ Pc = new Schema {
   speed: { fly: {type: Number, default: 5e-6} }
   loc: {type: [Number], index: "2d"}
   around: []
+  skills: [{name: String, value: Number}]
 }
 
 Pc.statics.by_user = by_user = (userId, cb) ->
@@ -132,14 +133,25 @@ Pc.methods.sees_only = (pc)->
   @publish('you see', new_pcs) if new_pcs.length > 0
   @publish('you lost', old_pcs) if old_pcs.length > 0
   @around = pc.map (e)->e._id
+
+skillLevel2Value = (level)->
+  if level < 0
+    'лох'
+  else if level < 5
+    'нуб'
+  else if level < 10
+    'норм'
+  else if level < 15
+    'крут'
+  else 'супер'
+
+Pc.methods.toJSON = ->
+  {
+    @name
+    @loc
+    skills: @skills.map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
+  }
         
-#Pc.methods.seen_by = (pc)->
-#  @_seen_by = $.insert(@_seen_by, pc)
-
-#Pc.methods.not_seen_by = (pc)->
-#  @_seen_by ?= []
-#  @_seen_by = $.delete(@_seen_by, pc)
-
 model = mongoose.model('PC', Pc)
 module.exports =
   model: model

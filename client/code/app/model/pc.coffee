@@ -41,3 +41,18 @@ ss.event.on 'pcPosition', (pos)->
 ss.event.on 'pcMove', (movement)->
   return unless pc
   pc.startMovement(movement)
+
+swap setInterval, 10000, ->
+  ss.rpc 'pc.lookAround', (err, new_people)->
+    if err
+      console.error(err)
+      return
+    return if new_people == true
+    window.people ?= {}
+    new_people.forEach (e)->
+      if e._id of people
+        #TODO add supoort for other fields
+        people[e._id].set('loc', e.loc)
+      else
+        people[e._id] = new Moving(e)
+

@@ -1,3 +1,4 @@
+require('./common')
 login = require('./login')
 init = require('./init')
 exports.startup = ->
