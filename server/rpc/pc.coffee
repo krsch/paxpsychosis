@@ -3,21 +3,21 @@ Pc = require('../models/pc')
 exports.actions = (req,res,ss) ->
   #req.use('session')
   #req.use('auth.authenticated')
-  req.use('pc.get', req)
+  req.use('pc.load', req)
 
   get: ->
     res(null, req.pc)
   move: (type, dst) ->
     pc = req.pc
-    unless type of pc.speed
-      return res(new Error('Wrong move type'),null)
-    pc.move(type, dst)
-    res null, {
-      waypoints: pc.movement.way.positions.map (p) -> [p.lat, p.lon]
-      speed: pc.movement.speed
-      distance: pc.movement.way.distance().total
-      time: pc.movement.start
-    }
+    #unless type of pc.speed
+    #  return res(new Error('Wrong move type'),null)
+    if type == 'fly'
+      pc.move(type, [dst])
+    else if type == 'stop'
+      pc.move(type)
+    else return res(new Error('Wrong move type'))
+    #pc.move(type, dst)
+    res null
   lookAround: ->
     pc = req.pc
     pc.updatePos()

@@ -6,106 +6,73 @@ Geo = require('geojs')
 ss = require('socketstream').api
 Schema = mongoose.Schema
 ObjectId = Schema.ObjectId
-Pc = new Schema {
+movements = require('./movement')
+pc_schema = new Schema {
   name: String
   factionId: ObjectId
   userId: {type: ObjectId, unique: true}
   speed: { fly: {type: Number, default: 5e-6} }
   loc: {type: [Number], index: "2d"}
-  around: []
   skills: [{name: String, value: Number}]
 }
 
-Pc.statics.by_user = by_user = (userId, cb) ->
+log_error = (err)->(console.error(err) if err)
+
+class Pc
+  constructor: (@doc)->
+    if @doc._id of cache.pc
+      throw new Error("PC document not loaded into cache but trying to be created")
+    @_id = @doc._id
+    @around = []
+    @movement = new movements(doc.loc, doc.speed)
+    @movement.on 'change:movement', (movement)=>
+      @publish 'pcMove', movement
+    @movement.on 'change:direction', (movement)=>
+      @notify_movement(movement)
+    @movement.on 'change:position', (loc)=>
+      @doc.loc = loc
+      model.update {_id: @_id}, {$set: {loc: [loc.lon, loc.lat]}}, log_error
+      look_around(@)
+  @create: (doc)->
+    if doc._id of cache.pc
+      console.error("PC document not loaded into cache but trying to be created")
+      cache.pc[doc._id]
+    else
+      cache.pc[doc._id] = new Pc(doc)
+  publish: (topic, message)->
+    ss.publish.user(@doc.userId, topic, message)
+  updatePos: ->
+    @movement.force()
+  move: ->
+    @movement.move(arguments...)
+  notify_movement: (message)->
+    @around.forEach (pc)=>
+      if pc of cache.pc and @_id in cache.pc[pc].around
+        cache.pc[pc].publish 'you see', [message]
+  toJSON: ->
+    {
+      @name
+      @loc
+      skills: @skills.map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
+    }
+        
+
+look_around = (pc)->
+  return
+
+by_user = (userId, cb) ->
   model.findOne {userId}, (err, doc)->
     return cb(arguments) if err
-    if doc._id of cache.pc
-      cb(null, cache.pc[doc._id])
-    else
-      cb(null, cache.pc[doc._id]=doc)
-Pc.statics.by_id = by_id = (pc_id, cb) ->
-  if pc_id of cache.pc
-    cb(null, cache.pc[pc_id])
+    cb(null, Pc.create(doc))
+by_id = (_id, cb) ->
+  if _id of cache.pc
+    cb(null, cache.pc[_id])
   else
-    model.findOne {_id: pc_id}, (err,doc)->
+    model.findOne {_id}, (err,doc)->
       return cb(arguments) if err
-      if pc_id of cache.pc
-        cb(null, cache.pc[pc_id])
-      else
-        cache.pc[pc_id] = doc unless err
-        cb(err,doc)
+      cb(null, Pc.create(doc))
 
-Pc.methods.publish = (topic, message)->
-  ss.publish.user(@userId, topic, message)
-
-Pc.methods.updatePos = ->
-  if cache.pc[@_id] != @
-    throw new Error("updatePos for non-cached PC #{@_id}: #{@}")
-  if @movement && @movement.type = 'fly'
-    time = (new Date).getTime() - @movement.start
-    distance = time * @speed[@movement.type]
-    distances = @movement.way.distance()
-    distance_segments = distances.segments
-    if distance >= distances.total
-      pos = _.last(@movement.way.positions)
-      @loc = [pos.lat, pos.lon]
-      delete @movement
-      model.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->(console.error(err) if err)
-      @publish('pcPosition', @loc)
-    else
-      pos = @movement.way.traverse(distance)
-      @loc = [pos.lat, pos.lon]
-      model.update {_id: @_id}, {$set: {loc: @loc}}, (err, num)->(console.error(err) if err)
-      while distance > distance_segments[0]
-        distance -= distance_segments[0]
-        @movement.way.positions.shift()
-        distance_segments.shift()
-      if distance_segments.length > 0
-        @movement.way.positions[0] = pos
-        @movement.start += time
-        distance = @movement.way.distance().total
-        new_time = distance / @movement.speed
-        setTimeout Pc.methods.updatePos.bind(this), new_time
-      @publish 'pcMove',
-        waypoints: @movement.way.positions.map (p)->[p.lat,p.lon]
-        speed: @movement.speed
-    @notify_movement()
-  else
-    ss.publish.user(@userId, 'pcPosition', @loc)
-    @around.forEach (pc)=>
-      if pc of cache.pc
-        message = [{_id: @_id, loc: @loc}]
-        ss.publish.user cache.pc[pc].userId, 'you see', message
-
-get_message = (pc)->
-  message = {_id: pc._id, loc: pc.loc}
-  if pc.movement?.way.positions.length > 1
-    message.movement =
-      src: pc.loc
-      speed: pc.movement.speed
-      heading: pc.movement.way.positions[0].bearing(pc.movement.way.positions[1])
-  message
-
-Pc.methods.notify_movement = ->
-  message = get_message(this)
-  @around.forEach (pc)=>
-    if pc of cache.pc and @_id in cache.pc[pc].around
-      cache.pc[pc].publish 'you see', [message]
-
-move =
-  fly: (dst)->
-    @movement.way= new Geo.Line([@loc.toObject(), dst].map (loc)-> new Geo.Pos(loc...))
-    distance = @movement.way.distance().total
-    time = distance / @movement.speed
-    setTimeout(@updatePos.bind(this), time)
-    @notify_movement()
-
-Pc.methods.move = (type, other...) ->
-  @updatePos()
-  @movement = {type: type, start: (new Date).getTime(), speed: @speed[type]}
-  move[type].apply this, other
-
-Pc.methods.sees_only = (pc)->
+Pc.prototype.sees_only = (pc)->
   pc_ids = @around.map (e)->{_id: e}
   equals = (a,b)-> String(a._id) == String(b._id)
   new_pcs = $.differenceBy(equals, pc, pc_ids)
@@ -145,18 +112,12 @@ skillLevel2Value = (level)->
     'крут'
   else 'супер'
 
-Pc.methods.toJSON = ->
-  {
-    @name
-    @loc
-    skills: @skills.map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
-  }
-        
-model = mongoose.model('PC', Pc)
+model = mongoose.model('PC', pc_schema)
 module.exports =
   model: model
   by_id: by_id
   by_user: by_user
+  create: Pc.create
   find: (query, cb)->
     model.find query, (err, docs)->
       cb(arguments) if err

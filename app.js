@@ -3,6 +3,8 @@
 var http = require('http')
   , ss = require('socketstream');
 
+require('./fixes')
+
 // Connect to MongoDB
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/pp');

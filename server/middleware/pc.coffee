@@ -1,6 +1,6 @@
 Pc = require('../models/pc')
 
-exports.get = (req)->
+exports.load = (req)->
   req.use('session')
   req.use('auth.authenticated')
   (req, res, next) ->
@@ -18,5 +18,4 @@ exports.get = (req)->
           return next(err)
         req.session.pc_id = pc._id
         req.pc = pc
-        cache.pc[pc._id] ?= pc
         next()

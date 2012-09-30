@@ -19,7 +19,11 @@
     "underscore": "*",
     "interlude": "0.7.x",
     "node-codein": "1.0.x",
-    "mocha"     : "1.x.x",
+    "JSON"      : "*",
     "deep-equal": "*"
+  },
+  "devDependencies": {
+    "mocha"     : "1.x.x",
+    "sinon"     : "1.4.x"
   }
 }

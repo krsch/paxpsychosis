@@ -51,7 +51,7 @@ swap setInterval, 10000, ->
     window.people ?= {}
     new_people.forEach (e)->
       if e._id of people
-        #TODO add supoort for other fields
+        #TODO add support for other fields
         people[e._id].set('loc', e.loc)
       else
         people[e._id] = new Moving(e)

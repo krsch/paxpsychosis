@@ -15,6 +15,6 @@ exports.loadMap = ->
       ss.rpc 'pc.move', 'fly', [e.latlng.lat, e.latlng.lng], (err, movement)->
         if err
           console.error(err)
-        else
-          pc.startMovement(movement)
+        #else
+        #  pc.startMovement(movement)
 
