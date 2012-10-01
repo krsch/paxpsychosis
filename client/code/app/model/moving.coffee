@@ -1,6 +1,11 @@
 MapObject = require('./map_object')
 _ = require('underscore')
 
+heading = (l1, l2)->
+  p1 = new geo.Point(l1.lat, l1.lng)
+  p2 = new geo.Point(l2.lat, l2.lng)
+  geo.math.heading(p1,p2)
+
 module.exports = class MovingObject extends MapObject
   updatePosition: =>
     return unless @has('movement')
@@ -10,7 +15,7 @@ module.exports = class MovingObject extends MapObject
     pos = geo.math.destination(m.start_pos, heading:m.heading, distance:distance)
     @setPosition([pos.lat(), pos.lng()])
     if m.animate
-      if !m.distance? || !pos.equals(_.last(m.way)) && distance < m.distance
+      if !m.distance? || distance < m.distance
         requestAnimationFrame(@updatePosition)
       else
         m.animate = false
@@ -27,40 +32,39 @@ module.exports = class MovingObject extends MapObject
 
   setMovement: (movement)->
     if movement.waypoints
-      @setPosition movement.waypoints[0]
+      @setPosition(movement.waypoints[0])
       if movement.waypoints.length == 1
         @unset('movement')
         return
-      movement.way = movement.waypoints.map (loc)->new geo.Point(loc...)
-      movement.distance = movement.way[0].distance(movement.way[1])
-      movement.heading = geo.math.heading(movement.way[0..1]...)
-      movement.start_pos = movement.way[0]
+      movement.waypoints = movement.waypoints.map ({lat, lon}) -> new L.LatLng(lat,lon)
+      movement.distance = movement.waypoints[0].distanceTo(movement.waypoints[1])
+      movement.heading = heading(movement.waypoints[0..1]...)
+      movement.start_pos = new geo.Point(movement.waypoints[0].lat, movement.waypoints[0].lng)
     else
       @setPosition movement.src
-      movement.start_pos = new geo.Point(movement.src...)
+      movement.start_pos = new geo.Point(movement.src.lat, movement.src.lon)
     movement.startTime = (new Date).getTime()
     movement.animate ?= false
     @set('movement', movement)
-    return if movement.distance? == 0
+    #return if movement.distance? == 0
     if movement.animate
       requestAnimationFrame(@updatePosition)
   remove: ->
     @unset('movement')
     super()
 
-ss.event.on 'you see', (pcs)->
+ss.event.on 'you see', (e)->
   window.people ?= {}
-  console.log(pcs)
-  pcs.forEach (e)->
-    if e._id of people
-      #TODO add support for other fields
-      people[e._id].setPosition(e.loc)
-    else
-      people[e._id] = new MovingObject(e)
-    if e.movement
-      people[e._id].startMovement(e.movement)
-    else if people[e._id].has('movement')
-      people[e._id].unset('movement')
+  console.log('I see', e)
+  if e._id of people
+    #TODO add support for other fields
+    people[e._id].setPosition(e.loc)
+  else
+    people[e._id] = new MovingObject(e)
+  if e.movement
+    people[e._id].startMovement(e.movement)
+  else if people[e._id].has('movement')
+    people[e._id].unset('movement')
 
 ss.event.on 'you lost', (pcs)->
   window.people ?= {}

@@ -40,6 +40,7 @@ ss.event.on 'pcPosition', (pos)->
 
 ss.event.on 'pcMove', (movement)->
   return unless pc
+  console.log('I move', movement)
   pc.startMovement(movement)
 
 swap setInterval, 10000, ->

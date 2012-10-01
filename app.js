@@ -3,8 +3,6 @@
 var http = require('http')
   , ss = require('socketstream');
 
-require('./fixes')
-
 // Connect to MongoDB
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/pp');
@@ -40,7 +38,9 @@ if (ss.env == 'production') ss.client.packAssets();
 var server = http.Server(ss.http.middleware);
 server.listen(3000);
 
+require('./fixes')
+
 // Start SocketStream
 ss.start(server);
 
-require('node-codein')
+//require('node-codein')

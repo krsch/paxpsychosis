@@ -8,14 +8,17 @@ exports.load = (req)->
       Pc.by_id req.session.pc_id, (err, pc)->
         if err
           console.error(err)
-          return next(err)
+          next(err.message)
+          return
         req.pc = pc
         next()
     else
       Pc.by_user req.session.userId, (err, pc)->
         if err
           console.error(err)
-          return next(err)
+          next(err.message)
+          return
         req.session.pc_id = pc._id
+        req.session.save()
         req.pc = pc
         next()

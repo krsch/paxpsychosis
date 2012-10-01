@@ -17,7 +17,6 @@ reduce_path = (path, distance) ->
 
 class Fly
   constructor: (@event, loc, path, @speed)->
-    debugger
     path.unshift(loc)
     @path = path.map (p)->new Geo.Pos(p)
     @time = get_time()
@@ -31,11 +30,12 @@ class Fly
     old_length = @path.length
     @path = reduce_path(@path, distance)
     @event.emit('change:position', @path[0].toJSON())
-    if @path.length != old_length && @path.length > 1
-      @event.emit('change:direction', src: @path[0], heading: @path[0].heading(@path[1]))
-    else if @path.length == 1
+    if @path.length == 1
       @event.move('stop')
-    if @path.length > 1
+    else
+      if @path.length != old_length
+        console.log('Change direction to ', @direction())
+        @event.emit('change:direction', @direction())
       @schedule_update()
     return @path[0]
 
@@ -43,6 +43,12 @@ class Fly
     waypoints: @path.map (e)->e.toJSON()
     speed: @speed
     time: @time
+
+  direction: ->
+    src: @path[0].toJSON()
+    heading: @path[0].bearing(@path[1])
+    time: @time
+    speed: @speed
 
   schedule_update: ->
     clearTimeout(@timeout_id) if @timeout_id
@@ -52,14 +58,17 @@ class Fly
       delete @timeout_id
 
   destroy: ->
-    clearTimeout @timeout_id
+    clearTimeout @timeout_id if @timeout_id?
 
 class Stop
-  constructor: (@event, @loc)->
+  constructor: (@event, loc)->
+    @loc = new Geo.Pos(loc)
   update_position: -> @loc
   destroy: ->
+  direction: ->
+    @toJSON()
   toJSON: ->
-    loc: @loc.toJSON()
+    src: @loc.toJSON()
     waypoints: [@loc.toJSON()]
 
 movement = (loc,speed)->
@@ -68,6 +77,7 @@ movement = (loc,speed)->
   self.force = ->
     move.update_position()
   self.move = (type, args...)->
+    console.log('Moves by ', type)
     loc = move.update_position()
     move.destroy()
     if type == 'fly'
@@ -75,7 +85,9 @@ movement = (loc,speed)->
     else if type == 'stop'
       move = new Stop(self, loc, args...)
     self.emit('change:movement', move.toJSON())
+    self.emit('change:direction')
   self.toJSON = -> move.toJSON()
+  self.direction = -> move.direction()
   #self.move(arguments)
   return self
 
