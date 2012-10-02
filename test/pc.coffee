@@ -2,6 +2,7 @@ require('./world')
 ss = require('socketstream').start()
 pc = require '../server/rpc/pc'
 chai = require 'chai'
+chai.Assertion.includeStack = true
 user = require '../server/models/user'
 sinon = require 'sinon'
 deepEqual = require('deep-equal')
@@ -27,12 +28,12 @@ describe 'PC', ->
     stubs = []
     beforeEach ->
           cache.pc = {}
-          pc = create_pc({_id: 1, userId: 1, loc: [0.02,0.02], speed: {fly: 0.005}, update: (->)})
+          pc = create_pc({_id: 1, userId: 1, loc: [0.02,0.02], speed: {fly: 0.005}})
           session = {pc_id:pc._id, userId: 1, save: ->true}
-          stubs = []
-          @stub = -> stubs.push sinon.stub(arguments)
+          @stubs = []
+          @stub = => @stubs.push sinon.stub(arguments)
     afterEach ->
-      stubs.forEach (stub)->stub.restore()
+      @stubs.forEach (stub)->stub.restore()
     before ->
       stub_session = sinon.stub(ss.session, 'find', (a,b,cb)->cb(session))
     after ->
@@ -45,27 +46,32 @@ describe 'PC', ->
 
     it 'should move by fly', (done)->
       dst = {lat: 0.01, lon: 0.01}
-      stubs.push sinon.stub(Pc, 'update').returns(null).yields(null,1)
+      @stubs.push sinon.stub(Pc, 'update').returns(null).yields(null,1)
       pc.movement.on 'change:movement', (move)->
-        if move.waypoints?
-          move.waypoints.should.deep.equal [pc.doc.loc, dst]
+        #console.log move
+        if move.waypoints?.length > 1
+          move.waypoints.should.deep.equal [{lat: pc.doc.loc[1], lon: pc.doc.loc[0]}, dst]
         else
-          pc.doc.loc.should.deep.equal dst
-        done()
+          pc.doc.loc.should.deep.equal [dst.lon, dst.lat]
+          done()
       ss.rpc 'pc.move', 'fly', dst, wrapRPC (err,m)->
         chai.expect(err).to.be.null
 
     it 'should update position in fly', (done)->
+      loc = pc.doc.loc
       dst = {lat: 0.019, lon: 0.001}
-      stubs.push sinon.stub Pc, 'update', (who, how, cb)->
+      @stubs.push sinon.stub Pc, 'update', (who, how, cb)->
         unless who._id == pc._id
           setTimeout -> cb(new Error('not found'))
           return
-        pc.loc = how['$set'].loc
+        loc = how['$set'].loc
         setTimeout -> cb(null, 1)
-      stubs.push sinon.stub ss.publish, 'user', (userId, messageId, m)->
+      @stubs.push sinon.stub ss.publish, 'user', (userId, messageId, m)->
+        #console.error('Loc ', loc, ' id = ', messageId, 'message = ', m)
+        #throw new Error('Entered the stub')
         if messageId == 'pcMove' and deepEqual(m.waypoints[0], dst)
-          pc.loc.should.deep.equal [dst.lon, dst.lat]
+          loc.should.deep.equal [dst.lon, dst.lat]
+          pc.doc.loc.should.deep.equal [dst.lon, dst.lat]
           m.waypoints.should.deep.equal [dst]
           done()
         else if messageId == 'pcPosition' and deepEqual(m, dst)
