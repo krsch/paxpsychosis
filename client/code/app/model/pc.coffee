@@ -1,6 +1,7 @@
 MovingObject = require('./moving')
 
 module.exports = class Pc extends MovingObject
+  icon: '/images/x2.png'
   initialize: ->
     super
     @set('dstMarker', new L.CircleMarker(new L.LatLng(0,0)))

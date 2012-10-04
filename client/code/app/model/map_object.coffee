@@ -1,7 +1,7 @@
 Backbone = require('backbone')
 
 module.exports = class MapObject extends Backbone.Model
-  icon: '/images/user.png'
+  icon: '/images/x1.png'
   setPosition: (pos)->
     loc = [pos[0] ? pos.lat, pos[1] ? pos.lon ? pos.lng]
     throw "Bad position" if undefined in pos
