@@ -20,6 +20,7 @@
     "interlude": "0.7.x",
     "node-codein": "1.0.x",
     "JSON"      : "*",
+    "coffee-trace": "*",
     "deep-equal": "*"
   },
   "devDependencies": {

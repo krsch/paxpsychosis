@@ -20,7 +20,7 @@ class Fly
     path.unshift(loc)
     @path = path.map (p)->new Geo.Pos(p)
     @time = get_time()
-    @update_position()
+    #@update_position()
     return
 
   update_position: ->
@@ -85,7 +85,8 @@ movement = (loc,speed)->
     else if type == 'stop'
       move = new Stop(self, loc, args...)
     self.emit('change:movement', move.toJSON())
-    self.emit('change:direction')
+    self.emit('change:direction', move.direction())
+    move.update_position()
   self.toJSON = -> move.toJSON()
   self.direction = -> move.direction()
   #self.move(arguments)

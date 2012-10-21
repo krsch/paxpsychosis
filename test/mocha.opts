@@ -1,0 +1,4 @@
+--compilers coffee:coffee-script
+--globals cache
+--reporter spec
+
