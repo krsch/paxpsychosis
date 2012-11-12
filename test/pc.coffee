@@ -7,7 +7,6 @@ chai.Assertion.includeStack = true
 user = require '../server/models/user'
 sinon = require 'sinon'
 deepEqual = require('deep-equal')
-profiler = require('profiler')
 chai.should()
 wrapRPC = (done)-> (args)->done(args...)
 {model: Pc, create: create_pc} = require('../server/models/pc')
