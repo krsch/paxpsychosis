@@ -11,7 +11,7 @@ exports.actions = (req,res,ss) ->
     return res(null, req.pc)
   move: (type, dst) ->
     pc = req.pc
-    console.log("(#{pc.doc.name}) moves by #{type} to ", dst)
+    #console.log("(#{pc.doc.name}) moves by #{type} to ", dst)
     if type == 'fly'
       pc.move(type, [dst])
     else if type == 'stop'

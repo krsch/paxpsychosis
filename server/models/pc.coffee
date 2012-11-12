@@ -24,15 +24,15 @@ class Pc
       throw new Error("PC document not loaded into cache but trying to be created")
     @_id = @doc._id
     @around = []
-    loc = {lon: @doc.loc[0], lat: @doc.loc[1]}
-    @movement = movement(loc, @doc.speed)
+    @loc = new Geo.Pos({lon: @doc.loc[0], lat: @doc.loc[1]})
+    @movement = movement(@loc, @doc.speed)
     @movement.on 'change:movement', (movement)=>
       @publish 'pcMove', movement
     @movement.on 'change:direction', (movement)=>
       @notify_movement(movement)
     @movement.on 'change:position', (loc)=>
+      @loc = new Geo.Pos(loc)
       @doc.loc = [loc.lon, loc.lat]
-      #loc = {lon: @doc.loc[0], lat: @doc.loc[1]}
       model.update {_id: @_id}, {$set: {loc: @doc.loc}}, log_error
       look_around(@)
   @create: (doc)->

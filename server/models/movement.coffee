@@ -34,7 +34,7 @@ class Fly
       @event.move('stop')
     else
       if @path.length != old_length
-        console.log('Change direction to ', @direction())
+        #console.log('Change direction to ', @direction())
         @event.emit('change:direction', @direction())
       @schedule_update()
     return @path[0]
@@ -77,7 +77,7 @@ movement = (loc,speed)->
   self.force = ->
     move.update_position()
   self.move = (type, args...)->
-    console.log('Moves by ', type)
+    #console.log('Moves by ', type)
     loc = move.update_position()
     move.destroy()
     if type == 'fly'
