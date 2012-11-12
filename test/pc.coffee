@@ -31,22 +31,22 @@ arrayEqual = (a,b)->
   eq
 
 describe 'PC', ->
+  stub_session = null
+  session = null
+  pc = null
+  beforeEach ->
+    cache.pc = {}
+    pc = create_pc({_id: 1, userId: 1, loc: [0.02,0.02], speed: {fly: 0.005}})
+    session = {pc_id:pc._id, userId: 1, save: ->true}
+    @stubs = []
+    @stub = => @stubs.push sinon.stub(arguments)
+  afterEach ->
+    @stubs.forEach (stub)->stub.restore()
+  before ->
+    stub_session = sinon.stub(ss.session, 'find', (a,b,cb)->cb(session))
+  after ->
+    stub_session.restore()
   describe 'move', ->
-    stub_session = null
-    session = null
-    pc = null
-    beforeEach ->
-      cache.pc = {}
-      pc = create_pc({_id: 1, userId: 1, loc: [0.02,0.02], speed: {fly: 0.005}})
-      session = {pc_id:pc._id, userId: 1, save: ->true}
-      @stubs = []
-      @stub = => @stubs.push sinon.stub(arguments)
-    afterEach ->
-      @stubs.forEach (stub)->stub.restore()
-    before ->
-      stub_session = sinon.stub(ss.session, 'find', (a,b,cb)->cb(session))
-    after ->
-      stub_session.restore()
 
     it 'should not move by magic', (done)->
       ss.rpc 'pc.move', 'magic', [0, 0], wrapRPC (err, m)->
@@ -106,20 +106,22 @@ describe 'PC', ->
           done()
       ss.rpc 'pc.move', 'fly', dst, wrapRPC (err,m)->
         chai.expect(err).to.be.null
+    it 'should use the correct speed'
 
-    it 'should get pc', (done)->
-      pc_id = session.pc_id
-      pc_doc = cache.pc[pc_id].doc
-      delete session.pc_id
-      cache.pc = {}
-      mock = sinon.mock(Pc)
-      mock.expects('findOne').yields(null,pc_doc).returns(null)
-      ss.rpc 'pc.get', wrapRPC (err,new_pc)->
-        chai.expect(err).to.be.null
-        mock.verify()
-        new_pc.doc.should.equal pc_doc
-        #session.pc_id.should.equal 1
-        done(err)
+  it 'should get pc', (done)->
+    pc_id = session.pc_id
+    pc_doc = cache.pc[pc_id].doc
+    delete session.pc_id
+    cache.pc = {}
+    mock = sinon.mock(Pc)
+    mock.expects('findOne').yields(null,pc_doc).returns(null)
+    ss.rpc 'pc.get', wrapRPC (err,new_pc)->
+      chai.expect(err).to.be.null
+      mock.verify()
+      new_pc.doc.should.equal pc_doc
+      #session.pc_id.should.equal 1
+      done(err)
+
   describe 'look around', ->
     beforeEach ->
       cache.pc = {1: {}, 2: {}}
