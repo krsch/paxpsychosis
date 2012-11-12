@@ -14,7 +14,7 @@
     "ss-hogan": "0.1.x",
     "socketstream": "0.3.x",
     "mongoose": "3.x.x",
-    "geojs"   : "0.2.x",
+    "geojs"   : "0.3.x",
     "connect-mongo": "0.1.x",
     "underscore": "*",
     "interlude": "0.7.x",
