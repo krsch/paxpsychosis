@@ -1,7 +1,15 @@
 ss = require('socketstream')
+pass_event = require('./pass')
+inside = require('./inside')
+
+polygons = {
+  '.up-k13': [{x: 18, y: 35}, {x:112,y: 12}, {x:112,y: 210}]
+  '.up-k1' : [{x: 18, y: 6 }, {x:111,y: 29}, {x: 18,y: 204}]
+  '.up-k2' : [{x:100, y: 6 }, {x:172,y: 70}, {x:  9,y: 182}]
+}
 
 $ ->
-  $(document).on 'mousedown', '.dialog > h1', (e)->
+  $(document).on 'mousedown', '.dialog .up-bg-panel', (e)->
     return unless e.which == 1
     dialog= $(this).parent()
     offset = dialog.offset()
@@ -28,7 +36,13 @@ exports.show = ->
 
 exports.update = update = ->
   html = ss.tmpl['character'].render(pc.toJSON())
-  $('#character').html(html)
+  ch = $('#character')
+  ch.html(html)
+  pass_event.wrapPassEvent('#character .up-bg-panel',
+    #target_by_class: 'up-bg-panel', selector: '.up-bg-panel',
+    inside: inside.center_circle('#character .up-bg-panel', 128))
+  for style of polygons
+    pass_event.wrapPassEvent(ch.find(style), inside: inside.polygon(polygons[style], ch.find(style)))
 
 exports.hide = ->
   $('#character').hide()

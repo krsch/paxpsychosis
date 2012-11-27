@@ -13,7 +13,7 @@ pc_schema = new Schema {
   userId: {type: ObjectId, unique: true}
   speed: { fly: {type: Number, default: 5e-6} }
   loc: {type: [Number], index: "2d"}
-  skills: [{name: String, value: Number}]
+  skills: Schema.Types.Mixed
 }
 
 log_error = (err)->(console.error(err) if err)
@@ -53,10 +53,13 @@ class Pc
         throw new Error(err) if err
         pc.see(@, m)
   toJSON: ->
+    skills = {}
+    for cat of @doc.skills
+      skills[cat] = @doc.skills[cat].map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
     {
       name: @doc.name
       loc: {lon: @doc.loc[0], lat: @doc.loc[1]}
-      skills: @doc.skills.map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
+      skills: skills
     }
   see: (pc, m)->
     @publish 'you see',

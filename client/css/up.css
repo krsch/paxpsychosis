@@ -1,0 +1,132 @@
+.up-container {
+	/*margin: 160px 0px 0px 415px;
+	position:absolute;*/
+	width: 450px;
+	height: 450px;
+	background:url(/img/up-bg-main.png);
+	background-repeat:no-repeat;
+}
+
+.up-bg-panel {
+	width: 350px;
+	height: 350px;
+	position:absolute;
+	margin: 50px 0px 0px 50px;
+	background:url(/img/up-bg-panel.png)
+}
+
+.up-k-user {
+	width: 50px;
+	height: 50px;
+	position:absolute;
+	margin: 41px 0px 0px 150px;
+	background:url(/img/up-k-user.png)
+}
+
+a.up-k1 {
+	width: 120px;
+	height: 210px;
+	position:absolute;
+	margin: 15px 0px 0px 206px;
+	background:url(/img/up-k1.png);
+}
+
+a:hover.up-k1 {
+	background-image:url(/img/up-k1-h.png);
+}
+
+.up-k2 {
+	width: 180px;
+	height: 190px;
+	position:absolute;
+	margin: 38px 0px 0px 218px;
+	background:url(/img/up-k2.png);
+}
+
+.up-k3 {
+	width: 220px;
+	height: 130px;
+	position:absolute;
+	margin: 101px 0px 0px 213px;
+	background:url(/img/up-k3.png);
+}
+
+.up-k4 {
+	width: 220px;
+	height: 120px;
+	position:absolute;
+	margin: 186px 0px 0px 223px;
+	background:url(/img/up-k4.png);
+}
+
+.up-k5 {
+	width: 220px;
+	height: 160px;
+	position:absolute;
+	margin: 221px 0px 0px 213px;
+	background:url(/img/up-k5.png);
+}
+
+.up-k6 {
+	width: 160px;
+	height: 210px;
+	position:absolute;
+	margin: 221px 0px 0px 214px;
+	background:url(/img/up-k6.png);
+}
+
+.up-k7 {
+	width: 120px;
+	height: 210px;
+	position:absolute;
+	margin: 219px 0px 0px 165px;
+	background:url(/img/up-k7.png);
+}
+
+.up-k8 {
+	width: 160px;
+	height: 210px;
+	position:absolute;
+	margin: 220px 0px 0px 80px;
+	background:url(/img/up-k8.png);
+}
+
+.up-k9 {
+	width: 200px;
+	height: 180px;
+	position:absolute;
+	margin: 202px 0px 0px 27px;
+	background:url(/img/up-k9.png);
+}
+
+.up-k10 {
+	width: 220px;
+	height: 120px;
+	position:absolute;
+	margin: 186px 0px 0px 7px;
+	background:url(/img/up-k10.png);
+}
+
+.up-k11 {
+	width: 220px;
+	height: 140px;
+	position:absolute;
+	margin: 96px 0px 0px 11px;
+	background:url(/img/up-k11.png);
+}
+
+.up-k12 {
+	width: 200px;
+	height: 190px;
+	position:absolute;
+	margin: 34px 0px 0px 44px;
+	background:url(/img/up-k12.png);
+}
+
+.up-k13 {
+	width: 160px;
+	height: 220px;
+	position:absolute;
+	margin: 10px 0px 0px 112px;
+	background:url(/img/up-k13.png);
+}

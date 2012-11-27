@@ -2,7 +2,7 @@ require('./world')
 ss = require('socketstream').start()
 pc = require '../server/rpc/pc'
 Geo = require('geojs')
-chai = require 'chai'
+chai = require('chai')
 chai.Assertion.includeStack = true
 user = require '../server/models/user'
 sinon = require 'sinon'
