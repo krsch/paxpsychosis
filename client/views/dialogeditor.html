@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<title>Dialog Editor</title>
+<SocketStream>
+<div id="graph"></div>
+<button data-bind="click: add_question">Add question</button>
+<div id="edit-dialog" data-bind="with: question">
+    <label for="question">Question:</label>
+    <input name="question" data-bind="value: text"/>
+    <h3>The list of answers:</h3>
+<ol id="answers" data-bind="foreach: answers">
+<li>
+        <input data-bind="value: text"/>
+        <button data-bind="click: $parent.del">Remove</button>
+        <button data-bind="click: point">Change destination</button>
+        <button data-bind="click: addQuestion">Add empty question</button>
+</li>
+</ol>
+<button data-bind="click: addAnswer">Add answer</button>
+</div>

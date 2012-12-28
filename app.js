@@ -20,10 +20,19 @@ ss.client.define('main', {
   code: ['libs', 'app', 'system'],
   tmpl: '*'
 });
+ss.client.define('dialogeditor', {
+  view: 'dialogeditor.html',
+  css:  ['libs', 'dialogeditor.css'],
+  code: ['libs', 'dialogeditor', 'system'],
+  tmpl: '*'
+});
 
 // Serve this client on the root URL
 ss.http.route('/', function(req, res){
   res.serveClient('main');
+})
+ss.http.route('/dialogeditor', function(req, res){
+  res.serveClient('dialogeditor');
 })
 var     connect = ss.http.connect,
         MongoStore = require('connect-mongo')(connect);
