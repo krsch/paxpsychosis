@@ -1,20 +1,15 @@
 var graph = exports.graph = Viva.Graph.graph(),
     graphics = exports.graphics = Viva.Graph.View.svgGraphics(),
-    ko = require('knockout'),
-    selectingNode = exports.selectingNode = false,
-    nodes, current_question_id;
+    ko = require('knockout');
+exports.selectingNode = false;
 
 graphics.node(function(node) {
     var ui = Viva.Graph.svg('circle').attr('class', 'node')
           .attr('r', 7);
     
     $(ui).mousedown(function(e){
-        var nx = node.position.x,
-            ny = node.position.y,
-            ex = e.clientX,
-            ey = e.clientY,
-            dx = nx-ex,
-            dy = ny-ey,
+        var dx = node.position.x - e.clientX,
+            dy = node.position.y - e.clientY,
             elem = $(ui);
         function move(e) {
             graphics.updateNodePosition(node.ui, {x: e.clientX+dx, y: e.clientY+dy});
@@ -26,7 +21,10 @@ graphics.node(function(node) {
         $(document).mousemove(move);
         $(document).mouseup(up);
     }).click(function(e) {
-        if (!selectingNode) {
+        var state = require('./state');
+        var nodes = state.nodes;
+        var current_question_id = state.current_question_id;
+        if (!exports.selectingNode) {
             var match = ko.utils.arrayFirst(nodes(), function(item) {
                 return node.id === item.id;
             });
@@ -64,6 +62,3 @@ marker.append('path').attr('d', 'M 0 0 L 10 5 L 0 10 z');
 // Marker should be defined only once in <defs> child element of root <svg> element:
 var defs = graphics.getSvgRoot().append('defs');
 defs.append(marker);
-state = require('./state');
-nodes = state.nodes;
-current_question_id = state.current_question_id;
