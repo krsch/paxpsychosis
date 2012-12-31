@@ -9,7 +9,7 @@ var graphjs = require('./graph'),
     Answer = require('./answer');
 
 ko.applyBindings({question: current_question, add_question: function(){
-        var q = new Question(++max_id, '');
+        var q = new Question('---' + (++max_id), '');
         var idx = nodes.push(q);
         current_question_id(idx-1);
 }, save: state.save});

@@ -26,8 +26,7 @@ function mousemove(node, text) {
         $(tooltip).remove();
     });
 }
-var Question = module.exports = function(id, text, original_id) {
-    if (original_id) { this.oid = original_id; }
+var Question = module.exports = function(id, text) {
     this.id = id;
     var oText = this.text = ko.observable(text);
     var node = graph.addNode(id),
@@ -35,8 +34,8 @@ var Question = module.exports = function(id, text, original_id) {
     var answers = this.answers = ko.observableArray();
     mousemove(node, oText);
 
-    this.answer = function(to, text) {
-        answers.push(new Answer(id, to, text));
+    this.answer = function(to, text, ans_id) {
+        answers.push(new Answer(id, to, text, ans_id));
     };
     this.del = function(answer) {
         self.answers.remove(answer);

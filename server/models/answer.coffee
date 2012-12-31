@@ -4,10 +4,13 @@
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 ObjectId = Schema.ObjectId
-Question = new Schema {
+Answer = new Schema {
   text: String
   dialog: {type: ObjectId, ref: 'Dialog'}
+  from: {type: ObjectId, ref: 'Question'}
+  to: {type: ObjectId, ref: 'Question'}
 }
-Question.index({dialog: 1})
+Answer.index({dialog: 1})
 
-module.exports = mongoose.model('Question', Question)
+module.exports = mongoose.model('Answer', Answer)
+

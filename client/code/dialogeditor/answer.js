@@ -3,8 +3,13 @@ var graphjs = require('./graph'),
     graphics = graphjs.graph,
     ko = require('knockout');
 
-var Answer = module.exports = function(question, go_to, text){
+var Answer = module.exports = function(question, go_to, text, id){
     this.question = question;
+    if (id) { 
+        this.id = id; // Optional
+    } else {
+        this.id = '---' + (++max_id);
+    }
     var Question = require('./question');
     if (go_to instanceof Question) { go_to = go_to.id; }
     this.to = ko.observable(go_to);
@@ -35,7 +40,7 @@ Answer.prototype.point = function() {
 Answer.prototype.addQuestion = function() {
     var Question = require('./question');
     var state = require('./state');
-    var q = new Question(++max_id, '');
+    var q = new Question('---' + (++max_id), '');
     state.nodes.push(q);
     this.to(q.id);
 };
