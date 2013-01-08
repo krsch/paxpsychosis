@@ -21,7 +21,6 @@ exports.actions = (req,res,ss) ->
                 Question.findByIdAndUpdate(oid, question, defer.makeNodeResolver())
             defer.promise
         promise.then ->
-            console.log(answers)
             promise_ans = Q.all answers.map (ans)->
                 ans.from = ids_map[ans.from] if is_temp(ans.from)
                 ans.to = ids_map[ans.to] if is_temp(ans.to)
