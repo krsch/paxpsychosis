@@ -4,8 +4,8 @@ pc = require '../server/rpc/pc'
 Geo = require('geojs')
 chai = require('chai')
 chai.Assertion.includeStack = true
-user = require '../server/models/user'
-sinon = require 'sinon'
+user = require( '../server/models/user' )
+sinon = require('sinon')
 deepEqual = require('deep-equal')
 chai.should()
 wrapRPC = (done)-> (args)->done(args...)
