@@ -48,3 +48,31 @@ exports.actions = (req,res,ss) ->
                 Answer.find {dialog: id}, (err, answers)->
                     console.error(err) if err
                     res(err,questions, answers)
+    list: ->
+      Dialog = require('../models/dialog')
+      Dialog.find {}, (err, dialogs)->
+        if err
+          res(err)
+          console.error(err)
+        else
+          res(null, dialogs)
+    create: (title)->
+      Dialog = require('../models/dialog')
+      Question = require('../models/question')
+      Dialog.create {title: title}, (err,dialog)->
+        if err
+          console.error(err)
+          res(err)
+          return
+        Question.create {dialog: dialog._id}, (err,question)->
+          if err
+            console.error(err)
+            res(err)
+            return
+          Dialog.findByIdAndUpdate dialog._id, {$set: start: question._id}, (err)->
+            if err
+              console.error(err)
+              res(err)
+              return
+            res(null, dialog._id)
+

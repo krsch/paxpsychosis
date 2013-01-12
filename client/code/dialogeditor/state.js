@@ -6,24 +6,30 @@ var current_question_id = exports.current_question_id  = ko.observable(0),
 
 window.max_id = 2;
 var ss = require('socketstream');
-var dialog_id =  "50e0c0a406ef29987ee02b66";
+// var dialog_id =  "50e0c0a406ef29987ee02b66";
 var nodemap = exports.nodemap = ko.computed(function(){
     var res = {};
     nodes().forEach(function(q){ res[q.id] = q; });
     return res;
 });
-ss.rpc('dialog.load', dialog_id, function(err, questions, answers) {
-    if (err) { console.error(err); }
-    console.log(questions);
-    var Question = require('./question'),
-        Answer = require('./answer');
-    questions.forEach(function(q){
-        nodes.push(new Question(q._id, q.text));
+exports.load = function(dialog_id) {
+    ss.rpc('dialog.load', dialog_id, function(err, questions, answers) {
+        if (err) { console.error(err); }
+        console.log(questions);
+        var Question = require('./question'),
+            Answer = require('./answer');
+        nodes.removeAll();
+        var graph = require('./graph');
+        graph.graph.clear();
+        questions.forEach(function(q){
+            nodes.push(new Question(q._id, q.text));
+        });
+        answers.forEach(function(ans){
+            nodemap()[ans.from].answer(ans.to, ans.text, ans._id);
+        });
     });
-    answers.forEach(function(ans){
-        nodemap()[ans.from].answer(ans.to, ans.text, ans._id);
-    });
-});
+};
+// exports.load(dialog_id);
 
 function save() {
     var questions = nodes().map(function (question) {
@@ -60,3 +66,16 @@ function save() {
 }
 
 exports.save = save;
+
+exports.create = function (){
+    var title = window.prompt('Enter new dialog title', 'new dialog');
+    ss.rpc('dialog.create', title, function(err,id){
+        if (err) { console.error(err); return;}
+        var $el = $('#dialog-list');
+        $el.append(
+            '<option value="' + id + '">'+title+'</option>'
+        );
+        $el.val(id);
+        $el.change();
+    });
+};

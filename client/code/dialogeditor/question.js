@@ -51,7 +51,7 @@ var Question = module.exports = function(id, text) {
         if (_.some(this.answers(), function(ans) {
             return (ans.to() === cq.id); 
         }) ) { classes = classes + 'to_active '; }
-        node.ui.attr('class', classes);
+        if (node.ui){ node.ui.attr('class', classes); }
         return classes;
     }, this);
 };

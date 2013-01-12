@@ -4,6 +4,11 @@
 svg .link { stroke: gray; marker-end: url(#Triangle); stroke-width: 2px; }
 </style>
 <SocketStream>
+<div id="dialog-list-container">
+    <select id="dialog-list">
+    </select>
+</div>
+<button data-bind="click: create_dialog">Create new dialog</button>
 <div id="graph"></div>
 <button data-bind="click: save">Save</button>
 <button data-bind="click: add_question">Add question</button>
