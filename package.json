@@ -8,7 +8,8 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script --globals cache -R spec"
+    "test": "mocha --compilers coffee:coffee-script --globals cache -R spec",
+    "start": "node app.js"
   },
   "dependencies": {
     "ss-coffee": "0.1.x",
@@ -16,7 +17,7 @@
     "ss-hogan": "0.1.x",
     "socketstream": "0.3.x",
     "mongoose": "3.x.x",
-    "geojs": "0.3.x",
+    "geojs": "~0.3.0",
     "connect-mongo": "0.1.x",
     "underscore": "*",
     "interlude": "0.7.x",
@@ -25,7 +26,8 @@
     "coffee-trace": "*",
     "deep-equal": "*",
     "q": "~0.8.12",
-    "lodash": "~1.0.0-rc.3"
+    "lodash": "~1.0.0-rc.3",
+    "ss-clientjade": "0.0.5"
   },
   "devDependencies": {
     "mocha": "1.x.x",
