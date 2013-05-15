@@ -1,3 +1,4 @@
 ul#actions
-        each act in actions
-                li #{act.name}
+  each act in actions
+    li(class="#{act.id}")
+      a #{act.name}

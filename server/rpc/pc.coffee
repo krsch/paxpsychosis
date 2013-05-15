@@ -9,9 +9,20 @@ exports.actions = (req,res,ss) ->
   req.use('pc.load', req)
 
   get: ->
-    #req.pc.around.forEach (seen)->
-    #  req.pc.see(seen)
-    return res(null, req.pc)
+        res(null, req.pc)
+        setTimeout ->
+            req.pc.around.forEach (seen)->
+                    Pc.by_id seen, (err, pc)->
+                      req.pc.see(pc) unless err
+  observe: (id)->
+          if id
+                  res
+                        interfaces:
+                                # talk: {}
+                                look: {}
+          else
+                  res
+                        interfaces: []
   move: (type, dst) ->
     pc = req.pc
     #console.log("(#{pc.doc.name}) moves by #{type} to ", dst)
