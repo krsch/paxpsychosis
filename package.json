@@ -27,7 +27,7 @@
     "deep-equal": "*",
     "q": "~0.8.12",
     "lodash": "~1.0.0-rc.3",
-    "ss-clientjade": "0.0.5"
+    "ss-clientjade": "git://github.com/sveisvei/ss-clientjade.git#master"
   },
   "devDependencies": {
     "mocha": "1.x.x",
