@@ -15,6 +15,7 @@ var by_sid = {};
 User.methods.dologin = function login(session, sid, cb) {
         by_sid[sid] = this._id;
         session.userId = this._id;
+        session.admin = this.admin;
         session.save(function(err) { cb(err); } );
 };
 User.methods.selectpc = function selectpc(pc_id, session, cb) {

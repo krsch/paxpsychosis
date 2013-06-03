@@ -14,12 +14,9 @@ exports.authenticated = ->
     else
             res('Not logged in')
             ss.api.publish.socketId(req.socketId, 'login', 'Unknown error occured. You must login again =(')
-            # console.log(req.session);
-            # User.find {session: req.sessionId}, (err,doc)->
-            #         console.log(err) if err
-            #         if !err && doc?
-            #                 req.session.setUserId doc._id
-            #                 next()
-            #         else
-            #           res('Not logged in')
-
+exports.admin = ->
+        (req, res, next) ->
+                if req.session.admin
+                        next()
+                else
+                        res('You must be admin')
