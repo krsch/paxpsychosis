@@ -4,10 +4,12 @@
 <SocketStream>
 Hello, <span data-bind="text: username"></span>
 <ul id="pcs" data-bind="foreach: pcs">
-        <li> <a data-bind="click: selectpc, text: name"></a>
+        <li> <a data-bind="click: $root.selectpc, text: name"></a>
 </ul>
 <form id="create" data-bind="submit: create">
+        <h3>Create new character</h3>
         <div>Character name: <input type=text name="name" placeholder="Character name" data-bind="value: newname"></div>
-        <div><input type=submit></div>
+        <div><input type=submit value="Create"></div>
 </form>
+<a href='/logout'>Logout</a>
 </html>

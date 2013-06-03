@@ -5,6 +5,7 @@
 // My SocketStream app
 
 var http = require('http')
+  , redirect = require('connect-redirection')
   , ss = require('socketstream');
 
 // Connect to MongoDB
@@ -35,23 +36,24 @@ ss.client.define('selectpc', {
 
 // Serve this client on the root URL
 ss.http.route('/', function(req, res){
-  res.serveClient('main');
+        var User = require('./server/models/user');
+        if (!req.session) { return res.redirect('/login.html'); }
+        req.session.userId ||= User.by_sid(req.sessionID);
+        if (!req.session.userId) { return res.redirect('/login.html'); }
+        req.session.pc_id ||= User.getPc(req.session.userId);
+        if (!req.session.pc_id) { return res.redirect('/selectpc'); }
+        res.serveClient('main');
 });
 ss.http.route('/dialogeditor', function(req, res){
   res.serveClient('dialogeditor');
 });
 ss.http.route('/selectpc', function(req, res){
-        if (req.session && req.session.userId) {
-                res.serveClient('selectpc');
-        } else {
-                res.writeHead(302, {Location: '/login.html'});
-                res.end();
-        }
+        if (req.session && req.session.userId) { res.serveClient('selectpc'); } 
+        else { return res.redirect('/login.html'); }
 });
 ss.http.route('/logout', function(req, res){
-        delete req.session.userId;
-        res.writeHead(302, {Location: '/login.html'});
-        res.end();
+        req.session.destroy();
+        res.redirect('/login.html');
 });
 ss.http.route('/login.html', function(req,res){
         require('./server/express/login.js')(req,res,function(err){
@@ -66,6 +68,7 @@ ss.http.route('/login.html', function(req,res){
 var     connect = ss.http.connect,
         MongoStore = require('connect-mongo')(connect);
 ss.session.store.use(new MongoStore({db: 'pp'}));
+ss.http.middleware.prepend(redirect());
 ss.http.middleware.append(require('./server/express/register.js'));
 // ss.http.middleware.append(require('./server/express/login.js'));
 // Code Formatters

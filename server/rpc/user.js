@@ -7,22 +7,27 @@ exports.actions = function(req,res,ss){
         return {
           addpc: function(name){
                 loc = [ 37.58341312408447, 55.70879918673729 ];
-                skills = {first: {nothing: 0}};
-                var pc = new Pc.create({name: name, loc: loc, userId: req.userId, skills: skills});
+                skills = {first: [ {name: 'nothing', level: 0} ]};
                 console.log('creating pc ' + name);
-                pc.save(function(err,doc){
+                Pc.create({name: name, loc: loc, userId: req.session.userId, skills: skills}, function(err,doc){
                         if (err) {console.error(err); }
                         res(err, doc);
-                        ss.publish.user('pc:add', doc);
                         console.log("created pc " + name);
+                        ss.publish.user(req.session.userId, 'pc:add', doc);
                 });
           },
           listpc: function(){
-                Pc.by_user(req.session.userId, res);
+                Pc.json_by_user(req.session.userId, res);
+          },
+          selectpc: function(pc_id){
+                  User.findById(req.session.userId, function(err, user) {
+                          if (err) { res(err); }
+                          else { user.selectpc(pc_id, req.session, res); }
+                  });
           },
           name: function(){
                   User.findById(req.session.userId, function(err, doc) {
-                          if (err) { res(null, doc.name); }
+                          if (!err) { res(null, doc.login); }
                           else { res(err); }
                   });
           }

@@ -13,7 +13,7 @@ movement = require('./movement')
 pc_schema = new Schema {
   name: String
   factionId: ObjectId
-  userId: {type: ObjectId}
+  userId: {type: ObjectId, index: true}
   speed: { fly: {type: Number, default: 5e-6} }
   loc: {type: [Number], index: "2d"}
   skills: Schema.Types.Mixed
@@ -38,12 +38,18 @@ class Pc
       @doc.loc = [loc.lon, loc.lat]
       model.update {_id: @_id}, {$set: {loc: @doc.loc}}, log_error
       look_around(@)
-  @create: (doc)->
+  @adopt: (doc)->
     if doc._id of cache.pc
       throw new Error("PC document not loaded into cache but trying to be created")
       cache.pc[doc._id]
     else
       cache.pc[doc._id] = new Pc(doc)
+  @create: (params, cb)->
+          model.create params, (err, doc)->
+                  if err
+                          cb(err)
+                  else
+                          cb(null, Pc.adopt(doc))
   publish: (topic, message)->
     ss.publish.user(@doc.userId, topic, message)
   updatePos: ->
@@ -55,16 +61,19 @@ class Pc
       by_id pc, (err, pc)=>
         throw new Error(err) if err
         pc.see(@, m)
-  toJSON: ->
+  @jsonify: (doc)->
     skills = {}
-    console.log(@doc)
-    for cat of @doc.skills
-      skills[cat] = @doc.skills[cat].map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
+    console.log(doc)
+    for cat of doc.skills
+      skills[cat] = doc.skills[cat].map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
     {
-      name: @doc.name
-      loc: {lon: @doc.loc[0], lat: @doc.loc[1]}
+      _id: doc._id
+      name: doc.name
+      loc: {lon: doc.loc[0], lat: doc.loc[1]}
       skills: skills
     }
+  toJSON: ->
+          Pc.jsonify(@doc)
   see: (pc, m)->
     @publish 'you see',
       _id: pc._id
@@ -84,7 +93,7 @@ by_user = (userId, cb) ->
     cb(null, if doc._id of cache.pc
         cache.pc[doc._id]
       else
-        Pc.create(doc))
+        Pc.adopt(doc))
 by_id = (_id, cb) ->
   if _id of cache.pc
     cb(null, cache.pc[_id])
@@ -94,7 +103,12 @@ by_id = (_id, cb) ->
       if _id of cache.pc
         cache.pc[_id]
       else
-        cb(null, Pc.create(doc))
+        cb(null, Pc.adopt(doc))
+
+names_by_user = (userId, cb)->
+        model.find {userId}, (err, docs)->
+                return cb(err) if err
+                cb(null, docs.map Pc.jsonify)
 
 Pc.prototype.sees_only = (pc)->
   pc_ids = @around.map (e)->{_id: e}
@@ -130,6 +144,8 @@ module.exports =
   by_id: by_id
   by_user: by_user
   create: Pc.create
+  jsonify: Pc.jsonify
+  json_by_user: names_by_user
   find: (query, cb)->
     model.find query, (err, docs)->
       cb(arguments) if err
@@ -137,4 +153,4 @@ module.exports =
         if cache.pc[doc._id]
           cache.pc[doc._id]
         else
-          Pc.create(doc)
+          Pc.adopt(doc)
