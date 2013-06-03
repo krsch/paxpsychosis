@@ -3,6 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 Pc = require('../models/pc')
 User = require('../models/user')
+ss = require('socketstream')
 
 exports.load = (req)->
   req.use('session')
@@ -11,6 +12,7 @@ exports.load = (req)->
     req.session.pc_id ||= User.getPc(req.session.userId)
     if !req.session.pc_id
             res('pc not selected')
+            ss.api.publish.socketId(req.socketId, 'selectpc', 'You must select active PC');
     else
       Pc.by_id req.session.pc_id, (err, pc)->
         if err

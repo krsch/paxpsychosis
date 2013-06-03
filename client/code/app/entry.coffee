@@ -9,6 +9,14 @@ ss.server.on 'disconnect', ->
 ss.server.on 'reconnect', ->
   console.log('Connection back up :-)')
 
+ss.event.on 'login', (err)->
+        alert(err)
+        window.location = '/login.html'
+
+ss.event.on 'selectpc', (err)->
+        alert(err)
+        window.location = '/selectpc'
+
 ss.server.on 'ready', ->
 
   # Wait for the DOM to finish loading

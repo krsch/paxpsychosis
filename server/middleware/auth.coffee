@@ -4,6 +4,7 @@
 # Example request middleware
 
 User = require('../models/user')
+ss = require('socketstream')
 # Only let a request through if the session has been authenticated
 exports.authenticated = ->
   (req, res, next) ->
@@ -12,6 +13,7 @@ exports.authenticated = ->
       next()
     else
             res('Not logged in')
+            ss.api.publish.socketId(req.socketId, 'login', 'Unknown error occured. You must login again =(')
             # console.log(req.session);
             # User.find {session: req.sessionId}, (err,doc)->
             #         console.log(err) if err

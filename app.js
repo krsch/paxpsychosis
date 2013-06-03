@@ -38,9 +38,9 @@ ss.client.define('selectpc', {
 ss.http.route('/', function(req, res){
         var User = require('./server/models/user');
         if (!req.session) { return res.redirect('/login.html'); }
-        req.session.userId ||= User.by_sid(req.sessionID);
+        // req.session.userId ||= User.by_sid(req.sessionID);
         if (!req.session.userId) { return res.redirect('/login.html'); }
-        req.session.pc_id ||= User.getPc(req.session.userId);
+        // req.session.pc_id ||= User.getPc(req.session.userId);
         if (!req.session.pc_id) { return res.redirect('/selectpc'); }
         res.serveClient('main');
 });

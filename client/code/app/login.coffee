@@ -3,18 +3,23 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 exports.login = (fn)->
   ss.rpc 'login.isLoggedin', (err, loggedIn)->
-    if !err && loggedIn
-      fn(null,true)
-    else
-      $('#login_box').show()
-      $('#form-auth').submit ->
-        ss.rpc 'login.login', $('#login').val(), $('#pass').val(), (err,result)->
-          if result
-            $('#login_box').hide()
-            fn(null,true)
+          console.error(err) if err
+          if err || !loggedIn
+                  window.location = '/login.html'
           else
-            alert('Неправильное имя пользователя или пароль')
-        false
+                  fn(null, true)
+    # if !err && loggedIn
+    #   fn(null,true)
+    # else
+    #   $('#login_box').show()
+    #   $('#form-auth').submit ->
+    #     ss.rpc 'login.login', $('#login').val(), $('#pass').val(), (err,result)->
+    #       if result
+    #         $('#login_box').hide()
+    #         fn(null,true)
+    #       else
+    #         alert('Неправильное имя пользователя или пароль')
+    #     false
 exports.logout = (fn)->
   ss.rpc 'login.logout', (res)->
     if res

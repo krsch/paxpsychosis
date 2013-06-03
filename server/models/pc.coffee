@@ -63,7 +63,6 @@ class Pc
         pc.see(@, m)
   @jsonify: (doc)->
     skills = {}
-    console.log(doc)
     for cat of doc.skills
       skills[cat] = doc.skills[cat].map (skill)->{name: skill.name, value: skillLevel2Value(skill.level)}
     {

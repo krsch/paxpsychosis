@@ -6,7 +6,8 @@ var     mongoose = require('mongoose'),
         ObjectId = Schema.ObjectId,
         User = new Schema({
           login: String,
-          password: String
+          password: String,
+          admin: {type: Boolean, 'default': false}
         });
 var active_pc = {};
 var by_sid = {};
