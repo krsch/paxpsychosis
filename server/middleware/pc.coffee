@@ -11,7 +11,7 @@ exports.load = (req)->
       Pc.by_id req.session.pc_id, (err, pc)->
         if err
           console.error(err)
-          next(err.message)
+          res(err.message)
           return
         req.pc = pc
         next()
@@ -19,7 +19,7 @@ exports.load = (req)->
       Pc.by_user req.session.userId, (err, pc)->
         if err
           console.error(err)
-          next(err.message)
+          res(err.message)
           return
         req.session.pc_id = pc._id
         req.session.save()

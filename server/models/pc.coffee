@@ -13,7 +13,7 @@ movement = require('./movement')
 pc_schema = new Schema {
   name: String
   factionId: ObjectId
-  userId: {type: ObjectId, unique: true}
+  userId: {type: ObjectId}
   speed: { fly: {type: Number, default: 5e-6} }
   loc: {type: [Number], index: "2d"}
   skills: Schema.Types.Mixed
@@ -80,6 +80,7 @@ look_around = (pc)->
 by_user = (userId, cb) ->
   model.findOne {userId}, (err, doc)->
     return cb(arguments...) if err
+    return cb('not found') unless doc?
     cb(null, if doc._id of cache.pc
         cache.pc[doc._id]
       else
