@@ -5,8 +5,7 @@ var pcs = ko.observableArray(),
         username = ko.observable(),
         newname = ko.observable();
 
-// console.log('js works');
-$(function(){
+ss.server.on('ready', function(){
         ss.rpc('user.listpc', function(err, pclist) {
                 if (err) { console.error(err); }
                 pcs(pclist);
@@ -17,7 +16,9 @@ $(function(){
                 console.log(name);
                 username(name);
         });
-
+});
+// console.log('js works');
+$(function(){
         ko.applyBindings({
                 pcs: pcs,
                 newname: newname,
