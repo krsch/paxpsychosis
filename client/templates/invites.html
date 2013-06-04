@@ -1,0 +1,9 @@
+<ul data-bind="foreach: invites" class="invites">
+        <li>
+        <a data-bind="text: comment, css: {used: $root.used($data)}, attr: {href: $root.prefix + _id}" href="#"></a>
+        </li>
+</ul>
+<form data-bind="submit: create">
+        <input type="text" placeholder="Comment" data-bind="value: comment">
+        <input type="submit" value="Create">
+</form>

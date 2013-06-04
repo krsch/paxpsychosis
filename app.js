@@ -33,6 +33,12 @@ ss.client.define('selectpc', {
   code: ['libs', 'selectpc', 'system'],
   tmpl: '*'
 });
+ss.client.define('admin', {
+  view: 'admin.html',
+  css:  ['libs', 'admin.styl'],
+  code: ['libs', 'admin', 'system'],
+  tmpl: '*'
+});
 
 // Serve this client on the root URL
 ss.http.route('/', function(req, res){
@@ -49,6 +55,10 @@ ss.http.route('/dialogeditor', function(req, res){
 });
 ss.http.route('/selectpc', function(req, res){
         if (req.session && req.session.userId) { res.serveClient('selectpc'); } 
+        else { return res.redirect('/login.html'); }
+});
+ss.http.route('/admin', function(req, res){
+        if (req.session && req.session.userId) { res.serveClient('admin'); } 
         else { return res.redirect('/login.html'); }
 });
 ss.http.route('/logout', function(req, res){

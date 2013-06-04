@@ -16,7 +16,7 @@ exports.authenticated = ->
             ss.api.publish.socketId(req.socketId, 'login', 'Unknown error occured. You must login again =(')
 exports.admin = ->
         (req, res, next) ->
-                if req.session.admin
+                if req.session.admin || User.by_sid(req.sessionId)?.admin
                         next()
                 else
                         res('You must be admin')

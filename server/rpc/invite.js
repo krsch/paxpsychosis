@@ -4,13 +4,23 @@
 var Invite = require('../models/invite');
 
 exports.actions = function(req, res, ss){
-        req.use('pc.load', req);
+        req.use('session');
+        req.use('auth.admin');
 
         return {
-                newi: function(){
-                        var r = new Invite({by: req.pc._id});
-                        console.log(r);
-                        r.save(res);
+                create: function(comment){
+                        var r = new Invite({by: req.session.userId, comment: comment});
+                        r.save(function(err, doc){
+                                console.log(doc);
+                                res(err);
+                                ss.publish.channel('invites', 'invite:add', doc);
+                        });
+                },
+                list: function(){
+                        Invite.find({}, function(err, docs){
+                                res(null, docs);
+                        });
+                        req.session.channel.subscribe('invites');
                 }
         };
 };

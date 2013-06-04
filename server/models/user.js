@@ -13,7 +13,7 @@ var active_pc = {};
 var by_sid = {};
 
 User.methods.dologin = function login(session, sid, cb) {
-        by_sid[sid] = this._id;
+        by_sid[sid] = this;
         session.userId = this._id;
         session.admin = this.admin;
         session.save(function(err) { cb(err); } );

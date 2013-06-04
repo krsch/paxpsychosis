@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
         ObjectId = Schema.ObjectId,
         Invite = new Schema({
                 by: {type: ObjectId, ref: 'User'},
-                user: {type: ObjectId, ref: 'User'}
+                user: {type: ObjectId, ref: 'User'},
+                comment: {type: String, 'default': ''}
         });
 module.exports = mongoose.model('Invite', Invite);
