@@ -11,6 +11,10 @@
     "test": "mocha --compilers coffee:coffee-script --globals cache -R spec",
     "start": "node app.js"
   },
+  "repository" : {
+          "type" : "git",
+          "url" : "http://github.com/krsch/paxpsychosis.git"
+  },
   "dependencies": {
     "ss-coffee": "0.1.x",
     "ss-stylus": "0.1.x",
