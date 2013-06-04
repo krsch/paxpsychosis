@@ -38,6 +38,7 @@ function adduser (req, res) {
                         return res.end();
                 }
                 req.invite.user = doc;
+                req.invite.used_at = Date.now();
                 req.invite.save();
                 console.log('added user');
                 // req.pipe(filed(__dirname + 'success.html')).pipe(res);

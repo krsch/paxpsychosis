@@ -1,6 +1,6 @@
 <ul data-bind="foreach: invites" class="invites">
         <li>
-        <a data-bind="text: comment, css: {used: $root.used($data)}, attr: {href: $root.prefix + _id}" href="#"></a>
+        <a data-bind="text: comment, css: {used: $root.used($data)}, attr: {href: $root.prefix + _id}" href="#"></a> created at <span data-bind="text: created_at.toLocaleString()"></span> <span data-bind="if: $root.used($data)">and used at <span data-bind="text: used_at.toLocaleString()"></span></span>
         </li>
 </ul>
 <form data-bind="submit: create">

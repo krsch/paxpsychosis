@@ -6,6 +6,7 @@ var     comment = ko.observable(''),
 
 var app = Davis(function(){
         this.settings.generateRequestOnPageLoad = true;
+        this.settings.formSelector = 'form.davis';
         this.get('/admin/', function(req){
                 $('#content').html('<h1>Admin panel</h1>');
         });

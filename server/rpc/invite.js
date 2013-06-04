@@ -9,7 +9,7 @@ exports.actions = function(req, res, ss){
 
         return {
                 create: function(comment){
-                        var r = new Invite({by: req.session.userId, comment: comment});
+                        var r = new Invite({by: req.session.userId, comment: comment, created_at: Date.now()});
                         r.save(function(err, doc){
                                 console.log(doc);
                                 res(err);

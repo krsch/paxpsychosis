@@ -8,6 +8,8 @@ var mongoose = require('mongoose'),
         Invite = new Schema({
                 by: {type: ObjectId, ref: 'User'},
                 user: {type: ObjectId, ref: 'User'},
+                created_at: {type: Date, 'default': new Date(0)},
+                used_at: {type: Date, 'default': new Date(0)},
                 comment: {type: String, 'default': ''}
         });
 module.exports = mongoose.model('Invite', Invite);
