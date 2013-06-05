@@ -2,7 +2,7 @@ var ss = require('socketstream'),
         ko = require('knockout');
 
 var pcs = ko.observableArray(),
-        username = ko.observable(),
+        userdata = ko.observable({name: '', admin: false}),
         newname = ko.observable();
 
 ss.server.on('ready', function(){
@@ -11,10 +11,10 @@ ss.server.on('ready', function(){
                 pcs(pclist);
         });
 
-        ss.rpc('user.name', function(err, name) {
+        ss.rpc('user.info', function(err, doc) {
                 if (err) { console.error(err); }
-                console.log(name);
-                username(name);
+                console.log(doc);
+                userdata(doc);
         });
 });
 // console.log('js works');
@@ -22,7 +22,7 @@ $(function(){
         ko.applyBindings({
                 pcs: pcs,
                 newname: newname,
-                username: username,
+                userdata: userdata,
                 selectpc: function() {
                         ss.rpc('user.selectpc', this._id, function(err) {
                                 if (err) {console.error(err); }

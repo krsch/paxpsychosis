@@ -2,7 +2,7 @@
 <html>
 <title>Select your character</title>
 <SocketStream>
-Hello, <span data-bind="text: username"></span>
+Hello, <span data-bind="text: userdata().name"></span>
 <ul id="pcs" data-bind="foreach: pcs">
         <li> <a data-bind="click: $root.selectpc, text: name"></a>
 </ul>
@@ -12,4 +12,5 @@ Hello, <span data-bind="text: username"></span>
         <div><input type=submit value="Create"></div>
 </form>
 <a href='/logout'>Logout</a>
+<a href='/admin' data-bind="if: userdata().admin">Admin Panel</a>
 </html>

@@ -25,9 +25,9 @@ exports.actions = function(req,res,ss){
                           else { user.selectpc(pc_id, req.session, res); }
                   });
           },
-          name: function(){
+          info: function(){
                   User.findById(req.session.userId, function(err, doc) {
-                          if (!err) { res(null, doc.login); }
+                          if (!err) { res(null, {name: doc.login, admin: doc.admin}); }
                           else { res(err); }
                   });
           }
