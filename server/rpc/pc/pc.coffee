@@ -18,7 +18,7 @@ exports.actions = (req,res,ss) ->
           if id
                   res
                         interfaces:
-                                # talk: {}
+                                talk: {}
                                 look: {}
           else
                   res

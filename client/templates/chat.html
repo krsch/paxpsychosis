@@ -1,0 +1,8 @@
+<div class="chat">
+        <ul data-bind="foreach: messages">
+                <li data-bind="css: {you: isyou}, text: text">
+        </ul>
+        <textarea data-bind="value: newmessage"></textarea>
+        <!-- <input type="submit" value="Отправить" data-bind="submit: send"> -->
+        <button data-bind="click: send">Отправить</button>
+</div>

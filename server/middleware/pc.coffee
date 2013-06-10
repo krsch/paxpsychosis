@@ -14,13 +14,14 @@ exports.load = (req)->
             res('pc not selected')
             ss.api.publish.socketId(req.socketId, 'selectpc', 'You must select active PC');
     else
-      Pc.by_id req.session.pc_id, (err, pc)->
-        if err
-          console.error(err)
-          res(err.message)
-          return
-        req.pc = pc
-        next()
+      if (!req.pc || req.pc._id != req.session.pc_id)
+              Pc.by_id req.session.pc_id, (err, pc)->
+                if err
+                  console.error(err)
+                  res(err.message)
+                  return
+                req.pc = pc
+                next()
       # Pc.by_user req.session.userId, (err, pc)->
       #   if err
       #     console.error(err)

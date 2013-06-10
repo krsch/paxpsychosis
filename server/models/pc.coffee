@@ -95,10 +95,11 @@ by_user = (userId, cb) ->
         Pc.adopt(doc))
 by_id = (_id, cb) ->
   if _id of cache.pc
-    cb(null, cache.pc[_id])
+        cb(null, cache.pc[_id])
   else
-    model.findOne {_id}, (err,doc)->
+    model.findById _id, (err,doc)->
       return cb(arguments) if err
+      return cb('Not found') unless doc
       if _id of cache.pc
         cache.pc[_id]
       else
