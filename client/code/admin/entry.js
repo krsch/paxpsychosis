@@ -15,7 +15,7 @@ var app = Davis(function(){
                 ko.applyBindings({
                         invites: invites,
                         create: function(){
-                                ss.rpc('invite.create', comment(), function(err){
+                                ss.rpc('admin.invite.create', comment(), function(err){
                                         if (err) { console.error(err); }
                                         else {comment('');}
                                 });
@@ -30,7 +30,7 @@ var app = Davis(function(){
 });
 
 ss.server.on('ready', function() {
-        ss.rpc('invite.list', function(err, docs) {
+        ss.rpc('admin.invite.list', function(err, docs) {
                 if (err) { console.error(err); }
                 invites(docs);
         });

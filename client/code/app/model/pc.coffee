@@ -30,7 +30,7 @@ module.exports = class Pc extends MovingObject
       if @has('movement') and @get('movement').animate
         @get('path').spliceLatLngs(0, 1, @get('loc'))
   @load = (fn)->
-    ss.rpc 'pc.get', (err,pc_data)->
+    ss.rpc 'pc.pc.get', (err,pc_data)->
       if err
         fn(err)
       else
@@ -48,7 +48,7 @@ ss.event.on 'pcMove', (movement)->
   pc.startMovement(movement)
 
 swap setInterval, 10000, ->
-  ss.rpc 'pc.lookAround', (err, new_people)->
+  ss.rpc 'pc.pc.lookAround', (err, new_people)->
     if err
       console.error(err)
       return

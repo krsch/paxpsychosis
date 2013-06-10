@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 Geo = require('geojs')
-Pc = require('../models/pc')
+Pc = require('../../models/pc')
 exports.actions = (req,res,ss) ->
   #req.use('session')
   #req.use('auth.authenticated')

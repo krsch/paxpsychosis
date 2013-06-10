@@ -15,7 +15,7 @@ module.exports = class MapObject extends Backbone.Model
     @get('marker').setLatLng(@get('loc'))
   initialize: ->
     super
-    ss.rpc 'pc.observe', @get('_id'), (obj)=>
+    ss.rpc 'pc.pc.observe', @get('_id'), (obj)=>
             interfaces = require('../interfaces')
             @set('actions', [])
             for i of obj.interfaces

@@ -3,11 +3,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 _ = require('lodash')
 Q = require('q')
+Answer = require('../../models/answer')
+Question = require('../../models/question')
+Dialog = require('../../models/dialog')
 
 exports.actions = (req,res,ss) ->
     save: (questions, answers)->
-        Answer = require('../models/answer')
-        Question = require('../models/question')
         is_temp = (x)->/^---/.test(x)
         ids_map = {}
         promise = Q.all questions.map (question)->
@@ -39,8 +40,6 @@ exports.actions = (req,res,ss) ->
             res(err)
             console.error(err)
     load: (id)->
-        Answer = require('../models/answer')
-        Question = require('../models/question')
         Question.find {dialog: id}, (err,questions)->
             if err
                 console.error(err)
@@ -49,7 +48,6 @@ exports.actions = (req,res,ss) ->
                     console.error(err) if err
                     res(err,questions, answers)
     list: ->
-      Dialog = require('../models/dialog')
       Dialog.find {}, (err, dialogs)->
         if err
           res(err)
@@ -57,8 +55,6 @@ exports.actions = (req,res,ss) ->
         else
           res(null, dialogs)
     create: (title)->
-      Dialog = require('../models/dialog')
-      Question = require('../models/question')
       Dialog.create {title: title}, (err,dialog)->
         if err
           console.error(err)

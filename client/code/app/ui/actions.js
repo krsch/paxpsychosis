@@ -3,7 +3,6 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 module.exports = function(obj) {
-        var ss = require('socketstream');
         var popup = L.popup().setLatLng(obj.get('loc')),
                 actions = obj.get('actions');
         var html = JT['jade-actions']({actions: actions});

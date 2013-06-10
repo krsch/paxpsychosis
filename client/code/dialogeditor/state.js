@@ -3,19 +3,20 @@ var _ = require('lodash');
 var nodes = exports.nodes = ko.observableArray();
 var current_question_id = exports.current_question_id  = ko.observable(0),
     current_question = exports.current_question = ko.computed(function() {return nodes()[current_question_id()];});
+var current_dialog;
 
 window.max_id = 2;
 var ss = require('socketstream');
-// var dialog_id =  "50e0c0a406ef29987ee02b66";
 var nodemap = exports.nodemap = ko.computed(function(){
     var res = {};
     nodes().forEach(function(q){ res[q.id] = q; });
     return res;
 });
 exports.load = function(dialog_id) {
-    ss.rpc('dialog.load', dialog_id, function(err, questions, answers) {
+    ss.rpc('admin.dialog.load', dialog_id, function(err, questions, answers) {
         if (err) { console.error(err); }
         console.log(questions);
+        current_dialog = dialog_id;
         var Question = require('./question'),
             Answer = require('./answer');
         nodes.removeAll();
@@ -36,7 +37,7 @@ function save() {
         return {
             _id: question.id,
             text: question.text(),
-            dialog: dialog_id
+            dialog: current_dialog
         };
     });
     var answers = _.flatten(nodes().map(function (question) {
@@ -46,12 +47,12 @@ function save() {
                 from: question.id,
                 to: ans.to(),
                 text: ans.text(),
-                dialog: dialog_id
+                dialog: current_dialog
             };
         });
     }), true);
 
-    ss.rpc('dialog.save', questions, answers, function(err,idmap) {
+    ss.rpc('admin.dialog.save', questions, answers, function(err,idmap) {
         if (err) { console.log(err); }
         console.log(status);
         nodes().forEach(function(q) {
@@ -69,7 +70,7 @@ exports.save = save;
 
 exports.create = function (){
     var title = window.prompt('Enter new dialog title', 'new dialog');
-    ss.rpc('dialog.create', title, function(err,id){
+    ss.rpc('admin.dialog.create', title, function(err,id){
         if (err) { console.error(err); return;}
         var $el = $('#dialog-list');
         $el.append(

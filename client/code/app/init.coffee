@@ -15,7 +15,7 @@ exports.loadMap = ->
     osm.setView(pc_pos, 13)
     window.pc = pc
     osm.on 'click', (e)->
-      ss.rpc 'pc.move', 'fly', {lat: e.latlng.lat, lon: e.latlng.lng}, (err, movement)->
+      ss.rpc 'pc.pc.move', 'fly', {lat: e.latlng.lat, lon: e.latlng.lng}, (err, movement)->
         if err
           console.error(err)
         #else

@@ -12,7 +12,7 @@ module.exports = function(data) {
                                 if (this.has('look')){
                                         alert(this.get('look'));
                                 } else {
-                                        ss.rpc('look.start', this.get('_id'));
+                                        ss.rpc('pc.look.start', this.get('_id'));
                                 }
                         }
                 };
