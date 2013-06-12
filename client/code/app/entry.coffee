@@ -18,9 +18,8 @@ ss.event.on 'selectpc', (err)->
         alert(err)
         window.location = '/selectpc'
 
+require('./common')
 ss.server.on 'ready', ->
 
   # Wait for the DOM to finish loading
-  jQuery ->
-    # Load app
-    require('/app')
+  jQuery(require('./init').loadMap)
