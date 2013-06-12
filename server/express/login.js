@@ -1,3 +1,4 @@
+"use strict";
 var router = require('urlrouter'),
         path = require('path'),
         filed = require('filed'),

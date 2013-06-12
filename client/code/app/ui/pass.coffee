@@ -1,3 +1,4 @@
+"use strict";
 mouse_events = 'click dblclick mousedown mouseup mouseover mouseout contextmenu mousenter mouseleave'
 
 exports.wrapPassEvent = wrapPassEvent = (src, opts)->

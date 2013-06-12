@@ -1,3 +1,4 @@
+"use strict";
 var Pc = require('../models/pc'),
         User = require('../models/user');
 

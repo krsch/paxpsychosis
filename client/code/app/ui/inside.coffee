@@ -1,3 +1,4 @@
+"use strict";
 _ = require('underscore')
 exports.center_circle = (element, radius)->
   r2 = radius*radius
