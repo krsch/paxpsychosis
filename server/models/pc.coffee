@@ -62,6 +62,8 @@ class Pc
       by_id pc, (err, pc)=>
         throw new Error(err) if err
         pc.see(@, m)
+  notify_chat: (chat)->
+          @publish('chat:new', {id: chat_id, talkers: chat.pcs.map((pc)->pc._id)})
   @jsonify: (doc)->
     skills = {}
     for cat of doc.skills

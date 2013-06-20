@@ -22,6 +22,8 @@ exports.load = (req)->
                   res(err.message)
                   return
                 req.pc = pc
+                pc.session.destroy() if pc.session && pc.session.destroy
+                pc.session = req.session
                 next()
       # Pc.by_user req.session.userId, (err, pc)->
       #   if err

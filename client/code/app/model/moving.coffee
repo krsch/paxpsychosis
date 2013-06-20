@@ -11,10 +11,10 @@ heading = (l1, l2)->
   geo.math.heading(p1,p2)
 
 module.exports = class MovingObject extends MapObject
-  updatePosition: =>
+  updatePosition: (time)=>
     return unless @has('movement')
     m = @get('movement')
-    duration = (new Date).getTime() - m.startTime
+    duration = time - m.startTime
     distance = 1000*duration * m.speed
     pos = geo.math.destination(m.start_pos, heading:m.heading, distance:distance)
     @setPosition([pos.lat(), pos.lng()])
@@ -47,7 +47,7 @@ module.exports = class MovingObject extends MapObject
     else
       @setPosition movement.src
       movement.start_pos = new geo.Point(movement.src.lat, movement.src.lon)
-    movement.startTime = (new Date).getTime()
+    movement.startTime = window.performance.now()
     movement.animate ?= false
     @set('movement', movement)
     #return if movement.distance? == 0

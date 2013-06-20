@@ -53,3 +53,7 @@ ss.event.on('chat:message', function(m){
                 c.vm.messages.push(new Message(m));
         }
 });
+
+ss.event.on('chat:new', function(chat){
+
+});

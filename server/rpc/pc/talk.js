@@ -18,20 +18,20 @@ exports.actions = function(req, res, ss) {
                 },
                 'start chat': function(pc_id) {
                         if (!pc_id) { return res('Bad PC id'); }
-                        console.log('staring chat with '+ pc_id);
                         Pc.by_id(pc_id, function(err, talker){
                                 if (err) { console.error(err); return res(err); }
                                 console.log('staring chat with '+ talker.name);
-                                req.pc.chats = req.pc.chats || {};
-                                req.pc.chats[pc_id] = chat_id++;
-                                req.session.channel.subscribe('chat:'+chat_id);
-                                // talker.subscribe('chat:'+chat_id);
+                                var chat = new Chat();
+                                chat.add(req.pc).add(talker);
+                                talker.notify_chat(chat);
                                 res(null, chat_id);
                         });
                 },
                 say: function(chat_id, message) {
-                        var m = {message: message, chat: chat_id, from: req.pc._id};
-                        ss.publish.channel('chat:'+chat_id, 'chat:message', m);
+                        if (!pc.chats || !pc.chats[chat_id]) {
+                                return res('Chat not found');
+                        }
+                        req.pc.chats[chat_id].say(req.pc, message);
                         res(null);
                 }
         };
