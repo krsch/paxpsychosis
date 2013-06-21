@@ -44,3 +44,65 @@ button()
   a
     font-size: 130%
     button()
+
+.long {
+	position:absolute;
+	background-repeat: repeat-x;
+	left:30px;
+        right: 30px;
+	height:20px;
+}
+.high {
+	position:absolute;
+	background-repeat: repeat-y;
+	top:30px;
+	width:20px;
+        bottom: 30px;
+}
+.corner {
+	background-image:url(/img/main-border.png);
+	background-repeat:no-repeat;
+	position:absolute;
+	width:30px;
+	height:30px;
+}
+#border-nw {
+	top:0px;
+	left:0px;
+}
+#top-border {
+	background-image: url(/img/main-top-border.png);
+	top:0px;
+}
+#border-ne {
+	background-position:-30px 0px;
+	top:0px;
+	right:0px;
+}
+
+#right-border {
+	background-image: url(/img/main-right-border.png);
+	right:0px;
+}
+
+#border-se {
+	background-position:-30px -30px;
+	bottom:0px;
+	right:0px;
+}
+
+#bottom-border {
+	background-image: url(/img/main-bottom-border.png);
+	bottom:0px;
+}
+
+#border-sw {
+	background-position:0px -30px;
+	bottom:0px;
+	left:0px;
+}
+
+#left-border {
+	background-image: url(/img/main-left-border.png);
+	left:0px;
+}
