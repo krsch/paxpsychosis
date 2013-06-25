@@ -1,47 +1,22 @@
 html,body{
-
-	height:100%; 
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
 	background-color:#FFF; 
 	font-family:Tahoma, Helvetica, sans-serif; 
 	font-size:11px; 
-	margin:0 auto; 
-	margin-top:0px; 
-	
 }
-
-
-#bg{
-}
-
-
-.bt{
-
-	/*background:url(../images/background1.jpg) no-repeat;*/
-	margin: auto;
-	width:1280px;
-	height:800px;
-
-}
-
 
 #wrapper{
-
-	width:1280px;
-	height:800px;
-	overflow:hidden;
-	margin:0 auto;
-        position: absolute;
         top: 0;
-        z-index: 5;
-}
-
-.bord {
-	background-image:url(/img/bord.png);
-	width:1280px;
-	height:800px;
-        top: 0;
+        bottom: 0;
         left: 0;
-	position:absolute;
+        right: 0;
+
+	overflow:hidden;
+	margin:0;
+        position: absolute;
         z-index: 5;
 }
 
@@ -213,100 +188,48 @@ html,body{
 }
 
 .novi {
-	width:1000px;
-	height:90px;
+        left: 0;
+        right: 0;
+	/* height:90px; */
 	position:absolute;
-	top:710px;
-	left:140px;
+        bottom:0;
         z-index: 5;
 }
 
-.novibg {
+.novi .novibg, .novi .novibgk, .novi .novistekk {
 	width:1000px;
-	height:90px;
-	position:absolute;
+	/* height:100%; */
+}
+
+.novibg {
+        margin: 0 auto;
 	background-image:url(/img/novibg.png);
 }
 
 .novibgk {
-	width:1000px;
-	height:90px;
-	position:absolute;
 	background-image:url(/img/novibgk.png);
 }
 
 .novistekk {
-	width:1000px;
-	height:90px;
 	position:absolute;
+        top: 0;
+        bottom: 0;
 	background-image:url(/img/novistekk.png);
 }
 
-.knopka1 {
+.novi .slots {
+        margin: 0;
+	/* height:90px; */
+        padding: 30px 246px 16px 240px;
+        list-style: none outside none;
+}
+.novi .slots > li {
 	width:41px;
 	height:41px;
-	position:absolute;
+        padding: 0;
+        display: inline-block;
 	background-color:#339;
-	margin-left:246px;
-	margin-top:30px;
+        margin-right: 2px;
+        margin-left: 6px;
 }
 
-.knopka2 {
-	width:41px;
-	height:41px;
-	position:absolute;
-	background-color:#339;
-	margin-left:299px;
-	margin-top:30px;
-}
-
-.knopka3 {
-	width:41px;
-	height:41px;
-	position:absolute;
-	background-color:#339;
-	margin-left:352px;
-	margin-top:30px;
-}
-
-.knopka4 {
-	width:41px;
-	height:41px;
-	position:absolute;
-	background-color:#339;
-	margin-left:405px;
-	margin-top:30px;
-}
-
-.knopka5 {
-	width:41px;
-	height:41px;
-	position:absolute;
-	background-color:#339;
-	margin-left:458px;
-	margin-top:30px;
-}
-
-.vhod {
- width:310px;
- height:180px;
- position:absolute;
- left: 50%;
- top: 50%;
- margin-left: -200px;
- margin-top: -150px;
- z-index: 21;
-}
-
-.vhodbg {
-	width:310px;
-	height:180px;
-	background-image:url(/img/vhodbg.png);
-}
-
-.vhodk {
-	width:90px;
-	height:40px;
-	background-image:url(/img/vhodk.png);
-	margin:115px 0px 0px 110px;
-}
