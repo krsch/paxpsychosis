@@ -6,6 +6,7 @@
 "use strict";
 var http = require('http')
   , redirect = require('connect-redirection')
+  // , config = require('config')
   , ss = require('socketstream');
 
 // Connect to MongoDB
@@ -78,6 +79,9 @@ ss.http.route('/login.html', function(req,res){
 var     connect = ss.http.connect,
         MongoStore = require('connect-mongo')(connect);
 ss.session.store.use(new MongoStore({db: 'pp'}));
+if (process.env.NODE_ENV == 'production') {
+        ss.ws.transport.use('engineio', { client: { port: 443 } });
+}
 ss.http.middleware.prepend(redirect());
 ss.http.middleware.append(require('./server/express/register.js'));
 // ss.http.middleware.append(require('./server/express/login.js'));
