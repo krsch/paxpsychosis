@@ -1,5 +1,6 @@
 var ss = require('socketstream'),
         ko = require('knockout');
+window.ss = ss;
 
 var pcs = ko.observableArray(),
         userdata = ko.observable({name: '', admin: false}),
