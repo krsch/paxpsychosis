@@ -22,15 +22,8 @@ exports.load = (req)->
                   res(err.message)
                   return
                 req.pc = pc
-                pc.session.destroy() if pc.session && pc.session.destroy
-                pc.session = req.session
+                req.session.channel.subscribe('pc:'+pc._id);
+                # console.log(pc.session);
+                # pc.session.destroy() if pc.session && pc.session != req.session && pc.session.destroy
+                # pc.session = req.session
                 next()
-      # Pc.by_user req.session.userId, (err, pc)->
-      #   if err
-      #     console.error(err)
-      #     res(err.message)
-      #     return
-      #   req.session.pc_id = pc._id
-      #   req.session.save()
-      #   req.pc = pc
-      #   next()
