@@ -7,7 +7,7 @@ exports.actions = function(req,res,ss){
         req.use('auth.authenticated');
         return {
           addpc: function(name){
-                loc = [ 37.58341312408447, 55.70879918673729 ];
+                var loc = [ 37.58341312408447, 55.70879918673729 ];
                 skills = {first: [ {name: 'nothing', level: 0} ]};
                 console.log('creating pc ' + name);
                 Pc.create({name: name, loc: loc, userId: req.session.userId, skills: skills}, function(err,doc){

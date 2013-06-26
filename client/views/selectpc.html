@@ -4,7 +4,7 @@
 <SocketStream>
 Hello, <span data-bind="text: userdata().name"></span>
 <ul id="pcs" data-bind="foreach: pcs">
-        <li> <a data-bind="click: $root.selectpc, text: name"></a>
+        <li> <a href="#" data-bind="click: $root.selectpc, text: name"></a>
 </ul>
 <form id="create" data-bind="submit: create">
         <h3>Create new character</h3>
