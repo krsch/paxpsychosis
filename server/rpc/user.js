@@ -8,7 +8,7 @@ exports.actions = function(req,res,ss){
         return {
           addpc: function(name){
                 var loc = [ 37.58341312408447, 55.70879918673729 ];
-                skills = {first: [ {name: 'nothing', level: 0} ]};
+                var skills = {first: [ {name: 'nothing', level: 0} ]};
                 console.log('creating pc ' + name);
                 Pc.create({name: name, loc: loc, userId: req.session.userId, skills: skills}, function(err,doc){
                         if (err) {console.error(err); }
