@@ -7,7 +7,8 @@ Moving = require('./model/moving')
 require('./ui')
 
 exports.loadMap = ->
-  window.osm ?= new L.Map 'map', attributionControl: false
+  window.osm ?= new L.Map 'map', attributionControl: false, zoomControl: false
+  L.control.zoom(position: 'bottomleft').addTo(osm)
   L.tileLayer('http://{s}.tile.cloudmade.com/fbc6f9297a964ee5830cbeeaf0985e29/997/256/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(osm)
   Pc.load (err,pc)->
     return alert("Error on logon: #{err}") if err
