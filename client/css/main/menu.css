@@ -1,0 +1,96 @@
+#menu-cont {
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	right:0px;
+}
+#menu-cont .menu-cont-bg {
+	width:640px;
+	height:86px;
+	background:url(/img/menu-kon-bg.png);
+	background-repeat:no-repeat;
+	bottom:0px;
+	margin:0 auto;
+        list-style: none outside none;
+        padding: 0;
+}
+#menu-cont ol li{
+	width:40px;
+	height:40px;
+	background:url(/img/menu-button-bg.png);
+	background-repeat:no-repeat;
+	position:relative;
+        display: inline-block;
+	float:left;
+	top:28px;
+}
+#menu-cont .button-bg-1 {
+	left:99px;
+}
+#menu-cont .button-bg-2 {
+	left:104px;
+}
+#menu-cont .button-bg-3 {
+	left:109px;
+}
+#menu-cont .button-bg-4 {
+	left:114px;
+}
+#menu-cont .button-bg-5 {
+	left:119px;
+}
+#menu-cont .button-bg-6 {
+	left:124px;
+}
+#menu-cont .button-bg-7 {
+	left:129px;
+}
+#menu-cont .button-bg-8 {
+	left:134px;
+}
+#menu-cont .button-bg-9 {
+	left:139px;
+}
+#menu-cont .button-bg-0 {
+	left:144px;
+}
+#menu-cont a.buttom-bg-lock {
+	width:21px;
+	height:22px;
+	display:block;
+	background: url(/img/menu-lock-bg.png);
+	background-repeat:no-repeat;
+	position:relative;
+	float:left;
+	top:46px;
+	left:148px;
+}
+#menu-cont a.buttom-bg-lock:hover {
+	background-position:0px -22px;
+}
+#menu-cont .buttom-bg-lvl2 {
+	width:40px;
+	height:40px;
+	display:block;
+	background: url(/img/menu-button-lvl2.png);
+	background-repeat:no-repeat;
+	background-position:0px 0px;
+}
+#menu-cont .buttom-bg-lvl2:hover {
+	background-position:0px -40px;
+}
+#menu-cont ol li:nth-child(10n) {
+        counter-reset: menu -1;
+}
+#menu-cont li:before {
+        content:counter(menu);
+        counter-increment:menu;
+	margin:0;
+	padding:0;
+	position:absolute;
+	color:#CCC;
+	right:6px;
+	top:3px;
+	font-size:12px;
+}
+
