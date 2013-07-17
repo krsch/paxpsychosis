@@ -1,0 +1,38 @@
+#main-menu-con {
+	width:284px;
+	height:72px;
+	position:absolute;
+	background:url(/img/main-menu-bg.png);
+	background-repeat:no-repeat;
+	top:8px;
+	left:230px;
+}
+#main-menu-con:hover {
+	left:400px;
+}
+#main-menu-con a.exet {
+	width:60px;
+	height:20px;
+	display:block;
+	background:url(/img/menu-exet.png);
+	background-repeat:no-repeat;
+	position:absolute;
+	top:8px;
+	left:100px;
+}
+#main-menu-con a.exet:hover {
+	background-position:0px -22px;
+}
+#main-menu-con a.relog {
+	width:154px;
+	height:20px;
+	display:block;
+	background: url(/img/menu-relog.png);
+	background-repeat:no-repeat;
+	position:absolute;
+	top:36px;
+	left:54px;
+}
+#main-menu-con a.relog:hover {
+	background-position:0px -22px;
+}
