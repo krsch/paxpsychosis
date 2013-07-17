@@ -60,6 +60,7 @@
 #menu-cont .button-bg-lock {
 	width:21px;
 	height:22px;
+        cursor: pointer;
 	display:block;
 	background: url(/img/menu-lock-bg.png);
 	background-repeat:no-repeat;
@@ -87,6 +88,7 @@
 }
 #menu-cont li {
         counter-increment:menu;
+        cursor: pointer;
 }
 #menu-cont li:before {
         content:counter(menu);
