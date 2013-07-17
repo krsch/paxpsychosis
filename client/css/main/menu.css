@@ -54,7 +54,10 @@
 #menu-cont .button-bg-0 {
 	left:144px;
 }
-#menu-cont a.buttom-bg-lock {
+#menu-cont #button-lock {
+        visibility: hidden;
+}
+#menu-cont .button-bg-lock {
 	width:21px;
 	height:22px;
 	display:block;
@@ -65,10 +68,10 @@
 	top:46px;
 	left:148px;
 }
-#menu-cont a.buttom-bg-lock:hover {
+#menu-cont #button-lock:checked + label{
 	background-position:0px -22px;
 }
-#menu-cont .buttom-bg-lvl2 {
+#menu-cont .button-bg-lvl2 {
 	width:40px;
 	height:40px;
 	display:block;
@@ -76,15 +79,17 @@
 	background-repeat:no-repeat;
 	background-position:0px 0px;
 }
-#menu-cont .buttom-bg-lvl2:hover {
+#menu-cont .button-bg-lvl2:hover {
 	background-position:0px -40px;
 }
 #menu-cont ol li:nth-child(10n) {
         counter-reset: menu -1;
 }
+#menu-cont li {
+        counter-increment:menu;
+}
 #menu-cont li:before {
         content:counter(menu);
-        counter-increment:menu;
 	margin:0;
 	padding:0;
 	position:absolute;
