@@ -21,8 +21,20 @@ User.methods.dologin = function login(session, sid, cb) {
 };
 User.methods.selectpc = function selectpc(pc_id, session, cb) {
         active_pc[this._id] = pc_id;
-        session.pc_id = pc_id;
-        session.save(function(err) { cb(err); } );
+        var Pc = require('./pc');
+        Pc.by_id(pc_id, function(err, pc){
+                if (err) { return cb(err); }
+                if (pc.doc.userId != session.userId) { return cb('Bad pc_id'); }
+                if (pc.session) {
+                        pc.publish('selectpc', 'Someone selected this PC. If it is not you, someone might have hacked you');
+                        delete pc.session.pc_id;
+                        pc.session.save();
+                }
+                pc.session = session;
+                session.pc_id = pc_id;
+                session.channel.subscribe('pc:'+pc._id);
+                session.save(function(err) { cb(err); } );
+        });
 };
 User.statics.getPc = function getPc(userId) {
         if (userId) { return active_pc[userId]; }

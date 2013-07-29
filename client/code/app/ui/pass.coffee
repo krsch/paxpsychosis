@@ -1,5 +1,5 @@
 "use strict";
-mouse_events = 'click dblclick mousedown mouseup mouseover mouseout contextmenu mousenter mouseleave'
+mouse_events = 'click dblclick mousedown mouseup mouseover mouseout contextmenu mousenter mouseleave mousewheel'
 
 exports.get_inside_image = get_inside_image = (img, threshold)->
         canvas = document.createElement("canvas");  #Create HTML5 canvas: supported in latest firefox/chrome/safari/konquerer.  Support in IE9
@@ -39,9 +39,15 @@ exports.passEvent = passEvent = (src, opts)->
       e.preventDefault()
       event = document.createEvent('MouseEvents')
       detail = e.detail ? null
-      event.initMouseEvent(e.type, e.bubbles, e.cancelable, window, detail,
-           e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey,
-           e.metaKey, e.button, e.relatedTarget)
+      if e.type != 'mousewheel'
+              event.initMouseEvent(e.type, e.bubbles, e.cancelable, window, detail,
+                   e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey,
+                   e.metaKey, e.button, e.relatedTarget)
+      else
+              event.initMouseEvent(e.type, e.bubbles, e.cancelable, window, e.originalEvent.wheelDelta,
+                   0, 0, 0, 0, e.ctrlKey, e.altKey, e.shiftKey,
+                   e.metaKey, 0, e.relatedTarget)
+              e = e.originalEvent
       hidden.hide()
       dst = document.elementFromPoint(e.clientX, e.clientY)
       dst?.dispatchEvent(event)

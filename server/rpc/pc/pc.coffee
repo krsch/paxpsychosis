@@ -45,7 +45,7 @@ exports.actions = (req,res,ss) ->
         console.error(err) if err
         return res(err.message) if err
         pc_export = near.map (e)->{_id: e._id, loc: e.loc, type: 'person'}
-        console.log(pc._id, pc_export)
+        # console.log(pc._id, pc_export)
         pc.sees_only pc_export
         #near.forEach (e)->e.seen_by pc._id
         return res(null, true)
