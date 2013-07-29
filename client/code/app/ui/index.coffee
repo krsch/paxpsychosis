@@ -5,21 +5,18 @@
 character_window = require('./character')
 pass_event = require('./pass')
 
-inside_bgava = (e)->
-  x = e.clientX
-  y = e.clientY
-  return y<(220+120) and x<80 or y<(70+7) and x<(190+185) or (x*x + y*y < 200*200)
-
-inside_kman = (e)->
-  true
+require('./avatar')
 
 $ ->
-  #$('.lt').on(mouse_events, passEvent('.lt', inside_bgava))
-  pass_event.wrapPassEvent('.lt')
-  pass_event.wrapPassEvent('.bgava', inside: inside_bgava, hide: '.lt')
-  pass_event.wrapPassEvent '.kman', inside: inside_kman, fn: (e)->
-    if e.type == 'click'
-      character_window.show()
-      #false
-    #else true
+        $('[data-pointer-map]').each ->
+                img = new Image()
+                el = $(this)
+                img.src = el.data('pointer-map')
+                img.onload = ->
+                        console.log(el)
+                        pass_event.wrapPassEvent(el, inside: pass_event.get_inside_image(img, 10));
+                img.src = el.data('pointer-map')
+        $('[data-pointer-none]').each ->
+                pass_event.wrapPassEvent(this, inside: ->false)
+        # pass_event.wrapPassEvent('#cont-left-top', inside: ->false)
 

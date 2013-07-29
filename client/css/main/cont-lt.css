@@ -4,12 +4,6 @@
 	position:absolute;
 	top:0px;
 	left:0px;
-}
-.left-top-bg {
-	width:500px;
-	height:380px;
-	top:0px;
-	left:0px;
 	background:url(/img/panel-left-top-bg.png);
 	background-repeat:no-repeat;
 }
@@ -80,7 +74,7 @@
 	background: url(/img/hp-bg.png);
 	background-repeat:no-repeat;
 }
-.avarat-cont-bg {
+.avatar-bg {
 	width:70px;
 	height:70px;
 	top:17px;
@@ -89,7 +83,7 @@
 	background: url(/img/avatar-cont-bg.png);
 	background-repeat:no-repeat;
 }
-.avarat-cont {
+.avatar{
 	width:70px;
 	height:70px;
 	top:17px;
