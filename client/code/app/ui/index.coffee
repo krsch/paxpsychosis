@@ -13,10 +13,8 @@ $ ->
                 el = $(this)
                 img.src = el.data('pointer-map')
                 img.onload = ->
-                        console.log(el)
                         pass_event.wrapPassEvent(el, inside: pass_event.get_inside_image(img, 10));
                 img.src = el.data('pointer-map')
         $('[data-pointer-none]').each ->
                 pass_event.wrapPassEvent(this, inside: ->false)
-        # pass_event.wrapPassEvent('#cont-left-top', inside: ->false)
 

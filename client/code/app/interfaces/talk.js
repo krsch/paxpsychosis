@@ -55,5 +55,7 @@ ss.event.on('chat:message', function(m){
 });
 
 ss.event.on('chat:new', function(chat){
-
+        var confirm = require('../ui/confirmation');
+        confirm('Accept chat from ' + chat.talkers + '?', {yes: 'Yes', no: 'No'}, function(err, button) {
+        });
 });

@@ -72,7 +72,7 @@
 #menu-cont #button-lock:checked + label{
 	background-position:0px -22px;
 }
-#menu-cont .button-bg-lvl2 {
+#menu-cont li a {
 	width:40px;
 	height:40px;
 	display:block;
@@ -80,7 +80,7 @@
 	background-repeat:no-repeat;
 	background-position:0px 0px;
 }
-#menu-cont .button-bg-lvl2:hover {
+#menu-cont li:hover a {
 	background-position:0px -40px;
 }
 #menu-cont ol li:nth-child(10n) {
