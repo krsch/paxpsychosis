@@ -23,16 +23,20 @@ class Fly
   constructor: (@event, loc, path, @speed)->
     path.unshift(loc)
     @path = path.map (p)->new Geo.Pos(p)
-    @time = get_time()
+    # @time = get_time()
     #@update_position()
+    @time = process.hrtime()
+    @old_distance = 0
     return
 
   update_position: ->
     return @path[0] if @path.length == 1 # prevent infinite loop
-    time = get_time()
-    distance = @speed * (time-@time)
+    # time = get_time()
+    time = process.hrtime(@time)
+    distance = @speed * 1000 * (time[0] + time[1]*1e-9) - @old_distance
     old_length = @path.length
     @path = reduce_path(@path, distance)
+    @old_distance += distance
     @event.emit('change:position', @path[0].toJSON())
     if @path.length == 1
       @event.move('stop')
@@ -46,12 +50,12 @@ class Fly
   toJSON: ->
     waypoints: @path.map (e)->e.toJSON()
     speed: @speed
-    time: @time
+    # time: @time
 
   direction: ->
     src: @path[0].toJSON()
     heading: @path[0].bearing(@path[1])
-    time: @time
+    # time: @time
     speed: @speed
 
   schedule_update: ->

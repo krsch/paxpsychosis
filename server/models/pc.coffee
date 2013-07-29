@@ -52,7 +52,8 @@ class Pc
                   else
                           cb(null, Pc.adopt(doc))
   publish: (topic, message)->
-    ss.publish.user(@doc.userId, topic, message)
+    # ss.publish.user(@doc.userId, topic, message)
+    ss.publish.channel('pc:'+@doc._id, topic, message)
   updatePos: ->
     @movement.force()
   move: ->
@@ -77,6 +78,8 @@ class Pc
   toJSON: ->
           Pc.jsonify(@doc)
   see: (pc, m)->
+    if pc._id == @_id
+              console.log(pc._id, @_id, @around)
     @publish 'you see',
       _id: pc._id
       loc: {lat: pc.doc.loc[1], lon: pc.doc.loc[0]}
