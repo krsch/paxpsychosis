@@ -33,6 +33,7 @@ module.exports = function(data) {
                 self: this,
                 click: function() {
                         var self = this;
+                        console.log('talking with ', this.get('_id'), this);
                         ss.rpc('pc.talk.start chat', this.get('_id'), function(err, chat_id) {
                                 if (err) { return console.error(err); }
                                 if (!chats[chat_id]) {
@@ -56,6 +57,6 @@ ss.event.on('chat:message', function(m){
 
 ss.event.on('chat:new', function(chat){
         var confirm = require('../ui/confirmation');
-        confirm('Accept chat from ' + chat.talkers + '?', {yes: 'Yes', no: 'No'}, function(err, button) {
+        confirm('Accept chat from ' + chat.names + '?', {yes: 'Yes', no: 'No'}, function(err, button) {
         });
 });

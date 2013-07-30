@@ -4,6 +4,7 @@
 "use strict";
 var chat_id = 0;
 var Pc = require('../../models/pc');
+var Chat = require('../../models/chat');
 exports.actions = function(req, res, ss) {
         req.use('pc.load', req);
         return {
@@ -20,7 +21,6 @@ exports.actions = function(req, res, ss) {
                         if (!pc_id) { return res('Bad PC id'); }
                         Pc.by_id(pc_id, function(err, talker){
                                 if (err) { console.error(err); return res(err); }
-                                console.log('staring chat with '+ talker.name);
                                 var chat = new Chat();
                                 chat.add(req.pc).add(talker);
                                 talker.notify_chat(chat);
@@ -28,7 +28,7 @@ exports.actions = function(req, res, ss) {
                         });
                 },
                 say: function(chat_id, message) {
-                        if (!pc.chats || !pc.chats[chat_id]) {
+                        if (!req.pc.chats || !req.pc.chats[chat_id]) {
                                 return res('Chat not found');
                         }
                         req.pc.chats[chat_id].say(req.pc, message);

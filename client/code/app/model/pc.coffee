@@ -36,6 +36,7 @@ module.exports = class Pc extends MovingObject
         fn(err)
       else
         pc = new Pc(pc_data)
+        look_around()
         fn(null, pc)
 
 ss.event.on 'pcPosition', (pos)->
@@ -48,7 +49,7 @@ ss.event.on 'pcMove', (movement)->
   console.log('I move', movement)
   pc.startMovement(movement)
 
-swap setInterval, 10000, ->
+look_around = ->
   ss.rpc 'pc.pc.lookAround', (err, new_people)->
     if err
       console.error(err)
@@ -61,4 +62,6 @@ swap setInterval, 10000, ->
         people[e._id].set('loc', e.loc)
       else
         people[e._id] = new Moving(e)
+
+setInterval look_around, 10000
 

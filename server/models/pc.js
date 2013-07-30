@@ -1,10 +1,8 @@
 "use strict";
-var $, Geo, ObjectId, Pc, Schema, by_id, by_user, deepEqual, log_error, look_around, model, mongoose, movement, names_by_user, pc_schema, skillLevel2Value, ss, _;
-
 var mongoose = require('mongoose'),
         $ = require('interlude'), 
         deepEqual = require('deep-equal'),
-        _ = require('underscore'),
+        _ = require('lodash'),
         Geo = require('geojs'),
         ss = require('socketstream').api,
         Schema = mongoose.Schema,
@@ -29,6 +27,23 @@ var mongoose = require('mongoose'),
                 },
                 skills: Schema.Types.Mixed
         });
+var model = mongoose.model('PC', pc_schema);
+function look_around (pc) {}
+function skillLevel2Value(level) {
+        if (level < 0) {
+                return 'лох';
+        } else if (level < 5) {
+                return 'нуб';
+        } else if (level < 10) {
+                return 'норм';
+        } else if (level < 15) {
+                return 'крут';
+        } else {
+                return 'супер';
+        }
+}
+
+
 
 function log_error(err) {
         if (err) { return console.error(err); }
@@ -86,6 +101,21 @@ Pc.create = function(params, cb) {
         });
 };
 
+function by_id(_id, cb) {
+        if (_id in cache.pc) {
+                return cb(null, cache.pc[_id]);
+        } else {
+                return model.findById(_id, function(err, doc) {
+                        if (err) { return cb(arguments); }
+                        if (!doc) { return cb('Not found'); }
+                        if (_id in cache.pc) {
+                                return cache.pc[_id];
+                        } else {
+                                return cb(null, Pc.adopt(doc));
+                        }
+                });
+        }
+}
 Pc.prototype.publish = function(topic, message) {
         return ss.publish.channel('pc:' + this.doc._id, topic, message);
 };
@@ -110,12 +140,10 @@ Pc.prototype.notify_movement = function(m) {
 };
 
 Pc.prototype.notify_chat = function(chat) {
-        console.log('Notify ', this, 'about chat ', chat);
         return this.publish('chat:new', {
-                id: chat_id,
-                talkers: chat.talkers.map(function(pc) {
-                        return pc._id;
-                })
+                id: chat.id,
+                talkers: _.pluck(chat.talkers, '_id'),
+                names: _.pluck(_.pluck(_.without(chat.talkers, this), 'doc'), 'name')
         });
 };
 
@@ -165,9 +193,7 @@ Pc.prototype.lost = function(pc) {
         });
 };
 
-look_around = function(pc) {};
-
-by_user = function(userId, cb) {
+function by_user(userId, cb) {
         return model.findOne({
                 userId: userId
         }, function(err, doc) {
@@ -179,29 +205,10 @@ by_user = function(userId, cb) {
                 }
                 return cb(null, doc._id in cache.pc ? cache.pc[doc._id] : Pc.adopt(doc));
         });
-};
+}
 
-by_id = function(_id, cb) {
-        if (_id in cache.pc) {
-                return cb(null, cache.pc[_id]);
-        } else {
-                return model.findById(_id, function(err, doc) {
-                        if (err) {
-                                return cb(arguments);
-                        }
-                        if (!doc) {
-                                return cb('Not found');
-                        }
-                        if (_id in cache.pc) {
-                                return cache.pc[_id];
-                        } else {
-                                return cb(null, Pc.adopt(doc));
-                        }
-                });
-        }
-};
 
-names_by_user = function(userId, cb) {
+function names_by_user(userId, cb) {
         return model.find({
                 userId: userId
         }, function(err, docs) {
@@ -210,7 +217,7 @@ names_by_user = function(userId, cb) {
                 }
                 return cb(null, docs.map(Pc.jsonify));
         });
-};
+}
 
 Pc.prototype.sees_only = function(pc) {
         var equals, new_pcs, old_pcs, pc_ids,
@@ -246,27 +253,12 @@ Pc.prototype.sees_only = function(pc) {
         this.around = pc.map(function(e) { return e._id; });
 };
 
-skillLevel2Value = function(level) {
-        if (level < 0) {
-                return 'лох';
-        } else if (level < 5) {
-                return 'нуб';
-        } else if (level < 10) {
-                return 'норм';
-        } else if (level < 15) {
-                return 'крут';
-        } else {
-                return 'супер';
-        }
-};
-
-model = mongoose.model('PC', pc_schema);
-
 module.exports = {
         model: model,
         by_id: by_id,
         by_user: by_user,
         create: Pc.create,
+        adopt: Pc.adopt,
         jsonify: Pc.jsonify,
         json_by_user: names_by_user,
         find: function(query, cb) {
