@@ -1,6 +1,6 @@
 require('./world')
 ss = require('socketstream').start()
-pc = require '../server/rpc/pc'
+pc = require '../server/rpc/pc/pc'
 Geo = require('geojs')
 chai = require('chai')
 chai.Assertion.includeStack = true
@@ -8,7 +8,6 @@ user = require( '../server/models/user' )
 sinon = require('sinon')
 deepEqual = require('deep-equal')
 chai.should()
-wrapRPC = (done)-> (args)->done(args...)
 {model: Pc, create: create_pc} = require('../server/models/pc')
 process.on 'uncaughtException', (e)->
   if e instanceof RangeError

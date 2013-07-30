@@ -1,5 +1,5 @@
 ss = require('socketstream').start()
-pc = require '../server/rpc/pc'
+pc = require '../server/rpc/pc/pc'
 chai = require 'chai'
 user = require '../server/models/user'
 sinon = require 'sinon'
