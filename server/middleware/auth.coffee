@@ -8,7 +8,7 @@ ss = require('socketstream')
 # Only let a request through if the session has been authenticated
 exports.authenticated = ->
   (req, res, next) ->
-    req.session.userId ||= User.by_sid(req.sessionId);
+    req.session.userId ||= User.by_sid(req.sessionId)?._id;
     if req.session && req.session.userId?
       next()
     else
