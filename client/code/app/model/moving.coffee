@@ -5,6 +5,7 @@
 MapObject = require('./map_object')
 _ = require('underscore')
 
+window.people ?= {}
 heading = (l1, l2)->
   p1 = new geo.Point(l1.lat, l1.lng)
   p2 = new geo.Point(l2.lat, l2.lng)
@@ -58,7 +59,6 @@ module.exports = class MovingObject extends MapObject
     super()
 
 ss.event.on 'you see', (e)->
-  window.people ?= {}
   console.log('I see', e)
   if e._id of people
     #TODO add support for other fields
@@ -71,7 +71,6 @@ ss.event.on 'you see', (e)->
     people[e._id].unset('movement')
 
 ss.event.on 'you lost', (pcs)->
-  window.people ?= {}
   pcs.forEach (e)->
     if e._id of people
       people[e._id].remove()

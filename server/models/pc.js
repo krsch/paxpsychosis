@@ -140,10 +140,11 @@ Pc.prototype.notify_movement = function(m) {
 };
 
 Pc.prototype.notify_chat = function(chat) {
+        var other = _.without(chat.talkers, this)[0];
         return this.publish('chat:new', {
                 id: chat.id,
-                talkers: _.pluck(chat.talkers, '_id'),
-                names: _.pluck(_.pluck(_.without(chat.talkers, this), 'doc'), 'name')
+                talker: other._id,
+                name: other.doc.name
         });
 };
 

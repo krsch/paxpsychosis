@@ -24,7 +24,7 @@ exports.actions = function(req, res, ss) {
                                 var chat = new Chat();
                                 chat.add(req.pc).add(talker);
                                 talker.notify_chat(chat);
-                                res(null, chat_id);
+                                res(null, chat.id);
                         });
                 },
                 say: function(chat_id, message) {
@@ -33,6 +33,10 @@ exports.actions = function(req, res, ss) {
                         }
                         req.pc.chats[chat_id].say(req.pc, message);
                         res(null);
+                },
+                accept: function(chat_id) {
+                },
+                reject: function(chat_id) {
                 }
         };
 };
