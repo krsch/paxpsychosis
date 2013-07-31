@@ -37,6 +37,7 @@ module.exports = class Pc extends MovingObject
       else
         pc = new Pc(pc_data)
         look_around()
+        $('.panel-info-name').html(pc_data.name);
         fn(null, pc)
 
 ss.event.on 'pcPosition', (pos)->

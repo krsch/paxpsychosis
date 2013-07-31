@@ -18,7 +18,7 @@ global.cache = {pc: {} };
 // Define a single-page client
 ss.client.define('main', {
   view: 'main.html',
-  css:  ['libs', 'main', 'app.styl', 'css.css', 'forms.css', 'up.css'],
+  css:  ['libs', 'main', 'app.styl', 'css.css', 'forms.css'],
   code: ['libs', 'app', 'system'],
   tmpl: '*'
 });

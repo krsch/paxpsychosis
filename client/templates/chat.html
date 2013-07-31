@@ -1,4 +1,4 @@
-<div class="chat">
+<div class="chat" data-bind="attr: {title: title}">
         <ul data-bind="foreach: messages">
                 <li data-bind="css: {you: isyou, notyou: !isyou}, text: text">
         </ul>

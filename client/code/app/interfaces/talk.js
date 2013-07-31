@@ -6,12 +6,13 @@ var ko = require('knockout'),
         kb = require('knockback'),
         ss = require('socketstream');
 var chats = {};
-function ChatViewModel(obj,chat_id){
+function ChatViewModel(obj,chat_id, name){
         this.talker = obj;
         this.chat_id = chat_id;
         this.npc = kb.viewModel(obj);
         this.messages = ko.observableArray();
         this.newmessage = ko.observable('');
+        this.title = 'Dialogue with ' + name;
 }
 ChatViewModel.prototype.send = function send() {
         var self = this;
@@ -25,11 +26,11 @@ function Message(m) {
         this.isyou = m.talker === pc.get('_id');
 }
 
-function showChatWindow(chat_id, npc) {
+function showChatWindow(chat_id, npc, name) {
         if (!chats[chat_id]) {
                 var c = chats[chat_id] = { $el: $(ss.tmpl.chat.r()).appendTo(document.body) };
                 c.el = c.$el[0];
-                ko.applyBindings(c.vm = new ChatViewModel(npc, chat_id), c.el);
+                ko.applyBindings(c.vm = new ChatViewModel(npc, chat_id, name), c.el);
         }
         chats[chat_id].$el.dialog();
 }
@@ -45,7 +46,7 @@ module.exports = function(data) {
                         console.log('talking with ', this.get('_id'), this);
                         ss.rpc('pc.talk.start chat', this.get('_id'), function(err, chat_id) {
                                 if (err) { return console.error(err); }
-                                showChatWindow(chat_id, self);
+                                showChatWindow(chat_id, self, '');
                         });
                 }
         });
@@ -66,7 +67,7 @@ ss.event.on('chat:new', function(chat){
                 var confirm = require('../ui/confirmation');
                 var el = confirm('Accept chat from ' + chat.name + '?', {yes: 'Yes', no: 'No'}, function(err, button) {
                         if (button === 'yes') {
-                                showChatWindow(chat.id, people[chat.talker]);
+                                showChatWindow(chat.id, people[chat.talker], chat.name);
                                 ss.rpc('pc.talk.accept', chat);
                         } else {
                                 ss.rpc('pc.talk.reject', chat);
