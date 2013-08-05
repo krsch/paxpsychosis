@@ -1,11 +1,16 @@
-<div class="chat" data-bind="attr: {title: title}">
-        <ul data-bind="foreach: messages">
-                <li data-bind="css: {you: isyou, notyou: !isyou}, text: text">
-        </ul>
-        <form data-bind="submit: send">
-                <!-- <textarea data-bind="value: newmessage"></textarea> -->
-                <input type=text data-bind="value: newmessage">
-                <input type="submit" value="Отправить">
-        <form>
-        <!-- <button data-bind="click: send">Отправить</button> -->
+<div class="chat-window" data-bind="attr: {title: title}">
+        <div class="not-you-info"> </div>
+        <div class="chat">
+                <ul data-bind="foreach: messages">
+                        <li data-bind="css: {you: isyou, notyou: !isyou}, text: text">
+                </ul>
+        </div>
+        <div class="npc-chat"> </div>
+        <form data-bind="submit: send" class="you-chat">
+                <!-- <input class="chat-newmessage" type="text" data-bind="value: newmessage"> -->
+                <textarea class="chat-newmessage" data-bind="value: newmessage"></textarea> 
+                <input class="chat-send" type="submit" value="">
+        </form>
+        <div class="you-info"> </div>
 </div>
+

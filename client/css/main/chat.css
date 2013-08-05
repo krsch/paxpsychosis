@@ -1,0 +1,78 @@
+
+.chat-window {
+        width:500px;
+        height:350px;
+        position:absolute;
+        background:#CCC;
+}
+.chat-window .not-you-info {
+        width:150px;
+        height:350px;
+        background:#999;
+        position:absolute;
+        top:0px;
+        left:0px;
+}
+.chat-window .you-info {
+        width:150px;
+        height:350px;
+        background:#999;
+        position:absolute;
+        top:0px;
+        left:350px;
+}
+.chat-window .chat {
+        width:190px;
+        height:160px;
+        background:#666;
+        position:absolute;
+        top:0px;                                                                                                                                                                              
+        left:150px;                                                                                                                                                                           
+        padding:5px;                                                                                                                                                                          
+        overflow: auto;                                                                                                                                                                       
+        overflow-x: hidden;                                                                                                                                                                   
+}                                                                                                                                                                                             
+.chat-window .npc-chat {                                                                                                                                                                      
+        width:200px;                                                                                                                                                                          
+        height:80px;                                                                                                                                                                          
+        background:#0C9;                                                                                                                                                                      
+        position:absolute;                                                                                                                                                                    
+        top:170px;                                                                                                                                                                            
+        left:150px;                                                                                                                                                                           
+}                                                                                                                                                                                             
+.chat-window .you-chat {                                                                                                                                                                      
+        width:200px;                                                                                                                                                                          
+        height:100px;                                                                                                                                                                         
+        background:# 0F9;                                                                                                                                                                     
+        position:absolute;
+        top:250px;
+        left:150px;
+}
+.chat-window .chat ul{
+        list-style:none;
+        padding:0;
+        margin:0;
+}
+.chat-window .chat ul li.notyou{
+        text-align:left;
+}
+.chat-window .chat ul li.you{
+        text-align: right;
+}
+.chat-window .you-chat .chat-newmessage{
+        width:166px;
+        height:94px;
+        text-align:left;
+}
+.chat-window .you-chat input.chat-send{
+        width:30px;
+        height:100px;
+        padding:0;
+        border:none;
+        cursor: pointer;
+        background-image:url(/img/chan-send.png);
+        background-repeat:no-repeat;
+        position:absolute;
+        top:0px;
+        right:0px;
+}

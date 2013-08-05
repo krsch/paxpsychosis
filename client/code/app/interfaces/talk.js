@@ -32,7 +32,12 @@ function showChatWindow(chat_id, npc, name) {
                 c.el = c.$el[0];
                 ko.applyBindings(c.vm = new ChatViewModel(npc, chat_id, name), c.el);
         }
-        chats[chat_id].$el.dialog();
+        chats[chat_id].$el.dialog({minHeight: 400, minWidth: 500});
+        $('textarea.chat-newmessage').keydown(function(e){
+                if (e.ctrlKey && e.keyCode == 13) {
+                        $(this).closest('form').submit();
+                }
+        });
 }
 module.exports = function(data) {
         var actions = this.get('actions') || [],
