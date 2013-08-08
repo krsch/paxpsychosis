@@ -1,78 +1,97 @@
-
 .chat-window {
-        width:500px;
-        height:350px;
-        position:absolute;
-        background:#CCC;
+	width:100%;
+	height:100%;
+	min-width:500px;
+	min-height:350px;
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
 }
 .chat-window .not-you-info {
-        width:150px;
-        height:350px;
-        background:#999;
-        position:absolute;
-        top:0px;
-        left:0px;
+	width:150px;
+	min-height:350px;
+	background:#1B1B1B;
+	position:absolute;
+	top:0px;
+	left:0px;
+	bottom:0px;
 }
 .chat-window .you-info {
-        width:150px;
-        height:350px;
-        background:#999;
-        position:absolute;
-        top:0px;
-        left:350px;
+	width:150px;
+	min-height:350px;
+	background:#1B1B1B;
+	position:absolute;
+	top:0px;
+	right:0px;
+	bottom:0px;
 }
 .chat-window .chat {
-        width:190px;
-        height:160px;
-        background:#666;
-        position:absolute;
-        top:0px;                                                                                                                                                                              
-        left:150px;                                                                                                                                                                           
-        padding:5px;                                                                                                                                                                          
-        overflow: auto;                                                                                                                                                                       
-        overflow-x: hidden;                                                                                                                                                                   
-}                                                                                                                                                                                             
-.chat-window .npc-chat {                                                                                                                                                                      
-        width:200px;                                                                                                                                                                          
-        height:80px;                                                                                                                                                                          
-        background:#0C9;                                                                                                                                                                      
-        position:absolute;                                                                                                                                                                    
-        top:170px;                                                                                                                                                                            
-        left:150px;                                                                                                                                                                           
-}                                                                                                                                                                                             
-.chat-window .you-chat {                                                                                                                                                                      
-        width:200px;                                                                                                                                                                          
-        height:100px;                                                                                                                                                                         
-        background:# 0F9;                                                                                                                                                                     
-        position:absolute;
-        top:250px;
-        left:150px;
+	/*width:190px;*/
+	/*height:160px;*/
+	background:#F3F3F3;
+	position:absolute;
+	top:0px;
+	left:150px;
+	right:150px;
+	bottom:180px;
+	padding:5px;
+	overflow: auto;
+	overflow-x: hidden;
 }
-.chat-window .chat ul{
-        list-style:none;
-        padding:0;
-        margin:0;
+.chat-window .npc-chat {
+	/*width:200px;*/
+	height:80px;
+	background:#3A3C3B;
+	position:absolute;
+	left:150px;
+	right:150px;
+	bottom:100px;
 }
-.chat-window .chat ul li.notyou{
-        text-align:left;
+.chat-window .you-chat {
+	/*width:200px;*/
+	height:100px;
+	position:absolute;
+	left:150px;
+	right:150px;
+	bottom:0px;
 }
-.chat-window .chat ul li.you{
-        text-align: right;
+.chat-window ul.chat {
+	list-style:none;
+	padding:0;
+	margin:0;
 }
-.chat-window .you-chat .chat-newmessage{
-        width:166px;
-        height:94px;
-        text-align:left;
+.chat-window ul.chat  li.notyou{
+	text-align:left;
 }
-.chat-window .you-chat input.chat-send{
-        width:30px;
-        height:100px;
-        padding:0;
-        border:none;
-        cursor: pointer;
-        background-image:url(/img/chan-send.png);
-        background-repeat:no-repeat;
-        position:absolute;
-        top:0px;
-        right:0px;
+.chat-window ul.chat  li.you{
+	text-align: right;
+}
+.chat-window form.you-chat  textarea.chat-newmessage{
+	/*width:164px;*/
+	height:92px;
+	resize:none;
+	position:absolute;
+	left:0px;
+	right:30px;
+	bottom:0px;
+	border:none;
+	outline:none;
+	box-shadow: 0px 0px 20px #464441 inset;
+	margin:0px;
+	padding:3px;
+	border: 1px solid #5C5C5C;
+}
+.chat-window form.you-chat  input.chat-send{
+	width:30px;
+	height:100px;
+	padding:0;
+	border:none;
+	cursor: pointer;
+	background-image:url(/img/chan-send.png);
+	background-repeat:no-repeat;
+	position:absolute;
+	top:0px;
+	right:0px;
 }
