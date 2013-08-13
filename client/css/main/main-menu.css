@@ -7,10 +7,10 @@
 	top:8px;
 	left:230px;
 }
-#main-menu-con:hover {
+#main-menu-con.open {
 	left:400px;
 }
-#main-menu-con a.exet {
+#main-menu-con a#exit {
 	width:60px;
 	height:20px;
 	display:block;
@@ -20,10 +20,10 @@
 	top:8px;
 	left:100px;
 }
-#main-menu-con a.exet:hover {
+#main-menu-con a#exit:hover {
 	background-position:0px -22px;
 }
-#main-menu-con a.relog {
+#main-menu-con a#relog {
 	width:154px;
 	height:20px;
 	display:block;
@@ -33,6 +33,6 @@
 	top:36px;
 	left:54px;
 }
-#main-menu-con a.relog:hover {
+#main-menu-con a#relog:hover {
 	background-position:0px -22px;
 }

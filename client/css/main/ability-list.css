@@ -1,0 +1,97 @@
+#ability-list {
+	width:500px;
+	height:214px;
+	position:absolute;
+	top:30%;
+	left:25%;
+	background:#fc0;
+        z-index:10;
+}
+#ability-list .ability-list-bg {
+	width:480px;
+	height:194px;
+	background:#efefef;
+	margin:10px 10px 10px 10px;
+}
+#ability-list .left-block {
+	width:194px;
+	height:194px;
+	float:left;
+}
+#ability-list .right-block {
+	width:271px;
+	height:194px;
+	float:left;
+	margin: 0 0 0 15px;
+}
+#ability-list .right-block .category-title {
+	max-width:230px;
+	height:18px;
+	background: #09C;
+}
+#ability-list .center {
+	width:92px;
+	height:92px;
+	background:#cdc9c9;
+	position:absolute;
+	margin:51px 0px 0px 51px;
+}
+#ability-list .category-name-2, 
+#ability-list .category-name-3,
+#ability-list .category-name-4,
+#ability-list .category-name-5,
+#ability-list .category-name-6,
+#ability-list .category-name-7,
+#ability-list .category-name-8,
+#ability-list .category-name-9,
+#ability-list .category-name-10,
+#ability-list .category-name-11,
+#ability-list .category-name-12,
+#ability-list .category-name-13{
+	width:41px;
+	height:41px;
+	background:#939393;
+	position:absolute;
+}
+#ability-list .category-name-2 {
+	margin:0px 0px 0px 0px;
+}
+#ability-list .category-name-3 {
+	margin:0px 0px 0px 51px;
+}
+#ability-list .category-name-4 {
+	margin:0px 0px 0px 102px;
+}
+#ability-list .category-name-5 {
+	margin:0px 0px 0px 153px;
+}
+#ability-list .category-name-6 {
+	margin:51px 0px 0px 153px;
+}
+#ability-list .category-name-7 {
+	margin:102px 0px 0px 153px;
+}
+#ability-list .category-name-8 {
+	margin:153px 0px 0px 153px;
+}
+#ability-list .category-name-9 {
+	margin:153px 0px 0px 102px;
+}
+#ability-list .category-name-10 {
+	margin:153px 0px 0px 51px;
+}
+#ability-list .category-name-11 {
+	margin:153px 0px 0px 0px;
+}
+#ability-list .category-name-12 {
+	margin:102px 0px 0px 0px;
+}
+#ability-list .category-name-13 {
+	margin:51px 0px 0px 0px;
+}
+#ability-list .close {
+        position: absolute;
+        background-color: #b11;
+        right: 12px;
+        top: 10px;
+}

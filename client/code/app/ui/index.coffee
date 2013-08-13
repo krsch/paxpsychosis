@@ -5,9 +5,11 @@
 character_window = require('./character')
 pass_event = require('./pass')
 
-require('./avatar')
 
 $ ->
+        require('./avatar')
+        require('./ability-list')
+        $('#main-menu-con').click -> $(this).toggleClass('open')
         $('[data-pointer-map]').each ->
                 img = new Image()
                 el = $(this)
